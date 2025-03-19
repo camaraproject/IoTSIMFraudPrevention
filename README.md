@@ -18,7 +18,9 @@ Sandbox API Repository to describe, develop, document, and test the IoT SIM Frau
 
 * Service API(s) “IoTSIMFraudPrevention” (see APIBacklog.md) 
 * The API(s) provide(s) the API consumer with the ability to:  
-  * §Short API scope description§ !! Add here a scope description according to the API proposal
+  * manage device-card binding, includes bindng/unbinding imei to the card, when the imei is not match with the bind information, operator will block the network, when the imei is match, resume the network.. 
+  * manage device-area binding, includes binding/unbinding area to the card, when the area is not match with the bind information, operator will block the network, when the area is match, resume the network.
+  * query risk control information related to IoT SIM cards, includes machine-card binding and region restriction.
 * Describe, develop, document, and test the API(s)
 * Started: March 2025
 
