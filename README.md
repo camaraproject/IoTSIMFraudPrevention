@@ -12,7 +12,7 @@
 <!-- Alternative for new, independent Sandbox API Repositories -->
 Sandbox API Repository to describe, develop, document, and test the IoT SIM Fraud Prevention Service API(s). The repository does not yet belong to a CAMARA Sub Project.
 
-* API Repository wiki page: TBD !! Update with concrete link when available and delete the task
+* API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/x/xwKaBQ
 
 ## Scope
 
@@ -37,8 +37,7 @@ The repository has no (pre)releases yet, work in progress is within the main bra
 * Meetings are held virtually <!-- for new, independent Sandbox API repositories request a meeting link from the LF admin team or replace the information with the existing meeting information of the Sub Project -->
     * Schedule: !! TBD
     * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meetings/telcoapi) !! Update this link with your meeting registration/join link and delete the task
-    * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/AgDe) !! update this link to your wiki page using the "Share" link and delete the task
-* Mailing List (TBD)
-    <!-- Note: the $mailinglistname$ is either already existing (for API Repositories within a Sub Projects) or will be created by the CAMARA Admin Team. -->
-    * Subscribe / Unsubscribe to the mailing list <https://lists.camaraproject.org/g/$mailinglistname§>.
-    * A message to the community of this Sub Project can be sent using <$mailinglistname§@lists.camaraproject.org>.
+    * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/GwCfBQ)
+* Mailing List
+    * Subscribe / Unsubscribe to the mailing list <https://lists.camaraproject.org/g/sp-iot-sim-fraud-prevention>.
+    * A message to the community of this Sub Project can be sent using <sp-iot-sim-fraud-prevention@lists.camaraproject.org>.
