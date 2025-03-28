@@ -1,3 +1,3 @@
 | Org                    | Name                                      | GitHub Username        |
 | -----------------------| ------------------------------------------| -----------------------|
-| §company§ | §name§ | §github_username§ |
+| China Telecom | Furong Chen | chenfr2-ChinaTelecom |
