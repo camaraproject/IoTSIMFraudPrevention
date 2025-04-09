@@ -6,17 +6,18 @@ info:
     
     # Introduction
     
-    With this API,we need to subscribe to a service with SIM card binding and regional restriction first, for the SIM card binding service, the SIM card and IMEI must be bound together when subcribe the service. When the IMEI reported in the message doesn't match the binding one, the network serices will be blocked. When the IMEI reported in the message matches the binding one, the network service of the SIM card will be restored.
+    With this API, we need to subscribe to a SIM card binding service or regional restriction service first. Then, customers could use query api to query the binding information which returns match status. Also, customers could use bind api to bind the SIM card and IMEI together. When the IMEI reported in the message doesn't match the binding one, the network serices will be blocked automatically. When the IMEI reported in the message matches the binding one, the network service of the SIM card will be restored.
     The ability provided by the regional restriction is similar to that of SIM card binding, but what's bound is the regional information (the regional information is mapped to the corresponding region based on the base station ID reported in the message).
-    In the query api mentioned in this proposal, returned status means match (network access is enabled) / no match (network blocking).
-    Meanwhile，we added binding and unbinding APIs under this proposal.
     
     # Relevant terms and definitions
 
-    * **SIM card**: The SIM (subscriber identity module) card is an IC card held by mobile users of the GSM system, known as a "user identification card". The GSM system identifies GSM users through SIM cards.
+    * **SIM card**: The SIM (subscriber identity module) card here stands for IoT（internet of things）network card.
 
-    * **binding**: Machine card binding is a security management mechanism for IoT network cards, aimed at preventing them from being used for other purposes. By binding the SIM card to specific terminal devices, it ensures that the card can only be used on designated devices, thereby enhancing security. 
+    * **binding**: Machine card binding is a security management mechanism for IoT network cards, aimed at preventing them from being used for other purposes. By binding the SIM card to specific terminal devices, it ensures that the card can only be used on designated devices, thereby enhancing security.
+    
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication. At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier (not supported for this API version) assigned by the mobile network operator for the device.
+    
+    * **IMEI**: IMEI stands for International Mobile Equipment Identity. It is a unique 15-digit number assigned to every mobile phone or cellular device, which is used to identify the device on a mobile network. The IMEI serves as a crucial identifier for tracking and managing mobile devices, particularly in cases of theft or loss. It can also be utilized for validating whether a device is authorized to connect to a network.
       
     # API Functionality
     
@@ -122,7 +123,7 @@ info:
     (FAQs will be added in a later version of the documentation)
 
 
-  version: 1.0.0
+  version: wip
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -131,7 +132,7 @@ externalDocs:
   description: Project documentation at CAMARA
   url: https://github.com/camaraproject/DeviceLocation
 servers:
-  - url: "{apiRoot}/fraud-prevention/v2"
+  - url: "{apiRoot}/iot-sim-fraud-prevention/wip"
     variables:
       apiRoot:
         default: http://localhost:9091
