@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title:  IoT SIM Fraud Prevention
+  title:  IoT SIM Fraud Prevention Subscriptions
   description: |
    API to create, with SIM card binding and unbinding and regional restriction
     
@@ -23,9 +23,25 @@ info:
     
     The API defines one service endpoint:
 
-    - `POST /bind` This API allows enterprise customers to bind imei or area to the card
-    - `POST /unbind` This API allows enterprise customers to unbind imei or area to the card
-    - `POST /query` This API allows enterprise customers to query risk control information related to IoT SIM cards, such as machine-card binding, region restriction. With this information, enterprises can assess the security and reliability of IoT cards, helping to assess security, detect, and prevent possible fraud.
+    - `POST /subscribe` This API allows enterprise customers to subscribe to risk control information related to IoT SIM cards. When the device or region bound to the IoT card changes, the customer can be notified in a timely manner through the callback address registered by the customer, making it convenient for the customer to identify endpoint risks in a timely manner.
+      - It is mandatory in the subscription to provide the event type for which the client would like to subscribe.
+        - Following event ``types`` are managed for this API:
+        - ``IMEI_CHANGE`` The triggle event when imei of device was changed
+
+        - ``AREA_CHANGE`` The triggle event when area of device was changed
+        - Note: Additionally to these list, ``SUBSCRIBE_END`` notification `type` is sent when the subscription ends. This notification does not require dedicated subscription.
+          - It is used when:
+             - the subscription expire time (optionally set by the requester) has been reached
+             - the maximum number of subscription events (optionally set by the requester) has been reached
+             - the subscription was deleted by the requester
+             - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
+             - the API server has to stop sending notification prematurely
+      - Notification callback
+        This endpoint describes the event notification received on subscription listener side when the event occurred.
+        As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
+      - _**WARNING**: This callback endpoint must be exposed on the consumer side as `POST /{$request.body#/sink}`.
+      Developers may provide a callback URL on which notifications regarding geofencing can be received from the service provider.
+      If an event occurs the application will send events to the provided webhook - 'sink'._
 
     To call this endpoint, the API consumer must first obtain a valid access token from the token endpoint, which is then passed as an Authorization header. When a 2-legged access token is used, the API consumer must also pass at least one of the available IoT subscription identifiers in the body of the request.
     The type of communication function is also needed in the body of the request.
@@ -119,14 +135,14 @@ servers:
         default: http://localhost:9091
         description: API root
 paths:
-  /bind:
+  /subscribe:
     post:
       tags:
-        - Bind sim card fraud prevention
-      summary: Bind device IMEI or area restrictions
+        - Subscription sim card fraud prevention
+      summary: Subscription device's IMEI or region change
       description: |
-        This API allows enterprise customers to bind imei or area to the card
-      operationId: BindDeviceImei
+        This API allows enterprise customers to subscribe to risk control information related to IoT SIM cards. When the device or region bound to the IoT card changes, the customer can be notified in a timely manner through the callback address registered by the customer, making it convenient for the customer to identify endpoint risks in a timely manner.
+      operationId: SubscribeFraudPrevention
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       requestBody:
@@ -134,66 +150,181 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BindDeviceImeiRequest"
+              $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
             examples:
               INPUT_IPV4_ADDRESS:
-                summary: bind imei For One Device By IPv4 Address
-                description: Use the IPv4 address of a device for binding operations
+                summary: Subscription For One Device By IPv4 Address
+                description: Use the IPv4 address of a device for subscription operations
                 value:
-                  device: 
-                    ipv4Address: 
-                      publicAddress: "203.0.113.0"
-                      publicPort: 59765
-                  bindType: "IMEIBIND"
+                  config:
+                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    initialEvent: true
+                    subscriptionMaxEvents: 10
+                    subscriptionDetail:
+                        device:
+                            ipv4Address: 
+                              publicAddress: "203.0.113.0"
+                              publicPort: 59765
+                  types:
+                    - "IMEIBIND"
+                  sink: "http://notificationSendServer12.supertelco.com"
+                  protocol: "HTTP"
+                  sinkCredential: "PLAIN"
               INPUT_IPV6_ADDRESS:
-                summary: bind imei For One Device By IPv6 Address
-                description: Use the IPv6 address of a device for binding operations
+                summary: Subscription For One Device By IPV6 Address
+                description: Use the IPv6 address of a device for subscription operations
                 value:
-                  device:
-                    ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
-                  bindType: "IMEIBIND"
+                  config:
+                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    initialEvent: true
+                    subscriptionMaxEvents: 10
+                    subscriptionDetail:
+                        device:
+                            ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
+                  types:
+                    - "IMEIBIND"
+                  sink: "http://notificationSendServer12.supertelco.com"
+                  protocol: "HTTP"
+                  sinkCredential: "PLAIN"
               INPUT_PHONE_NUMBER:
-                summary: bind imei For One Device By Phone Number
-                description: Use a device's number for binding operation
+                summary: Subscription For One Device By Device Number
+                description: Use a device's number for subscription operation
                 value:
-                  device:
-                    phoneNumber: "+123456789"
-                  bindType: "IMEIBIND"
+                  config:
+                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    initialEvent: true
+                    subscriptionMaxEvents: 10
+                    subscriptionDetail:
+                        device:
+                            phoneNumber: "+123456789"
+                  types:
+                    - "IMEIBIND"
+                  sink: "http://notificationSendServer12.supertelco.com"
+                  protocol: "HTTP"
+                  sinkCredential: "PLAIN"
               INPUT_NETWORK_ACCESS_IDENTIFIER:
-                summary: bind imei For One Device By Network Access Identifier
-                description: Use a device's network access identifier for binding operations
+                summary: Subscription For One Device By Network Access Identification
+                description: Use a device's network access identifier for subscription operations
                 value:
-                  device:
-                    networkAccessIdentifier: "123456789@domain.com"
-                  bindType: "IMEIBIND"
-              INPUT_BIND_TYPE:
-                summary: bind imei For One Device By 3 Legged Token
-                description: Use a 3 Legged Token for binding operations
+                  config:
+                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    initialEvent: true
+                    subscriptionMaxEvents: 10
+                    subscriptionDetail:
+                        device:
+                            networkAccessIdentifier: "123456789@domain.com"
+                  types:
+                    - "IMEIBIND"
+                  sink: "http://notificationSendServer12.supertelco.com"
+                  protocol: "HTTP"
+                  sinkCredential: "PLAIN"
+              INPUT_CONFIG:
+                summary: Subscription For One Device By 3 Legged Token
+                description: Use a 3 Legged Token for subscription operations
                 value:
-                  bindType: "IMEIBIND"
+                  config:
+                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    initialEvent: true
+                    subscriptionMaxEvents: 10
+                  types:
+                    - "IMEIBIND"
+                  sink: "http://notificationSendServer12.supertelco.com"
+                  protocol: "HTTP"
+                  sinkCredential: "PLAIN"
+      callbacks:
+        notifications:
+          "{$request.body#/sink}":
+            post:
+              summary: "notifications callback"
+              description: |
+                Important note: This endpoint will be implemented by API users.
+                Whenever an IMEI or area change event occurs, the server will call this endpoint.
+              operationId: postNotification
+              parameters:
+                - $ref: "#/components/parameters/x-correlator"
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/NoticeEvent"
+                    examples:
+                      AREA_CHANGE:
+                        description: The triggle event when area of device was changed
+                        value:
+                          id: "123655"
+                          type: "AREA_CHANGE"
+                          datacontenttype: "application/json"
+                          time: "2023-03-22T05:40:23.682Z"
+                          data:
+                            subscriptionId: "987654321"
+                            area:
+                              areaType: "CIRCLE"
+                              center:
+                                latitude: "50.735851"
+                                longitude: "7.10066"
+                              radius: 2000
+                            device:
+                                phoneNumber: "+123456789"
+                      IMEI_CHANGE:
+                        description: The triggle event when imei of device was changed
+                        value:
+                          id: "123655"
+                          type: "IMEI_CHANGE"
+                          datacontenttype: "application/json"
+                          time: "2023-03-22T05:40:23.682Z"
+                          data:
+                            subscriptionId: "987654321"
+                            imei: "35-209900-176148-1"
+                            device:
+                                phoneNumber: "+123456789"
+              responses:
+                "204":
+                  description: Successful notification.
+                  headers:
+                    x-correlator:
+                      $ref: "#/components/headers/x-correlator"
+                "400":
+                  $ref: "#/components/responses/Generic400"
+                "401":
+                  $ref: "#/components/responses/Generic401"
+                "403":
+                  $ref: "#/components/responses/Generic403"
+                "404":
+                  $ref: "#/components/responses/Generic404"
+                "410":
+                  $ref: "#/components/responses/Callback410"
+                "429":
+                  $ref: "#/components/responses/Generic429"
       responses:
-        "200":
-          description: The result of binding the device
+        "201":
+          description: Created (Successful creation of subscription).
           headers:
             x-correlator:
               $ref: "#/components/headers/x-correlator"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BindDeviceImeiResponse"
+                $ref: "#/components/schemas/Subscription"
+        "202":
+          description: |
+            The result of subscription machine card binding or region restriction change events
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscribeFraudPreventionResponseAsync"
               examples:
-                BIND_SUCCESS:
-                  summary: BOUND SUCCESSFULLY
-                  description: The result of binding the device is successful
+                RESULT_SUBSCRIPTION_ID:
+                  summary: subscription result
+                  description: |
+                    The result of subscription device's IMEI or region change 
                   value:
-                    bound: "TRUE"
-                BIND_FAIL:
-                  summary: BOUND FAILED
-                  description: The result of binding the device is a failure
-                  value:
-                    bound: "FALSE"
+                    subscriptionId: "1119920371"
         "400":
-          $ref: "#/components/responses/BindBadRequest400"
+          $ref: "#/components/responses/SubscribeBadRequest400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -201,199 +332,12 @@ paths:
         "404":
           $ref: "#/components/responses/Generic404"
         "422":
-          $ref: "#/components/responses/Bind422"
+          $ref: "#/components/responses/Subscribe422"
         "429":
           $ref: "#/components/responses/Generic429"
       security:
         - openId:
-            - device-imei-areaLimit:bind
-  /unbind:
-    post:
-      tags:
-        - Unbind sim card fraud prevention
-      summary: Unbind device IMEI or area restrictions
-      description: |
-        This API allows enterprise customers to unbind imei or area to the card
-      operationId: UnBindDeviceImei
-      parameters:
-        - $ref: "#/components/parameters/x-correlator"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UnBindDeviceImeiRequest"
-            examples:
-              INPUT_IPV4_ADDRESS:
-                summary: unbind imei For One Device By IPv4 Address
-                description: Use the IPv4 address of a device for unbinding operations
-                value:
-                  device: 
-                    ipv4Address: 
-                      publicAddress: "203.0.113.0"
-                      publicPort: 59765
-                  unBindType: "IMEIBIND"
-              INPUT_IPV6_ADDRESS:
-                summary: unbind imei For One Device By IPv6 Address
-                description: Use the IPv6 address of a device for unbinding operations
-                value:
-                  device:
-                    ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
-                  unBindType: "IMEIBIND"
-              INPUT_PHONE_NUMBER:
-                summary: unbind imei For One Device By Phone Number
-                description: Use a device's number for unbinding operation
-                value:
-                  device:
-                    phoneNumber: "+123456789"
-                  unBindType: "IMEIBIND"
-              INPUT_NETWORK_ACCESS_IDENTIFIER:
-                summary: unbind imei For One Device By Network Access Identifier
-                description: Use a device's network access identifier for unbinding operations
-                value:
-                  device:
-                    networkAccessIdentifier: "123456789@domain.com"
-                  unBindType: "IMEIBIND"
-              INPUT_UNBIND_TYPE:
-                summary: unbind imei For One Device By 3 Legged Token
-                description: Use a 3 Legged Token for unbinding operations
-                value:
-                  unBindType: "IMEIBIND"
-      responses:
-        "200":
-          description: The result of unbinding the device
-          headers:
-            x-correlator:
-              $ref: "#/components/headers/x-correlator"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UnBindDeviceImeiResponse"
-              examples:
-                UNBIND_SUCCESS:
-                  summary: UNBOUND SUCCESSFULLY
-                  description: The result of unbinding the device is successful
-                  value:
-                    unbound: "TRUE"
-                UNBIND_FAIL:
-                  summary: UNBOUND FAILED
-                  description: The result of unbinding the device is a failure
-                  value:
-                    unbound: "FALSE"
-        "400":
-          $ref: "#/components/responses/UnbindBadRequest400"
-        "401":
-          $ref: "#/components/responses/Generic401"
-        "403":
-          $ref: "#/components/responses/Generic403"
-        "404":
-          $ref: "#/components/responses/Generic404"
-        "422":
-          $ref: "#/components/responses/Unbind422"
-        "429":
-          $ref: "#/components/responses/Generic429"
-      security:
-        - openId:
-            - device-imei-areaLimit:unbind
-
-  /query:
-    post:
-      tags:
-        - Query card fraud prevention
-      summary: IoT SIM Fraud Prevention Query
-      description: |
-        This API allows enterprise customers to query risk control information related to IoT SIM cards, such as machine-card binding, region restriction. With this information, enterprises can assess the security and reliability of IoT cards, helping to assess security, detect, and prevent possible fraud.
-      operationId: query
-      parameters:
-        - $ref: "#/components/parameters/x-correlator"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/QueryRequest"
-            examples:
-              INPUT_IPV4_ADDRESS:
-                summary: query For One Device By IPv4 Address
-                description: Use the IPv4 address of a device for query operations
-                value:
-                  device: 
-                    ipv4Address: 
-                      publicAddress: "203.0.113.0"
-                      publicPort: 59765
-                  queryType: "IMEIBIND"
-              INPUT_IPV6_ADDRESS:
-                summary: query For One Device By IPv6 Address
-                description: Use the IPv6 address of a device for query operations
-                value:
-                  device:
-                    ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
-                  queryType: "IMEIBIND"
-              INPUT_PHONE_NUMBER:
-                summary: query For One Device By Phone Number
-                description: Use a device's number for query operation
-                value:
-                  device:
-                    phoneNumber: "+123456789"
-                  queryType: "IMEIBIND"
-              INPUT_NETWORK_ACCESS_IDENTIFIER:
-                summary: query For One Device By Network Access Identifier
-                description: Use a device's network access identifier for query operations
-                value:
-                  device:
-                    networkAccessIdentifier: "123456789@domain.com"
-                  queryType: "IMEIBIND"
-              INPUT_UNBIND_TYPE:
-                summary: query For One Device By 3 Legged Token
-                description: Use a 3 Legged Token for query operations
-                value:
-                  queryType: "IMEIBIND"
-
-      responses:
-        "200":
-          description: The result of query the device
-          headers:
-            x-correlator:
-              $ref: "#/components/headers/x-correlator"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/QueryFraudPreventionResponse"
-              examples:
-                AREA_LIMIT_RESULT:
-                  summary: AREALIMIT RESULT
-                  description: The result of query sim card area limit
-                  value:
-                    areaLimit:
-                      areaLimitStatus: "RESTRICTED"
-                      limitArea: 
-                        point:
-                          latitude: "50.735851"
-                          longitude: "7.10066"
-                        areaType: "CIRCLE"
-                IMEI_BIND_RESULT:
-                  summary: BINDIMEI RESULT
-                  description: The result of query sim card imei bind
-                  value:
-                    imeiBind:
-                      bindImei: "35-209900-176148-1"
-                      bindStatus: "BIND"
-        "400":
-          $ref: "#/components/responses/QueryBadRequest400"
-        "401":
-          $ref: "#/components/responses/Generic401"
-        "403":
-          $ref: "#/components/responses/Generic403"
-        "404":
-          $ref: "#/components/responses/Generic404"
-        "422":
-          $ref: "#/components/responses/Query422"
-        "429":
-          $ref: "#/components/responses/Generic429"
-      security:
-        - openId:
-            - device-imei-arealimit:query
-
+            - device-imei-arealimit:subscription
 components:
   securitySchemes:
     openId:
