@@ -35,8 +35,8 @@ The repository has no (pre)releases yet, work in progress is within the main bra
 
 ## Contributing
 * Meetings are held virtually <!-- for new, independent Sandbox API repositories request a meeting link from the LF admin team or replace the information with the existing meeting information of the Sub Project -->
-    * Schedule: !! TBD
-    * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meetings/telcoapi) !! Update this link with your meeting registration/join link and delete the task
+    * Schedule: Every 2 weeks on Wednesdays at 9:00 UTC (start from April 30th, 2025)
+    * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/92159554978?password=c5c63329-3b55-4fe0-94d9-9091c51f2ef9)
     * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/GwCfBQ)
 * Mailing List
     * Subscribe / Unsubscribe to the mailing list <https://lists.camaraproject.org/g/sp-iot-sim-fraud-prevention>.
