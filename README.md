@@ -9,7 +9,6 @@
 
 # IoTSIMFraudPrevention
 
-<!-- Alternative for new, independent Sandbox API Repositories -->
 Sandbox API Repository to describe, develop, document, and test the IoT SIM Fraud Prevention Service API(s). The repository does not yet belong to a CAMARA Sub Project.
 
 * API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/xwKaBQ) 
