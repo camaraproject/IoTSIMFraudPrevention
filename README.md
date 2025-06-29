@@ -9,10 +9,9 @@
 
 # IoTSIMFraudPrevention
 
-<!-- Alternative for new, independent Sandbox API Repositories -->
 Sandbox API Repository to describe, develop, document, and test the IoT SIM Fraud Prevention Service API(s). The repository does not yet belong to a CAMARA Sub Project.
 
-* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/xwKaBQ)
+* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/xwKaBQ) 
 
 ## Scope
 
@@ -34,7 +33,7 @@ The repository has no (pre)releases yet, work in progress is within the main bra
 <!-- For changes see [CHANGELOG.md](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/main/CHANGELOG.md) -->
 
 ## Contributing
-* Meetings are held virtually <!-- for new, independent Sandbox API repositories request a meeting link from the LF admin team or replace the information with the existing meeting information of the Sub Project -->
+* Meetings are held virtually
     * Schedule: Every 2 weeks on Wednesdays at 9:00 UTC (start from April 30th, 2025)
     * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/92159554978?password=c5c63329-3b55-4fe0-94d9-9091c51f2ef9)
     * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/GwCfBQ)
