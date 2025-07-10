@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention API, vwip-Query Operation
+Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Query Operation
   Background:
     Given an environment at "apiRoot"
     And the resource "/iot-sim-fraud-prevention/wip/query"
