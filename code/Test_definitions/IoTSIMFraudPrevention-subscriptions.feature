@@ -14,6 +14,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation SubscribeFraudPre
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/parameters/x-correlator"
+    And the request body is set by default to a request body compliant with the schema
 
   # Success scenarios
   @iot_sim_subscribe_01_phone_number_2legged
