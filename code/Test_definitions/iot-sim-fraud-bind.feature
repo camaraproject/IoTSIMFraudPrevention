@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention API - Bind Operation
+Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Bind Operation
   Background:
     Given an environment at "apiRoot"
     And the resource "/iot-sim-fraud-prevention/wip/bind"
