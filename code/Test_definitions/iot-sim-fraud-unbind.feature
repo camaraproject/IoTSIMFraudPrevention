@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention API - Unbind Operation
+Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Unbind Operation
   Background:
     Given an environment at "apiRoot"
     And the resource "/iot-sim-fraud-prevention/wip/unbind"
