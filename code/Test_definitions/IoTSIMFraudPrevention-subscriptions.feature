@@ -1,7 +1,3 @@
-
-### Test Definitions (`iot-sim-fraud-prevention-subscribe.feature`)
-
-```gherkin
 Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation SubscribeFraudPrevention
   # Implementation indications:
   # * apiRoot: API root of the server URL
