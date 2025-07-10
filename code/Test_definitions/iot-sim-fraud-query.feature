@@ -4,7 +4,8 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Query Operation
     And the resource "/iot-sim-fraud-prevention/wip/query"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
-    And the header "x-correlator" is set to a UUID value
+    And the header "x-correlator" complies with the schema at "#/components/parameters/x-correlator"
+    And the request body is set by default to a request body compliant with the schema
 
   @iot_sim_query_01_bound_status
   Scenario: Query bound device status
