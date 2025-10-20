@@ -369,7 +369,7 @@ paths:
                       limitArea:
                         point:
                           latitude: 50.735851
-                          longitude: "7.10066"
+                          longitude: 7.10066
                         areaType: "CIRCLE"
                 IMEI_BIND_RESULT:
                   summary: BINDIMEI RESULT
@@ -1784,6 +1784,7 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Rejected due to request rate limit overpassed.
+
 
 
 
