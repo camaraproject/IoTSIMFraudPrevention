@@ -1,26 +1,26 @@
 openapi: 3.0.3
 info:
-  title:  IoT SIM Fraud Prevention Subscriptions
+  title: IoT SIM Fraud Prevention Subscriptions
   description: |
    API to create, with SIM card binding and unbinding and regional restriction
-    
+
     # Introduction
-    
+
     With this API, we need to subscribe to a SIM card binding service or regional restriction service first. Then, customers could use query api to query the binding information which returns match status. Also, customers could use bind api to bind the SIM card and IMEI together. When the IMEI reported in the message doesn't match the binding one, the network serices will be blocked automatically. When the IMEI reported in the message matches the binding one, the network service of the SIM card will be restored.
     The ability provided by the regional restriction is similar to that of SIM card binding, but what's bound is the regional information (the regional information is mapped to the corresponding region based on the base station ID reported in the message).
-    
+
     # Relevant terms and definitions
 
     * **SIM card**: The SIM (subscriber identity module) card here stands for IoT（internet of things）network card.
 
     * **binding**: Machine card binding is a security management mechanism for IoT network cards, aimed at preventing them from being used for other purposes. By binding the SIM card to specific terminal devices, it ensures that the card can only be used on designated devices, thereby enhancing security.
-    
+
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
-    
+
     * **IMEI**: IMEI stands for International Mobile Equipment Identity. It is a unique 15-digit number assigned to every mobile phone or cellular device, which is used to identify the device on a mobile network. The IMEI serves as a crucial identifier for tracking and managing mobile devices, particularly in cases of theft or loss. It can also be utilized for validating whether a device is authorized to connect to a network.
-      
+
     # API Functionality
-    
+
     The API defines one service endpoint:
 
     - `POST /subscribe` This API allows enterprise customers to subscribe to risk control information related to IoT SIM cards. When the device or region bound to the IoT card changes, the customer can be notified in a timely manner through the callback address registered by the customer, making it convenient for the customer to identify endpoint risks in a timely manner.
@@ -48,8 +48,8 @@ info:
     
 
 
-  
-    
+
+
     ## Error handling
 
     Errors may be returned for the following reasons. Note that this list is not exhaustive.
@@ -161,10 +161,10 @@ paths:
                     initialEvent: true
                     subscriptionMaxEvents: 10
                     subscriptionDetail:
-                        device:
-                            ipv4Address: 
-                              publicAddress: "203.0.113.0"
-                              publicPort: 59765
+                      device:
+                        ipv4Address:
+                          publicAddress: "203.0.113.0"
+                          publicPort: 59765
                   types:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
@@ -179,8 +179,8 @@ paths:
                     initialEvent: true
                     subscriptionMaxEvents: 10
                     subscriptionDetail:
-                        device:
-                            ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
+                      device:
+                        ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
                   types:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
@@ -195,8 +195,8 @@ paths:
                     initialEvent: true
                     subscriptionMaxEvents: 10
                     subscriptionDetail:
-                        device:
-                            phoneNumber: "+123456789"
+                      device:
+                        phoneNumber: "+123456789"
                   types:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
@@ -211,8 +211,8 @@ paths:
                     initialEvent: true
                     subscriptionMaxEvents: 10
                     subscriptionDetail:
-                        device:
-                            networkAccessIdentifier: "123456789@domain.com"
+                      device:
+                        networkAccessIdentifier: "123456789@domain.com"
                   types:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
@@ -265,7 +265,7 @@ paths:
                                 longitude: "7.10066"
                               radius: 2000
                             device:
-                                phoneNumber: "+123456789"
+                              phoneNumber: "+123456789"
                       IMEI_CHANGE:
                         description: The triggle event when imei of device was changed
                         value:
@@ -277,7 +277,7 @@ paths:
                             subscriptionId: "987654321"
                             imei: "35-209900-176148-1"
                             device:
-                                phoneNumber: "+123456789"
+                              phoneNumber: "+123456789"
               responses:
                 "204":
                   description: Successful notification.
@@ -320,7 +320,7 @@ paths:
                 RESULT_SUBSCRIPTION_ID:
                   summary: subscription result
                   description: |
-                    The result of subscription device's IMEI or region change 
+                    The result of subscription device's IMEI or region change
                   value:
                     subscriptionId: "1119920371"
         "400":
@@ -470,7 +470,7 @@ components:
           AMQP: "#/components/schemas/AMQPSubscriptionResponse"
           NATS: "#/components/schemas/NATSSubscriptionResponse"
           KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
-        
+
     SubscribeFraudPreventionResponseAsync:
       description: Response for an event-type subscription request managed asynchronously (Creation or Deletion).
       type: object
@@ -479,7 +479,7 @@ components:
           type: string
           description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as `subscriptionId` as per [Commonalities Event Notification Model](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md#122-event-notification).
           example: "1119920371"
-        
+
       required:
         - subscriptionId
     SubscribeFraudPreventionRequest:
@@ -705,7 +705,7 @@ components:
         IMEI (International Mobile Equipment Identity) is a 15 digit code used to uniquely identify a mobile device and plays a key role in the SIM card binding mechanism.
       type: string
     BindStatus:
-      description: | 
+      description: |
         The IMEI binding status in SIM card binding refers to the association status between the device IMEI number recorded in the operator's network system and the SIM card (usually identified by ICCID). This state determines whether the device and SIM card are authorized to be used together.
       type: string
       enum:
@@ -720,7 +720,7 @@ components:
         areaLimitStatus:
           $ref: "#/components/schemas/AreaLimitStatus"
     AreaLimitStatus:
-      description: | 
+      description: |
         The current status of regional restrictions
         RESTRICTED - The current device's area has been restricted from accessing the network
         UNRESTRICTED - The current device's area is not restricted from accessing the network
@@ -819,7 +819,7 @@ components:
         The type of machine card unbinding being bound in the current operation, Such as AREALIMIT or IMEIBIND
       enum:
         - AREALIMIT
-        - IMEIBIND    
+        - IMEIBIND
     UnBindDeviceImeiRequest:
       description: Request to unbind the IMEI binding of the device. According to the rules described, unBindType is required.
       type: object
@@ -1767,6 +1767,3 @@ components:
 
 
 
-
-
-             
