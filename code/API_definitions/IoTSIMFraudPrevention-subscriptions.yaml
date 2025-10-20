@@ -169,7 +169,8 @@ paths:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
-                  sinkCredential: "PLAIN"
+                  sinkCredential:
+                    credentialType: "PLAIN"
               INPUT_IPV6_ADDRESS:
                 summary: Subscription For One Device By IPV6 Address
                 description: Use the IPv6 address of a device for subscription operations
@@ -185,7 +186,8 @@ paths:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
-                  sinkCredential: "PLAIN"
+                  sinkCredential:
+                    credentialType: "PLAIN"
               INPUT_PHONE_NUMBER:
                 summary: Subscription For One Device By Device Number
                 description: Use a device's number for subscription operation
@@ -201,7 +203,8 @@ paths:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
-                  sinkCredential: "PLAIN"
+                  sinkCredential:
+                    credentialType: "PLAIN"
               INPUT_NETWORK_ACCESS_IDENTIFIER:
                 summary: Subscription For One Device By Network Access Identification
                 description: Use a device's network access identifier for subscription operations
@@ -217,7 +220,8 @@ paths:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
-                  sinkCredential: "PLAIN"
+                  sinkCredential:
+                    credentialType: "PLAIN"
               INPUT_CONFIG:
                 summary: Subscription For One Device By 3 Legged Token
                 description: Use a 3 Legged Token for subscription operations
@@ -230,7 +234,8 @@ paths:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
-                  sinkCredential: "PLAIN"
+                  sinkCredential:
+                    credentialType: "PLAIN"
       callbacks:
         notifications:
           "{$request.body#/sink}":
@@ -1728,6 +1733,7 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Rejected due to request rate limit overpassed.
+
 
 
 
