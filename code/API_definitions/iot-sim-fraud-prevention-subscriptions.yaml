@@ -230,6 +230,8 @@ paths:
                     subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
                     initialEvent: true
                     subscriptionMaxEvents: 10
+                      device:
+                        phoneNumber: "+123456789"
                   types:
                     - "IMEIBIND"
                   sink: "http://notificationSendServer12.supertelco.com"
