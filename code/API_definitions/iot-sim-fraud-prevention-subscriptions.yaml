@@ -45,9 +45,6 @@ info:
 
     To call this endpoint, the API consumer must first obtain a valid access token from the token endpoint, which is then passed as an Authorization header. When a 2-legged access token is used, the API consumer must also pass at least one of the available IoT subscription identifiers in the body of the request.
     The type of communication function is also needed in the body of the request.
-    
-
-
 
 
     ## Error handling
@@ -230,6 +227,7 @@ paths:
                     subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
                     initialEvent: true
                     subscriptionMaxEvents: 10
+                    subscriptionDetail:
                       device:
                         phoneNumber: "+123456789"
                   types:
@@ -1735,42 +1733,3 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Rejected due to request rate limit overpassed.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
