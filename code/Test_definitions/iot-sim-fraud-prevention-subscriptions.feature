@@ -1,4 +1,4 @@
-@iot_sim_fraud_prevention_subscriptions
+  @iot_sim_fraud_prevention_subscriptions
 Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API, wip - Operations for Event Subscriptions
 
 # Input to be provided by the implementation to the tests
