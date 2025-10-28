@@ -1,5 +1,5 @@
 @iot_sim_fraud_prevention_callbacks
-Feature: CAMARA IoT SIM Fraud Prevention Callbacks - Notification Event Handling
+  Feature: CAMARA IoT SIM Fraud Prevention Callbacks - Notification Event Handling
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml
