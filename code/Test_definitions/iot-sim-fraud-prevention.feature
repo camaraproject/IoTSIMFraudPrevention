@@ -1,4 +1,4 @@
-@iot_sim_fraud_prevention
+  @iot_sim_fraud_prevention
 Feature: CAMARA IoT SIM Fraud Prevention API, wip - Operations for SIM Card Binding and Area Restrictions
 
 # Input to be provided by the implementation to the tests
