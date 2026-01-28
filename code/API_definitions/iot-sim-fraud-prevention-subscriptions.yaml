@@ -117,7 +117,7 @@ info:
     (FAQs will be added in a later version of the documentation)
 
 
-  version: 0.1.0-rc3.4
+  version: 0.1.0-rc.1
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -126,7 +126,7 @@ externalDocs:
   description: Project documentation at CAMARA
   url: https://github.com/camaraproject/DeviceLocation
 servers:
-  - url: "{apiRoot}/iot-sim-fraud-prevention/v0.1.0-rc3.4"
+  - url: "{apiRoot}/iot-sim-fraud-prevention/v0.1.0-rc.1"
     variables:
       apiRoot:
         default: http://localhost:9091
