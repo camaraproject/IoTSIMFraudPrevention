@@ -35,7 +35,7 @@ info:
 
     Errors may be returned for the following reasons. Note that this list is not exhaustive.
 
-    `401 UNAUTHENTICATED`or `401 AUTHENTICATION_REQUIRED`:
+    `401 UNAUTHENTICATED`:
     - The access token is not a valid access token for the API provider
     - The access token was valid but has now expired
 
@@ -101,16 +101,16 @@ info:
     (FAQs will be added in a later version of the documentation)
 
 
-  version: wip
+  version: 0.1.0-rc3.4
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.5
+  x-camara-commonalities: 0.6
 externalDocs:
   description: Project documentation at CAMARA
   url: https://github.com/camaraproject/DeviceLocation
 servers:
-  - url: "{apiRoot}/iot-sim-fraud-prevention/wip"
+  - url: "{apiRoot}/iot-sim-fraud-prevention/v0.1.0-rc3.4"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -404,13 +404,13 @@ components:
       description: Correlation id for the different services
       schema:
         type: string
-        pattern: ^[a-zA-Z0-9-]{0,55}$
+        pattern: uuid
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         type: string
-        pattern: ^[a-zA-Z0-9-]{0,55}$
+        pattern: uuid
   schemas:
     NoticeEvent:
       description: The notification callback.
@@ -1444,7 +1444,6 @@ components:
                   code:
                     enum:
                       - UNAUTHENTICATED
-                      - AUTHENTICATION_REQUIRED
           examples:
             GENERIC_401_UNAUTHENTICATED:
               description: Request cannot be authenticated
@@ -1452,12 +1451,6 @@ components:
                 status: 401
                 code: UNAUTHENTICATED
                 message: Request not authenticated due to missing, invalid, or expired credentials.
-            GENERIC_401_AUTHENTICATION_REQUIRED:
-              description: New authentication is needed, authentication is no longer valid
-              value:
-                status: 401
-                code: AUTHENTICATION_REQUIRED
-                message: New authentication is required.
     Generic403:
       description: Forbidden
       headers:
