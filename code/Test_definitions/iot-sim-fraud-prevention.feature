@@ -6,7 +6,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API - Operations for SIM Card Binding a
 
   Background: Common IoT SIM Fraud Prevention setup
     Given an environment at "apiRoot"
-    And the resource "/iot-sim-fraud-prevention/v0.1.0-rc.1"
+    And the resource "/iot-sim-fraud-prevention/v0.1rc1"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
