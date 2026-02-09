@@ -3,18 +3,18 @@ info:
   title: IoT SIM Fraud Prevention Subscriptions API
   description: |
     This API allows customers to subscribe to notifications when SIM card bindings change.
-    
+
     **Event Types & Schema References:**
     - `IMEI_CHANGE`: Event schema defined as `ImeiChangeEventData` (see components/schemas)
     - `AREA_CHANGE`: Event schema defined as `AreaChangeEventData` (see components/schemas)
-    
+
     **CloudEvents Compliance:**
     - All events conform to CloudEvents v1.0 specification
     - Event types use CAMARA canonical URIs:
       * `org.camara.iot-sim-fraud-prevention.v1.imei-changed`
       * `org.camara.iot-sim-fraud-prevention.v1.area-changed`
     - `data` field strictly follows schemas defined in this specification
-    
+
     **Event Payload Structure (CloudEvents):**
     ```json
     {
@@ -27,7 +27,7 @@ info:
       "data": { /* Strictly validated against ImeiChangeEventData schema */ }
     }
     ```
-    
+
     Full schema definitions available in components/schemas section below.
   version: 1.0.0
   contact:
@@ -116,13 +116,13 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
         '429':
           $ref: '#/components/responses/TooManyRequests'
-    
+
     get:
       summary: List all subscriptions for the authenticated SIM
       operationId: listSubscriptions
       description: |
         Retrieves all subscriptions (active and inactive) for the SIM card associated with the access token.
-        
+
         **Filtering:**
         - Use `eventType` query parameter to filter by event type
         - Omit parameter to retrieve all subscriptions
@@ -221,13 +221,13 @@ paths:
                     updatedAt: "2023-08-10T23:59:59Z"
         '404':
           $ref: '#/components/responses/NotFound'
-    
+
     delete:
       summary: Delete a subscription
       operationId: deleteSubscription
       description: |
         Deletes a subscription, stopping future notifications.
-        
+
         **Behavior:**
         - Subscription status changes to `INACTIVE`
         - `endedReason` is set to `SUBSCRIPTION_DELETED`
@@ -269,7 +269,7 @@ components:
           maximum: 180
           description: Longitude coordinate in decimal degrees
           example: -74.006
-    
+
     ImeiChangeEventData:
       type: object
       required: [subscriptionId, previousImei, newImei, timestamp]
@@ -295,7 +295,7 @@ components:
           format: date-time
           description: Timestamp when the IMEI change was detected (RFC 3339)
           example: "2023-08-15T14:22:15Z"
-    
+
     AreaBindingDataForEvent:
       type: object
       required: [areaType, center, radius]
