@@ -314,7 +314,7 @@ components:
           maximum: 200000
           description: Radius of the area in meters
           example: 5000
-    
+
     AreaChangeEventData:
       type: object
       required: [subscriptionId, previousArea, newArea, timestamp]
@@ -336,7 +336,7 @@ components:
           format: date-time
           description: Timestamp when the area change was detected (RFC 3339)
           example: "2023-08-15T15:30:42Z"
-    
+
     # ========== 订阅资源 Schema ==========
     Subscription:
       type: object
@@ -379,7 +379,7 @@ components:
           format: date-time
           description: Timestamp when subscription was last updated (RFC 3339)
           example: "2023-08-15T10:30:00Z"
-    
+
     SubscriptionCreateRequest:
       type: object
       required: [eventType, sink]
@@ -395,7 +395,7 @@ components:
           example: "https://api.example.com/fraud-notifications"
         config:
           $ref: '#/components/schemas/SubscriptionConfig'
-    
+
     SubscriptionConfig:
       type: object
       description: Optional configuration parameters for the subscription
@@ -415,7 +415,7 @@ components:
           format: date-time
           description: Timestamp when subscription should automatically expire (RFC 3339)
           example: "2024-12-31T23:59:59Z"
-    
+
     Error:
       type: object
       required: [code, message]
@@ -434,7 +434,7 @@ components:
             type: string
           description: Additional details about the error
           example: ["Provided URL 'http://example.com' uses insecure HTTP protocol"]
-  
+
   responses:
     BadRequest:
       description: Bad request - invalid parameters or syntax
@@ -449,7 +449,7 @@ components:
                 code: "INVALID_SINK_URL"
                 message: "Sink URL must use HTTPS protocol"
                 details: ["Provided URL 'http://example.com' uses insecure HTTP protocol"]
-    
+
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token
       content:
@@ -462,7 +462,7 @@ components:
               value:
                 code: "MISSING_AUTH_TOKEN"
                 message: "Authentication token is required"
-    
+
     Forbidden:
       description: Forbidden - insufficient permissions or quota exceeded
       content:
@@ -475,7 +475,7 @@ components:
               value:
                 code: "DUPLICATE_SUBSCRIPTION"
                 message: "An active subscription for IMEI_CHANGE already exists"
-    
+
     NotFound:
       description: Resource not found
       content:
@@ -488,14 +488,14 @@ components:
               value:
                 code: "SUBSCRIPTION_NOT_FOUND"
                 message: "Subscription with ID 'sub_invalid' does not exist"
-    
+
     UnprocessableEntity:
       description: Unprocessable entity - semantic errors in request
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    
+
     TooManyRequests:
       description: Too many requests - rate limit exceeded
       headers:
@@ -508,7 +508,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  
+
   securitySchemes:
     BearerAuth:
       type: http
@@ -516,13 +516,13 @@ components:
       bearerFormat: JWT
       description: |
         OAuth 2.0 Bearer token with 3-legged authorization flow.
-        
+
         **Critical Requirements:**
         - Token MUST contain SIM identifier in claims (e.g., `phone_number` or `sim_id`)
         - 2-legged OAuth is NOT SUPPORTED
         - Token must have `iot-sim-fraud-prevention-subscription` scope
         - Token must be issued for the specific SIM being managed
-        
+
         **Example token claims:**
         ```json
         {
