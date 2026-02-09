@@ -2,24 +2,24 @@ openapi: 3.0.3
 info:
   title: IoT SIM Fraud Prevention API
   description: |
-    This API provides fraud prevention capabilities for IoT SIM cards by allowing 
+    This API provides fraud prevention capabilities for IoT SIM cards by allowing
     bindings of SIM cards to specific devices (via IMEI) or geographic areas.
-    
+
     **Binding Types:**
     - **IMEI Binding**: Restricts SIM usage to a specific device identified by IMEI
     - **Area Binding**: Restricts SIM usage to a defined geographic area (circle-based)
-    
+
     **How Bindings Work:**
     - Bindings are associated with the SIM card identified in the OAuth access token
     - When active, the network monitors SIM usage against the binding constraints
     - If SIM is used outside the bound device/area, fraud prevention mechanisms are triggered
-    - For area bindings: 
+    - For area bindings:
       * Area is defined as a circle with center (latitude/longitude) and radius (meters)
       * Location determination is based on cell tower data
       * If device moves outside the bound area, service may be restricted until verification
     - Only one active binding of each type (IMEI/area) is allowed per SIM at a time
     - Creating a new binding of the same type replaces the existing one
-    
+
     **Authorization:**
     - 3-legged OAuth flow is REQUIRED (SIM identifier extracted from access token claims)
     - The access token MUST contain the SIM identifier (e.g., in `phone_number` or `sim_id` claim)
@@ -51,7 +51,7 @@ paths:
       operationId: createBinding
       description: |
         Creates a new binding (IMEI or area) for the SIM card associated with the access token.
-        
+
         **Behavior:**
         - If a binding of the same type already exists, it is replaced by the new binding
         - The new binding becomes active immediately
@@ -128,13 +128,13 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
         '429':
           $ref: '#/components/responses/TooManyRequests'
-    
+
     get:
       summary: List all bindings for the authenticated SIM
       operationId: listBindings
       description: |
         Retrieves all active bindings for the SIM card associated with the access token.
-        
+
         **Filtering:**
         - Use `type` query parameter to filter by binding type (IMEI or AREA)
         - Omit parameter to retrieve all bindings
@@ -227,13 +227,13 @@ paths:
                     updatedAt: "2023-08-15T10:30:00Z"
         '404':
           $ref: '#/components/responses/NotFound'
-    
+
     delete:
       summary: Delete a binding
       operationId: deleteBinding
       description: |
         Deletes a binding resource, removing the restriction on SIM usage.
-        
+
         **Important:**
         - After deletion, the SIM can be used on any device or in any area
         - This is a permanent deletion (resource will return 404 on subsequent GET)
@@ -504,3 +504,4 @@ components:
 
 security:
   - BearerAuth: []
+
