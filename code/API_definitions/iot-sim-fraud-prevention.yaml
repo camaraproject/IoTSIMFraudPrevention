@@ -44,6 +44,10 @@ servers:
           - production
         description: Environment selector
 
+tags:
+  - name: Bindings
+    description: Operations for managing SIM card bindings
+
 paths:
   /bindings:
     post:
@@ -90,7 +94,7 @@ paths:
               schema:
                 type: string
                 format: uri
-                example: /bindings/bnd_7a3f9c2e
+                example: https://api.camara.org/iot-sim-fraud-prevention/v1/bindings/bnd_7a3f9c2e
           content:
             application/json:
               schema:
@@ -258,6 +262,7 @@ paths:
 components:
   schemas:
     Binding:
+      description: Represents a binding between a SIM card and either a device IMEI or geographic area
       type: object
       required: [id, type, bindingData, createdAt, updatedAt]
       properties:
@@ -293,6 +298,7 @@ components:
           example: "2023-08-15T10:30:00Z"
 
     BindingCreateRequest:
+      description: Request to create a new binding
       type: object
       required: [type, bindingData]
       properties:
@@ -312,15 +318,9 @@ components:
               AREA: '#/components/schemas/AreaBindingData'
 
     ImeiBindingData:
+      description: Data for IMEI binding type
       type: object
       required: [imei]
-      description: |
-        IMEI binding restricts SIM usage to a specific device.
-
-        **How it works:**
-        - Network verifies the IMEI of the device using the SIM
-        - If IMEI doesn't match the bound value, service is restricted
-        - Ideal for fixed IoT devices (e.g., smart meters, asset trackers)
       properties:
         imei:
           type: string
@@ -329,17 +329,9 @@ components:
           example: "356938035643809"
 
     AreaBindingData:
+      description: Data for geographic area binding type
       type: object
       required: [areaType, center, radius]
-      description: |
-        Area binding restricts SIM usage to a defined geographic area.
-
-        **How it works:**
-        - Area is defined as a circle with center coordinates and radius
-        - Network determines device location based on cell tower triangulation
-        - If device moves outside the bound area, service may be restricted
-        - Radius is measured in meters from the center point
-        - Ideal for mobile IoT devices with expected operational areas (e.g., fleet vehicles, delivery drones)
       properties:
         areaType:
           type: string
@@ -356,9 +348,9 @@ components:
           example: 5000
 
     Point:
+      description: Geographic coordinate using WGS84 datum
       type: object
       required: [latitude, longitude]
-      description: Geographic coordinate using WGS84 datum
       properties:
         latitude:
           type: number
@@ -374,6 +366,7 @@ components:
           example: -74.006
 
     Error:
+      description: Standard error response format
       type: object
       required: [code, message]
       properties:
