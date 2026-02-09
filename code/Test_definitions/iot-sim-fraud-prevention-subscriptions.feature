@@ -1,12 +1,12 @@
   @iot_sim_fraud_prevention_subscriptions
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API, wip - Operations for Event Subscriptions
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API - Operations for Event Subscriptions
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml
 
   Background: Common IoT SIM Fraud Prevention Subscriptions setup
     Given an environment at "apiRoot"
-    And the resource "/iot-sim-fraud-prevention/wip"
+    And the resource "/iot-sim-fraud-prevention/v0.1.0-rc.1"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
