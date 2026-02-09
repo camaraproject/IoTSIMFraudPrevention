@@ -4,31 +4,21 @@ info:
   description: |
     This API allows customers to subscribe to notifications when SIM card bindings change.
 
-    **Event Types & Schema References:**
-    - `IMEI_CHANGE`: Event schema defined as `ImeiChangeEventData` (see components/schemas)
-    - `AREA_CHANGE`: Event schema defined as `AreaChangeEventData` (see components/schemas)
+    **Event Types:**
+    - `IMEI_CHANGE`: Triggered when the bound device's IMEI changes
+    - `AREA_CHANGE`: Triggered when the bound device's geographic area changes
 
-    **CloudEvents Compliance:**
-    - All events conform to CloudEvents v1.0 specification
+    **Event Notification Format:**
+    - All notifications are delivered as CloudEvents v1.0 compliant events
     - Event types use CAMARA canonical URIs:
-      * `org.camara.iot-sim-fraud-prevention.v1.imei-changed`
-      * `org.camara.iot-sim-fraud-prevention.v1.area-changed`
-    - `data` field strictly follows schemas defined in this specification
+      - `org.camara.iot-sim-fraud-prevention.v1.imei-changed`
+      - `org.camara.iot-sim-fraud-prevention.v1.area-changed`
+    - The `data` field contains event-specific information as defined in the schemas below
 
-    **Event Payload Structure (CloudEvents):**
-    ```json
-    {
-      "id": "evt_9d8e7f6a",
-      "source": "https://api.camara.org/iot-sim-fraud-prevention",
-      "type": "org.camara.iot-sim-fraud-prevention.v1.imei-changed",
-      "specversion": "1.0",
-      "datacontenttype": "application/json",
-      "time": "2023-08-15T14:22:18.312Z",
-      "data": { /* Strictly validated against ImeiChangeEventData schema */ }
-    }
-    ```
-
-    Full schema definitions available in components/schemas section below.
+    **Subscription Management:**
+    - Only one active subscription per event type per SIM is allowed
+    - Creating a new subscription of the same type replaces the existing one
+    - Subscriptions can be configured with expiration time and maximum event count
   version: 1.0.0
   contact:
     name: CAMARA API Support
@@ -47,16 +37,24 @@ servers:
         enum: [sandbox, production]
         description: Environment selector
 
+tags:
+  - name: Subscriptions
+    description: Operations for managing event subscriptions
+
 paths:
   /subscriptions:
     post:
       summary: Create a new subscription
       operationId: createSubscription
       description: |
-        Creates a subscription to binding change events.
-        Only one active subscription per event type per SIM is allowed.
-        New subscription of same type replaces existing one.
-      tags: [Subscriptions]
+        Creates a subscription to receive notifications when binding changes occur.
+        
+        **Important:**
+        - Only one active subscription per event type per SIM is allowed
+        - Creating a new subscription of the same type replaces the existing one
+        - The `sink` endpoint MUST be publicly accessible and support HTTPS
+      tags:
+        - Subscriptions
       requestBody:
         required: true
         content:
@@ -88,7 +86,7 @@ paths:
               schema:
                 type: string
                 format: uri
-                example: /subscriptions/sub_3c4d5e6f
+                example: https://api.camara.org/iot-sim-fraud-prevention-subscription/v1/subscriptions/sub_3c4d5e6f
           content:
             application/json:
               schema:
@@ -126,7 +124,8 @@ paths:
         **Filtering:**
         - Use `eventType` query parameter to filter by event type
         - Omit parameter to retrieve all subscriptions
-      tags: [Subscriptions]
+      tags:
+        - Subscriptions
       parameters:
         - name: eventType
           in: query
@@ -177,7 +176,8 @@ paths:
       summary: Get subscription details
       operationId: getSubscription
       description: Retrieves details of a specific subscription resource
-      tags: [Subscriptions]
+      tags:
+        - Subscriptions
       parameters:
         - name: subscriptionId
           in: path
@@ -233,7 +233,8 @@ paths:
         - `endedReason` is set to `SUBSCRIPTION_DELETED`
         - Resource remains queryable for audit purposes
         - No notifications will be sent after deletion
-      tags: [Subscriptions]
+      tags:
+        - Subscriptions
       parameters:
         - name: subscriptionId
           in: path
@@ -251,29 +252,11 @@ paths:
 
 components:
   schemas:
-    # ========== 事件负载 Schema (CloudEvents data field) ==========
-    Point:
-      type: object
-      required: [latitude, longitude]
-      description: Geographic coordinate using WGS84 datum
-      properties:
-        latitude:
-          type: number
-          minimum: -90
-          maximum: 90
-          description: Latitude coordinate in decimal degrees
-          example: 40.7128
-        longitude:
-          type: number
-          minimum: -180
-          maximum: 180
-          description: Longitude coordinate in decimal degrees
-          example: -74.006
-
+    # Event Data Schemas (used in CloudEvents data field)
     ImeiChangeEventData:
+      description: Data payload for IMEI_CHANGE events
       type: object
       required: [subscriptionId, previousImei, newImei, timestamp]
-      description: Data payload for IMEI_CHANGE events (CloudEvents data field)
       properties:
         subscriptionId:
           type: string
@@ -296,10 +279,36 @@ components:
           description: Timestamp when the IMEI change was detected (RFC 3339)
           example: "2023-08-15T14:22:15Z"
 
+    AreaChangeEventData:
+      description: Data payload for AREA_CHANGE events
+      type: object
+      required: [subscriptionId, previousArea, newArea, timestamp]
+      properties:
+        subscriptionId:
+          type: string
+          pattern: '^sub_[a-zA-Z0-9]{8,32}$'
+          description: ID of the subscription that triggered this event
+          example: "sub_7g8h9i0j"
+        previousArea:
+          allOf:
+            - $ref: '#/components/schemas/AreaBindingDataForEvent'
+            - type: object
+              description: Area definition before the change
+        newArea:
+          allOf:
+            - $ref: '#/components/schemas/AreaBindingDataForEvent'
+            - type: object
+              description: Area definition after the change
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the area change was detected (RFC 3339)
+          example: "2023-08-15T15:30:42Z"
+
     AreaBindingDataForEvent:
+      description: Area definition used in event payloads
       type: object
       required: [areaType, center, radius]
-      description: Area definition used in event payloads
       properties:
         areaType:
           type: string
@@ -315,30 +324,27 @@ components:
           description: Radius of the area in meters
           example: 5000
 
-    AreaChangeEventData:
+    Point:
+      description: Geographic coordinate using WGS84 datum
       type: object
-      required: [subscriptionId, previousArea, newArea, timestamp]
-      description: Data payload for AREA_CHANGE events (CloudEvents data field)
+      required: [latitude, longitude]
       properties:
-        subscriptionId:
-          type: string
-          pattern: '^sub_[a-zA-Z0-9]{8,32}$'
-          description: ID of the subscription that triggered this event
-          example: "sub_7g8h9i0j"
-        previousArea:
-          $ref: '#/components/schemas/AreaBindingDataForEvent'
-          description: Area definition before the change
-        newArea:
-          $ref: '#/components/schemas/AreaBindingDataForEvent'
-          description: Area definition after the change
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp when the area change was detected (RFC 3339)
-          example: "2023-08-15T15:30:42Z"
+        latitude:
+          type: number
+          minimum: -90
+          maximum: 90
+          description: Latitude coordinate in decimal degrees
+          example: 40.7128
+        longitude:
+          type: number
+          minimum: -180
+          maximum: 180
+          description: Longitude coordinate in decimal degrees
+          example: -74.006
 
-    # ========== 订阅资源 Schema ==========
+    # Subscription Resource Schemas
     Subscription:
+      description: Represents an event subscription resource
       type: object
       required: [id, eventType, sink, status, createdAt, updatedAt]
       properties:
@@ -381,6 +387,7 @@ components:
           example: "2023-08-15T10:30:00Z"
 
     SubscriptionCreateRequest:
+      description: Request to create a new subscription
       type: object
       required: [eventType, sink]
       properties:
@@ -397,8 +404,8 @@ components:
           $ref: '#/components/schemas/SubscriptionConfig'
 
     SubscriptionConfig:
+      description: Configuration parameters for the subscription
       type: object
-      description: Optional configuration parameters for the subscription
       properties:
         initialEvent:
           type: boolean
@@ -417,6 +424,7 @@ components:
           example: "2024-12-31T23:59:59Z"
 
     Error:
+      description: Standard error response format
       type: object
       required: [code, message]
       properties:
