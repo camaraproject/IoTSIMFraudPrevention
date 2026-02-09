@@ -291,7 +291,7 @@ components:
           format: date-time
           description: Timestamp when the binding was last updated (RFC 3339 format)
           example: "2023-08-15T10:30:00Z"
-    
+
     BindingCreateRequest:
       type: object
       required: [type, bindingData]
@@ -310,7 +310,7 @@ components:
             mapping:
               IMEI: '#/components/schemas/ImeiBindingData'
               AREA: '#/components/schemas/AreaBindingData'
-    
+
     ImeiBindingData:
       type: object
       required: [imei]
@@ -327,7 +327,7 @@ components:
           pattern: '^\d{15}$'
           description: IMEI number of the authorized device (15 digits)
           example: "356938035643809"
-    
+
     AreaBindingData:
       type: object
       required: [areaType, center, radius]
@@ -354,7 +354,7 @@ components:
           maximum: 200000
           description: Radius of the area in meters (100m to 200km)
           example: 5000
-    
+
     Point:
       type: object
       required: [latitude, longitude]
@@ -372,7 +372,7 @@ components:
           maximum: 180
           description: Longitude coordinate in decimal degrees
           example: -74.006
-    
+
     Error:
       type: object
       required: [code, message]
@@ -391,7 +391,7 @@ components:
             type: string
           description: Additional details about the error
           example: ["Provided IMEI '123' has invalid length"]
-  
+
   responses:
     BadRequest:
       description: Bad request - invalid parameters or syntax
@@ -406,7 +406,7 @@ components:
                 code: "INVALID_IMEI_FORMAT"
                 message: "IMEI must be exactly 15 digits"
                 details: ["Provided IMEI '123' has invalid length"]
-    
+
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token
       content:
@@ -419,7 +419,7 @@ components:
               value:
                 code: "MISSING_AUTH_TOKEN"
                 message: "Authentication token is required"
-    
+
     Forbidden:
       description: Forbidden - insufficient permissions or quota exceeded
       content:
@@ -432,7 +432,7 @@ components:
               value:
                 code: "QUOTA_EXCEEDED"
                 message: "Monthly binding creation quota exceeded"
-    
+
     NotFound:
       description: Resource not found
       content:
@@ -445,7 +445,7 @@ components:
               value:
                 code: "BINDING_NOT_FOUND"
                 message: "Binding with ID 'bnd_invalid' does not exist"
-    
+
     UnprocessableEntity:
       description: Unprocessable entity - semantic errors in request
       content:
@@ -458,7 +458,7 @@ components:
               value:
                 code: "DUPLICATE_BINDING_TYPE"
                 message: "An active IMEI binding already exists for this SIM"
-    
+
     TooManyRequests:
       description: Too many requests - rate limit exceeded
       headers:
@@ -477,7 +477,7 @@ components:
               value:
                 code: "RATE_LIMIT_EXCEEDED"
                 message: "Too many requests. Please retry after 60 seconds"
-  
+
   securitySchemes:
     BearerAuth:
       type: http
@@ -485,13 +485,13 @@ components:
       bearerFormat: JWT
       description: |
         OAuth 2.0 Bearer token with 3-legged authorization flow.
-        
+
         **Critical Requirements:**
         - Token MUST contain SIM identifier in claims (e.g., `phone_number` or `sim_id`)
         - 2-legged OAuth is NOT SUPPORTED
         - Token must have `iot-sim-fraud-prevention` scope
         - Token must be issued for the specific SIM being managed
-        
+
         **Example token claims:**
         ```json
         {
@@ -504,4 +504,3 @@ components:
 
 security:
   - BearerAuth: []
-
