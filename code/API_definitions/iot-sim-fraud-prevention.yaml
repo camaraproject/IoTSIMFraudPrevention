@@ -504,4 +504,3 @@ components:
 
 security:
   - BearerAuth: []
-
