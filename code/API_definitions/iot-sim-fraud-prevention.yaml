@@ -316,7 +316,7 @@ components:
       required: [imei]
       description: |
         IMEI binding restricts SIM usage to a specific device.
-        
+
         **How it works:**
         - Network verifies the IMEI of the device using the SIM
         - If IMEI doesn't match the bound value, service is restricted
@@ -333,7 +333,7 @@ components:
       required: [areaType, center, radius]
       description: |
         Area binding restricts SIM usage to a defined geographic area.
-        
+
         **How it works:**
         - Area is defined as a circle with center coordinates and radius
         - Network determines device location based on cell tower triangulation
@@ -504,3 +504,4 @@ components:
 
 security:
   - BearerAuth: []
+
