@@ -48,7 +48,7 @@ paths:
       operationId: createSubscription
       description: |
         Creates a subscription to receive notifications when binding changes occur.
-        
+
         **Important:**
         - Only one active subscription per event type per SIM is allowed
         - Creating a new subscription of the same type replaces the existing one
