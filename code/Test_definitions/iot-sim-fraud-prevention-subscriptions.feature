@@ -46,7 +46,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API v1.0.0 - Operations f
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the schema defined by "#/components/schemas/SubscribeFraudPreventionResponseAsync"
-    And the response contains a valid subscription ID
+    And the response property "$.subscriptionId" is not empty
 
 ############### Error response scenarios ###########################
 
