@@ -1,5 +1,5 @@
 @iot_sim_fraud_prevention
-Feature: CAMARA IoT SIM Fraud Prevention API - Operations for SIM Card Binding and Area Restrictions
+Feature: CAMARA IoT SIM Fraud Prevention API v1.0.0 - Operations for SIM Card Binding and Area Restrictions
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml
@@ -130,7 +130,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API - Operations for SIM Card Binding a
   # 403 Error Scenarios
   @iot_sim_fraud_prevention_bind_403_permission_denied
   Scenario: Bind operation without required scope
-    Given the header "Authorization" is set to a valid access token without scope "device-imei-areaLimit:bind"
+    Given the header "Authorization" is set to a valid access token without scope "iot-sim-fraud-prevention:bind"
     And a valid bind request body
     When the HTTP POST request "BindDeviceImei" is sent to "/bind"
     Then the response status code is 403
