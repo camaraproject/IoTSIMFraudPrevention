@@ -1,5 +1,5 @@
 @iot_sim_fraud_prevention
-Feature: CAMARA IoT SIM Fraud Prevention API v1.0.0 - Operations for SIM Card Binding and Area Restrictions
+Feature: CAMARA IoT SIM Fraud Prevention API - Operations for SIM Card Binding and Area Restrictions
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml
