@@ -888,7 +888,7 @@ components:
       required:
         - bound
       properties:
-        unbound:
+        bound:
           type: string
           description: |
             Return a flag indicating whether binding was successful
@@ -1760,4 +1760,5 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Rejected due to request rate limit overpassed.
+
 
