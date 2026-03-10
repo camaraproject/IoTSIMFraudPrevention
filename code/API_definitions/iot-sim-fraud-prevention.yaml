@@ -86,7 +86,7 @@ externalDocs:
   description: CAMARA API Design Guidelines
   url: https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design/API-design.md
 servers:
-  - url: "{apiRoot}/iot-sim-fraud-prevention/1.0.0"
+  - url: "{apiRoot}/iot-sim-fraud-prevention/v1"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -1760,3 +1760,4 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Rejected due to request rate limit overpassed.
+
