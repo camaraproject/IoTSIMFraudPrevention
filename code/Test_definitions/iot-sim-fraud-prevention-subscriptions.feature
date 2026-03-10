@@ -1,5 +1,5 @@
 @iot_sim_fraud_prevention_subscriptions
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API - Operations for Event Subscriptions
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API v1.0.0 - Operations for Event Subscriptions
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml
@@ -109,7 +109,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API - Operations for Even
   # 403 Error Scenarios
   @iot_sim_fraud_prevention_subscribe_403_permission_denied
   Scenario: Subscribe operation without required scope
-    Given the header "Authorization" is set to a valid access token without scope "device-imei-arealimit:subscription"
+    Given the header "Authorization" is set to a valid access token without scope "iot-sim-fraud-prevention-subscriptions:subscribe"
     And a valid subscription request body
     When the HTTP POST request "SubscribeFraudPrevention" is sent to "/subscribe"
     Then the response status code is 403
