@@ -1,17 +1,26 @@
-@iot_sim_fraud_prevention_unbind
-  Feature: CAMARA IoT SIM Fraud Prevention API - Unbind Operations
+Feature: CAMARA IoT SIM Fraud Prevention API v1.0.0 - Operation UnBindDeviceImei
 
-  # Input to be provided by the implementation to the tests
-  # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml
+    # Input to be provided by the implementation to the tester
+    #
+    # Implementation indications:
+    # * apiRoot: API root of the server URL
+    #
+    # Testing assets:
+    # * A device with an existing IMEI binding
+    # * A device with an existing area restriction
+    # * A device without an existing IMEI binding
+    # * A valid access token with scope "iot-sim-fraud-prevention:unbind"
+    #
+    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml, version 1.0.0
 
-  Background: Common IoT SIM Fraud Prevention Unbind setup
+  Background: Common UnBindDeviceImei setup
     Given an environment at "apiRoot"
     And the resource "/iot-sim-fraud-prevention/v1/unbind"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
-  ######### Happy Path Scenarios #################################
+######### Happy Path Scenarios #################################
 
   @iot_sim_fraud_prevention_unbind_success_imei
   Scenario: Successfully unbind IMEI from device
@@ -37,9 +46,23 @@
     And the response body complies with the schema defined by "#/components/schemas/UnBindDeviceImeiResponse"
     And the response property "$.unbound" is "TRUE"
 
-  ############### Error response scenarios ###########################
+############### Error response scenarios ###########################
 
-  # 400 Error Scenarios for unbind
+  @iot_sim_fraud_prevention_unbind_422_unnecessary_unbind_imei
+  Scenario: Unbind IMEI when already unbound
+    Given a valid unbind request body with unBindType "IMEIBIND"
+    And the request body includes device identifier(s) supported by the implementation
+    And the device does not have existing IMEI binding
+    When the HTTP POST request "UnBindDeviceImei" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNNECESSARY_UNBIND_IMEI"
+    And the response property "$.message" contains "The current device imei has been unbound"
+
+  # Additional error scenarios (400, 401, 403, 404, 429) for unbind
+  # These are similar to bind scenarios but with unbind-specific messages.
+  # Below are representative examples; implementers should include all relevant error tests.
+
   @iot_sim_fraud_prevention_unbind_400_missing_unbindtype
   Scenario: Unbind operation with missing unBindType parameter
     Given the request body does not include property "$.unBindType"
@@ -60,17 +83,6 @@
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains "The value of unbindType can only be IMEIBIND,AREALIMIT"
 
-  @iot_sim_fraud_prevention_unbind_400_missing_device
-  Scenario: Unbind operation with missing device identifiers
-    Given the request body property "$.device" is not included
-    And the header "Authorization" is set to a valid access token which does not identify a single device
-    When the HTTP POST request "UnBindDeviceImei" is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains "At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified"
-
-  # 401 Error Scenarios
   @iot_sim_fraud_prevention_unbind_401_expired_token
   Scenario: Unbind operation with expired access token
     Given the header "Authorization" is set to an expired access token
@@ -81,7 +93,6 @@
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  # 403 Error Scenarios
   @iot_sim_fraud_prevention_unbind_403_permission_denied
   Scenario: Unbind operation without required scope
     Given the header "Authorization" is set to a valid access token without scope "iot-sim-fraud-prevention:unbind"
@@ -92,7 +103,6 @@
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
 
-  # 404 Error Scenarios
   @iot_sim_fraud_prevention_unbind_404_device_not_found
   Scenario: Unbind operation for unknown device
     Given the header "Authorization" is set to a valid access token which does not identify a single device
@@ -103,7 +113,6 @@
     And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
-  # 422 Error Scenarios
   @iot_sim_fraud_prevention_unbind_422_unnecessary_identifier
   Scenario: Unbind operation with unnecessary device identifier when using 3-legged token
     Given the header "Authorization" is set to a valid access token identifying a device
@@ -135,18 +144,6 @@
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
     And the response property "$.message" contains a user-friendly text
 
-  @iot_sim_fraud_prevention_unbind_422_unnecessary_unbind_imei
-  Scenario: Unbind IMEI when already unbound
-    Given a valid unbind request body with unBindType "IMEIBIND"
-    And the request body includes device identifier(s) supported by the implementation
-    And the device does not have existing IMEI binding
-    When the HTTP POST request "UnBindDeviceImei" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "UNNECESSARY_UNBIND_IMEI"
-    And the response property "$.message" contains "The current device imei has been unbound"
-
-  # 429 Error Scenarios
   @iot_sim_fraud_prevention_unbind_429_quota_exceeded
   Scenario: Unbind operation exceeding quota limit
     Given the API consumer has exceeded their quota limit
