@@ -1,15 +1,15 @@
 @iot_sim_fraud_prevention_callbacks
 Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event Handling
 
-# Input to be provided by the implementation to the tests
-# References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml
+  # Input to be provided by the implementation to the tests
+  # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml
 
   Background: Common IoT SIM Fraud Prevention Callbacks setup
     Given an environment at the callback sink URL
     And the header "Content-Type" is set to "application/json"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
-######### Happy Path Scenarios #################################
+  ######### Happy Path Scenarios #################################
 
   @iot_sim_fraud_prevention_callback_success_imei_change
   Scenario: Successfully handle IMEI change notification
@@ -29,7 +29,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event H
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
 
-############### Error response scenarios ###########################
+  ############### Error response scenarios ###########################
 
   # 400 Error Scenarios for callbacks
   @iot_sim_fraud_prevention_callback_400_missing_id
