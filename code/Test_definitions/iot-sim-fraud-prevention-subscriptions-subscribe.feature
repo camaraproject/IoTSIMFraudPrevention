@@ -1,3 +1,5 @@
+  @iot_sim_fraud_prevention_subscriptions_subscribe
+  @subscription-api
 Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API v1.0.0 - Operation SubscribeFraudPrevention
 
     # Input to be provided by the implementation to the tester
