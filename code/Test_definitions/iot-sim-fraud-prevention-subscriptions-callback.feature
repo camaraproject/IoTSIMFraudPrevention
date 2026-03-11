@@ -1,9 +1,14 @@
-Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event Handling
+  @iot_sim_fraud_prevention_subscriptions_callback
+  @client-callback-test
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API v1.0.0 - Notification Callback Handling (Client-Side)
 
-    # Input to be provided by the implementation to the tester
+    # This feature file is intended for API consumers to validate their own callback endpoint implementation.
+    # It does not test the API server, but rather simulates the server sending a notification to the client.
+    # Therefore, no API resource path is defined, and the operation "postNotification" is not a server-side endpoint.
+    # The "When" step uses a generic phrase to send a POST request to the callback sink URL.
     #
-    # Implementation indications:
-    # * The callback sink URL must be provided by the API consumer
+    # Input to be provided by the implementation to the tester:
+    # * The callback sink URL must be provided by the API consumer.
     #
     # Testing assets:
     # * A valid notification payload for IMEI_CHANGE event
@@ -23,7 +28,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event H
     Given a valid notification event with type "IMEI_CHANGE"
     And the notification includes required fields: id, type, time, data
     And the data includes subscriptionId and device information
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request is sent to the callback endpoint
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
 
@@ -32,7 +37,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event H
     Given a valid notification event with type "AREA_CHANGE"
     And the notification includes required fields: id, type, time, data
     And the data includes subscriptionId, area information and device information
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request is sent to the callback endpoint
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
 
@@ -42,7 +47,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event H
   Scenario: Callback with missing id parameter
     Given the notification event does not include property "$.id"
     And the notification includes other required fields
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request is sent to the callback endpoint
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -52,7 +57,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event H
   Scenario: Callback with missing type parameter
     Given the notification event does not include property "$.type"
     And the notification includes other required fields
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request is sent to the callback endpoint
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -62,7 +67,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event H
   Scenario: Callback with invalid type value
     Given the notification event property "$.type" is set to an invalid value
     And the notification includes other required fields
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request is sent to the callback endpoint
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -72,7 +77,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Callbacks v1.0.0 - Notification Event H
   Scenario: Callback endpoint no longer available
     Given the callback endpoint is no longer available
     And a valid notification event
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request is sent to the callback endpoint
     Then the response status code is 410
     And the response property "$.status" is 410
     And the response property "$.code" is "GONE"
