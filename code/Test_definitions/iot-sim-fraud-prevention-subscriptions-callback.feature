@@ -1,5 +1,6 @@
-  @iot_sim_fraud_prevention_subscriptions_callback
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notification Event Handling
+Feature: IoT SIM Fraud Prevention Subscriptions Callback Handling (v1.0.0)
+
+And the resource "/iot-sim-fraud-prevention-subscriptions/1.0.0/subscribe"
 
     # This file tests the API consumer's callback endpoint.
     # It validates that the consumer correctly handles incoming notifications.
@@ -14,7 +15,6 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
 
   Background: Common IoT SIM Fraud Prevention Callbacks setup
     Given an environment at the callback sink URL
-    And the resource "/iot-sim-fraud-prevention-subscriptions/1.0.0/callback"
     And the header "Content-Type" is set to "application/json"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
