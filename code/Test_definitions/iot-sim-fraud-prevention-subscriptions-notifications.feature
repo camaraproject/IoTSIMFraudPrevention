@@ -1,4 +1,4 @@
-@iot_sim_fraud_prevention_subscriptions_notifications
+  @iot_sim_fraud_prevention_subscriptions_notifications
 Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery
 
   This feature tests the end‑to‑end delivery of notifications for the explicit subscriptions model.
