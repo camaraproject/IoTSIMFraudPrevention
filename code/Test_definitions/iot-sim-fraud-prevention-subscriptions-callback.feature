@@ -17,6 +17,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API v1.0.0 - Notification
     # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml, version 1.0.0
 
   Background: Common IoT SIM Fraud Prevention Callbacks setup
+    And the resource "client-callback-endpoint"
     Given an environment at the callback sink URL
     And the header "Content-Type" is set to "application/json"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
