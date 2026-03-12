@@ -9,6 +9,7 @@ Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery
 
   Background: Common setup
     Given an environment at "apiRoot"
+    And the resource "/iot-sim-fraud-prevention-subscriptions/1.0.0/subscribe"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:subscribe"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
