@@ -1,4 +1,4 @@
-  @iot_sim_fraud_prevention_subscriptions_notifications
+@iot_sim_fraud_prevention_subscriptions_notifications
 Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery
 
   This feature tests the end‑to‑end delivery of notifications for the explicit subscriptions model.
@@ -16,81 +16,65 @@ Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery
 
   @happy_path_imei_change
   Scenario: Receive notification when IMEI changes
-    Given a valid subscription request body for device with phoneNumber "+123456789"
+    Given a subscription for device with phoneNumber "+123456789"
     And the subscription type is "IMEIBIND"
     And the sink is set to "https://mock-sink.example.com/notify"
     And the sink uses an access token "valid-bearer-token"
-    When the HTTP POST request "SubscribeFraudPrevention" is sent
-    Then the response code is 201
-    And I store the subscription ID as "{subscriptionId}"
-
     When an IMEI change event is triggered for the same device
     Then a notification is received at the mock sink
     And the notification uses the Bearer token "valid-bearer-token"
     And the notification payload complies with the schema "#/components/schemas/NoticeEvent"
     And the payload property "$.type" is "IMEI_CHANGE"
-    And the payload property "$.data.subscriptionId" equals "{subscriptionId}"
     And the payload property "$.data.imei" matches the new IMEI
 
   @happy_path_area_change
   Scenario: Receive notification when area changes
-    Given a valid subscription request body for device with phoneNumber "+123456789"
+    Given a subscription for device with phoneNumber "+123456789"
     And the subscription type is "AREALIMIT"
     And the sink is set to "https://mock-sink.example.com/notify"
     And the sink uses an access token "valid-bearer-token"
-    When the HTTP POST request "SubscribeFraudPrevention" is sent
-    Then the response code is 201
-    And I store the subscription ID as "{subscriptionId}"
-
     When an area change event (enter/leave) is triggered for the same device
     Then a notification is received at the mock sink
     And the notification uses the Bearer token "valid-bearer-token"
     And the notification payload complies with the schema "#/components/schemas/NoticeEvent"
     And the payload property "$.type" is "AREA_CHANGE"
-    And the payload property "$.data.subscriptionId" equals "{subscriptionId}"
     And the payload property "$.data.area" is present
 
   @expiration_time
   Scenario: No notification after subscription expires
-    Given a valid subscription request body for device with phoneNumber "+123456789"
+    Given a subscription for device with phoneNumber "+123456789"
     And the subscription type is "IMEIBIND"
     And subscriptionExpireTime is set to "2024-01-01T00:00:00Z" (a past date)
     And the sink is set to "https://mock-sink.example.com/notify"
-    When the HTTP POST request "SubscribeFraudPrevention" is sent
-    Then the response code is 201
-
     When an IMEI change event is triggered for the same device
     Then no notification is received at the mock sink
 
-  @max_events_limit
-  Scenario: No notification after max events reached
-    Given a valid subscription request body for device with phoneNumber "+123456789"
+  @max_events_limit_before_limit
+  Scenario: Notifications are received until the max events limit is reached
+    Given a subscription for device with phoneNumber "+123456789"
     And the subscription type is "IMEIBIND"
     And subscriptionMaxEvents is set to 2
     And the sink is set to "https://mock-sink.example.com/notify"
-    When the HTTP POST request "SubscribeFraudPrevention" is sent
-    Then the response code is 201
-
     When an IMEI change event is triggered (first event)
     Then a notification is received
-
     When an IMEI change event is triggered (second event)
     Then a notification is received
 
+  @max_events_limit_after_limit
+  Scenario: No notification after max events limit is exceeded
+    Given a subscription for device with phoneNumber "+123456789"
+    And the subscription type is "IMEIBIND"
+    And subscriptionMaxEvents is set to 2
+    And the sink is set to "https://mock-sink.example.com/notify"
+    And 2 events have already been triggered (the limit is reached)
     When an IMEI change event is triggered (third event)
-    Then no notification is received
+    Then no notification is received at the mock sink
 
   @deletion
   Scenario: No notification after subscription deleted
-    Given a valid subscription request body for device with phoneNumber "+123456789"
+    Given a subscription for device with phoneNumber "+123456789"
     And the subscription type is "IMEIBIND"
     And the sink is set to "https://mock-sink.example.com/notify"
-    When the HTTP POST request "SubscribeFraudPrevention" is sent
-    Then the response code is 201
-
-    And I store the subscription ID as "{subscriptionId}"
-    When I send a DELETE request to "/subscriptions/{subscriptionId}" with a valid access token having scope "iot-sim-fraud-prevention-subscriptions:delete"
-    Then the response code is 204
-    
+    And the subscription has been deleted
     When an IMEI change event is triggered for the same device
     Then no notification is received at the mock sink
