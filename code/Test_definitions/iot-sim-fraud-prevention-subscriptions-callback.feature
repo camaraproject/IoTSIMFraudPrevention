@@ -24,7 +24,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
     Given a valid notification event with type "IMEI_CHANGE"
     And the notification includes required fields: id, type, time, data
     And the data includes subscriptionId, imei and device information
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request "SubscribeFraudPrevention" is sent to the callback endpoint
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     # Additional payload validation (optional for consumer, but ensures correct handling)
@@ -37,7 +37,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
     Given a valid notification event with type "AREA_CHANGE"
     And the notification includes required fields: id, type, time, data
     And the data includes subscriptionId, area information and device information
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request "SubscribeFraudPrevention" is sent to the callback endpoint
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the received notification body complies with the schema "#/components/schemas/NoticeEvent"
@@ -50,7 +50,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
   Scenario: Callback with missing id parameter
     Given the notification event does not include property "$.id"
     And the notification includes other required fields
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request "SubscribeFraudPrevention" is sent to the callback endpoint
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -60,7 +60,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
   Scenario: Callback with missing type parameter
     Given the notification event does not include property "$.type"
     And the notification includes other required fields
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request "SubscribeFraudPrevention" is sent to the callback endpoint
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -70,7 +70,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
   Scenario: Callback with invalid type value
     Given the notification event property "$.type" is set to an invalid value
     And the notification includes other required fields
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request "SubscribeFraudPrevention" is sent to the callback endpoint
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -80,7 +80,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
   Scenario: Callback endpoint no longer available
     Given the callback endpoint is no longer available
     And a valid notification event
-    When the HTTP POST request "postNotification" is sent to the callback endpoint
+    When the HTTP POST request "SubscribeFraudPrevention" is sent to the callback endpoint
     Then the response status code is 410
     And the response property "$.status" is 410
     And the response property "$.code" is "GONE"
