@@ -325,7 +325,17 @@ paths:
       security:
         - openId:
             - "iot-sim-fraud-prevention:query"
-
+  /callbacks:
+    eventNotification:
+      '{$request.query.callback}':
+        post:
+          operationId: postNotification
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Notification'
 components:
   securitySchemes:
     openId:
@@ -350,6 +360,10 @@ components:
       description: Correlation id for the request
       example: "123e4567-e89b-12d3-a456-426614174000"
       pattern: ^[a-zA-Z0-9-]{0,55}$
+  notificationsBearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
 
     # ---------- Bind / Unbind / Query common schemas ----------
     Device:
@@ -1167,3 +1181,4 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Rejected due to request rate limit overpassed.
+
