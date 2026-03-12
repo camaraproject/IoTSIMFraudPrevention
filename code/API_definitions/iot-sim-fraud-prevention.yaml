@@ -26,17 +26,15 @@ info:
     - `POST /unbind` – unbind IMEI or area from a card.
     - `POST /query` – query binding/restriction status.
 
-    # Authorization and authentication
-    The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
+    # Authentication and authorization
+    The API follows the CAMARA Security and Interoperability Profile.
+    A valid access token must be provided in the `Authorization` header.
+    When a two‑legged token is used, the `device` object in the request body MUST identify the target device.
+    When a three‑legged token is used, the `device` object MUST NOT be provided (the device is derived from the token).
 
-    The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
-
-    In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
-
-    # Additional CAMARA error responses
-    The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
-    Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
-    As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
+    # Error responses
+    Common error codes are documented in the `responses` section.
+    For a complete list, refer to the CAMARA commonalities.
 
   version: 1.0.0
   license:
@@ -325,17 +323,7 @@ paths:
       security:
         - openId:
             - "iot-sim-fraud-prevention:query"
-  /callbacks:
-    eventNotification:
-      '{$request.query.callback}':
-        post:
-          operationId: postNotification
-          requestBody:
-            required: true
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Notification'
+
 components:
   securitySchemes:
     openId:
@@ -360,10 +348,6 @@ components:
       description: Correlation id for the request
       example: "123e4567-e89b-12d3-a456-426614174000"
       pattern: ^[a-zA-Z0-9-]{0,55}$
-  notificationsBearerAuth:
-    type: http
-    scheme: bearer
-    bearerFormat: JWT
 
     # ---------- Bind / Unbind / Query common schemas ----------
     Device:
@@ -1181,4 +1165,3 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Rejected due to request rate limit overpassed.
-
