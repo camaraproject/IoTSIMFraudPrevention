@@ -49,24 +49,32 @@ Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery
     When an IMEI change event is triggered for the same device
     Then no notification is received at the mock sink
 
-  @max_events_limit_before_limit
-  Scenario: Notifications are received until the max events limit is reached
+  @max_events_first_event
+  Scenario: First event triggers a notification (below limit)
     Given a subscription for device with phoneNumber "+123456789"
     And the subscription type is "IMEIBIND"
     And subscriptionMaxEvents is set to 2
     And the sink is set to "https://mock-sink.example.com/notify"
     When an IMEI change event is triggered (first event)
-    Then a notification is received
-    When an IMEI change event is triggered (second event)
-    Then a notification is received
+    Then a notification is received at the mock sink
 
-  @max_events_limit_after_limit
-  Scenario: No notification after max events limit is exceeded
+  @max_events_second_event
+  Scenario: Second event triggers a notification (still below limit)
     Given a subscription for device with phoneNumber "+123456789"
     And the subscription type is "IMEIBIND"
     And subscriptionMaxEvents is set to 2
     And the sink is set to "https://mock-sink.example.com/notify"
-    And 2 events have already been triggered (the limit is reached)
+    And one event has already been triggered (the count is 1)
+    When an IMEI change event is triggered (second event)
+    Then a notification is received at the mock sink
+
+  @max_events_third_event
+  Scenario: Third event does not trigger a notification (limit exceeded)
+    Given a subscription for device with phoneNumber "+123456789"
+    And the subscription type is "IMEIBIND"
+    And subscriptionMaxEvents is set to 2
+    And the sink is set to "https://mock-sink.example.com/notify"
+    And two events have already been triggered (the limit is reached)
     When an IMEI change event is triggered (third event)
     Then no notification is received at the mock sink
 
