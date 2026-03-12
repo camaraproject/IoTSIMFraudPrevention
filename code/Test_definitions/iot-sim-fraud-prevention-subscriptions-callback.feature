@@ -22,8 +22,8 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
   @iot_sim_fraud_prevention_callback_success_imei_change
   Scenario: Successfully handle IMEI change notification
     Given a valid notification event with type "IMEI_CHANGE"
-      And the notification includes required fields: id, type, time, data
-      And the data includes subscriptionId, imei and device information
+    And the notification includes required fields: id, type, time, data
+    And the data includes subscriptionId, imei and device information
     When the HTTP POST request "postNotification" is sent to the callback endpoint
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -35,8 +35,8 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions Callbacks v1.0.0 - Notifi
   @iot_sim_fraud_prevention_callback_success_area_change
   Scenario: Successfully handle area change notification
     Given a valid notification event with type "AREA_CHANGE"
-      And the notification includes required fields: id, type, time, data
-      And the data includes subscriptionId, area information and device information
+    And the notification includes required fields: id, type, time, data
+    And the data includes subscriptionId, area information and device information
     When the HTTP POST request "postNotification" is sent to the callback endpoint
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
