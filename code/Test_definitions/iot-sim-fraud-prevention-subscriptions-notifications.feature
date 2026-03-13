@@ -1,7 +1,5 @@
 Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery (v1.0.0)
 
-And the resource "/iot-sim-fraud-prevention-subscriptions/1.0.0/subscribe"
-
   This feature tests the end‑to‑end delivery of notifications for the explicit subscriptions model.
   It assumes the existence of:
     - A mock sink endpoint that can capture and verify incoming HTTP requests.
@@ -10,6 +8,7 @@ And the resource "/iot-sim-fraud-prevention-subscriptions/1.0.0/subscribe"
 
   Background: Common setup
     Given an environment at "apiRoot"
+    And the resource "/iot-sim-fraud-prevention-subscriptions/v1/subscribe"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:subscribe"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
