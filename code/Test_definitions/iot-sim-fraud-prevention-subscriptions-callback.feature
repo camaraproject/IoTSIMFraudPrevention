@@ -1,7 +1,5 @@
 Feature: IoT SIM Fraud Prevention Subscriptions Callback Handling (v1.0.0)
 
-And the resource "/iot-sim-fraud-prevention-subscriptions/1.0.0/subscribe"
-
     # This file tests the API consumer's callback endpoint.
     # It validates that the consumer correctly handles incoming notifications.
 
@@ -15,6 +13,7 @@ And the resource "/iot-sim-fraud-prevention-subscriptions/1.0.0/subscribe"
 
   Background: Common IoT SIM Fraud Prevention Callbacks setup
     Given an environment at the callback sink URL
+    And the resource "/iot-sim-fraud-prevention-subscriptions/v1/subscribe"
     And the header "Content-Type" is set to "application/json"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
