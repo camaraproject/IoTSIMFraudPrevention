@@ -13,7 +13,7 @@ Feature: IoT SIM Fraud Prevention Subscriptions Callback Handling (v1.0.0)
 
   Background: Common IoT SIM Fraud Prevention Callbacks setup
     Given an environment at the callback sink URL
-    And the resource "/iot-sim-fraud-prevention-subscriptions/v1/subscribe"
+    And the resource "/iot-sim-fraud-prevention-subscriptions/vwip/subscribe"
     And the header "Content-Type" is set to "application/json"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
