@@ -1,4 +1,4 @@
-Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery (v1.0.0)
+Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery (wip)
 
   This feature tests the end‑to‑end delivery of notifications for the explicit subscriptions model.
   It assumes the existence of:
