@@ -21,7 +21,7 @@ info:
     - `DELETE /subscriptions/{subscriptionId}` – delete a subscription.
 
     # Notifications
-    When a subscribed event occurs, the server sends a `POST` request to the `sink` 0.7 provided by the subscriber.
+    When a subscribed event occurs, the server sends a `POST` request to the `sink` URL provided by the subscriber.
     The notification payload conforms to the `NoticeEvent` schema.
 
     # Authorization and authentication
@@ -37,10 +37,11 @@ info:
     As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
 
   version: wip
+  version: wip
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 
+  x-camara-commonalities: 0.7
 externalDocs:
   description: CAMARA API Design Guidelines
   url: https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design/API-design.md
@@ -185,7 +186,7 @@ paths:
                             area:
                               areaType: "CIRCLE"
                               center:
-                                latitude: "535851"
+                                latitude: "5wip35851"
                                 longitude: "7.10066"
                               radius: 2000
                             device:
@@ -349,7 +350,7 @@ components:
     openId:
       description: OpenID Connect authentication
       type: openIdConnect
-      openIdConnect: https://example.org/.well-known/openid-configuration
+      openIdConnectUrl: https://example.org/.well-known/openid-configuration
   parameters:
     x-correlator:
       name: x-correlator
@@ -505,7 +506,7 @@ components:
         sink:
           type: string
           format: uri
-          description: The callback 0.7 where notifications will be sent.
+          description: The callback URL where notifications will be sent.
           example: "https://endpoint.example.com/sink"
         sinkCredential:
           $ref: "#/components/schemas/SinkCredential"
