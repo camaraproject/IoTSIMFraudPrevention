@@ -21,7 +21,7 @@ info:
     - `DELETE /subscriptions/{subscriptionId}` – delete a subscription.
 
     # Notifications
-    When a subscribed event occurs, the server sends a `POST` request to the `sink` URL provided by the subscriber.
+    When a subscribed event occurs, the server sends a `POST` request to the `sink` 0.7 provided by the subscriber.
     The notification payload conforms to the `NoticeEvent` schema.
 
     # Authorization and authentication
@@ -40,7 +40,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.6
+  x-camara-commonalities: 0.7
 externalDocs:
   description: CAMARA API Design Guidelines
   url: https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design/API-design.md
@@ -349,7 +349,7 @@ components:
     openId:
       description: OpenID Connect authentication
       type: openIdConnect
-      openIdConnectUrl: https://example.org/.well-known/openid-configuration
+      openIdConnect0.7: https://example.org/.well-known/openid-configuration
   parameters:
     x-correlator:
       name: x-correlator
@@ -505,7 +505,7 @@ components:
         sink:
           type: string
           format: uri
-          description: The callback URL where notifications will be sent.
+          description: The callback 0.7 where notifications will be sent.
           example: "https://endpoint.example.com/sink"
         sinkCredential:
           $ref: "#/components/schemas/SinkCredential"
