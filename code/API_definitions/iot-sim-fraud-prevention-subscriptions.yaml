@@ -40,7 +40,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.7
+  x-camara-commonalities: 
 externalDocs:
   description: CAMARA API Design Guidelines
   url: https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design/API-design.md
@@ -185,7 +185,7 @@ paths:
                             area:
                               areaType: "CIRCLE"
                               center:
-                                latitude: "50.735851"
+                                latitude: "535851"
                                 longitude: "7.10066"
                               radius: 2000
                             device:
@@ -349,7 +349,7 @@ components:
     openId:
       description: OpenID Connect authentication
       type: openIdConnect
-      openIdConnect0.7: https://example.org/.well-known/openid-configuration
+      openIdConnect: https://example.org/.well-known/openid-configuration
   parameters:
     x-correlator:
       name: x-correlator
