@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention API v1.0.0 - Operation query
+Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation query
 
     # Input to be provided by the implementation to the tester
     #
