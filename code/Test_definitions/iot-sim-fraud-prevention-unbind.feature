@@ -11,7 +11,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API v1.0.0 - Operation UnBindDeviceImei
     # * A device without an existing IMEI binding
     # * A valid access token with scope "iot-sim-fraud-prevention:unbind"
     #
-    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml, version 1.0.0
+    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml
 
   Background: Common UnBindDeviceImei setup
     Given an environment at "apiRoot"
