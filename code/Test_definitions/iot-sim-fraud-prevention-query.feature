@@ -10,7 +10,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation query
     # * A device with an active area restriction
     # * A valid access token with scope "iot-sim-fraud-prevention:query"
     #
-    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml, version 1.0.0
+    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml
 
   Background: Common query setup
     Given an environment at "apiRoot"
