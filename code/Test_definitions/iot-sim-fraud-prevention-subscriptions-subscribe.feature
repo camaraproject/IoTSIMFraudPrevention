@@ -1,5 +1,5 @@
   @iot_sim_fraud_prevention_subscriptions_subscribe
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API wip - Operation SubscribeFraudPrevention
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions - Operation SubscribeFraudPrevention (wip)
 
     # Input to be provided by the implementation to the tester
     #
