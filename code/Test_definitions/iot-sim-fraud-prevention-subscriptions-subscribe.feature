@@ -13,7 +13,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions API v1.0.0 - Operation Su
     # * An access token that requires new authentication
     # * An access token without the required scope
     #
-    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml, version 1.0.0
+    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml
 
   Background: Common SubscribeFraudPrevention setup
     Given an environment at "apiRoot"
