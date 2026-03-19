@@ -1,4 +1,4 @@
-Feature: IoT SIM Fraud Prevention Subscriptions Callback Handling (v1.0.0)
+Feature: IoT SIM Fraud Prevention Subscriptions Callback Handling (wip)
 
     # This file tests the API consumer's callback endpoint.
     # It validates that the consumer correctly handles incoming notifications.
