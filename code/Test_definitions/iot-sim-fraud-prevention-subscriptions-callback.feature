@@ -9,7 +9,7 @@ Feature: IoT SIM Fraud Prevention Subscriptions Callback Handling (wip)
     # * A valid notification payload for IMEI_CHANGE event
     # * A valid notification payload for AREA_CHANGE event
     #
-    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml, version 1.0.0
+    # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention-subscriptions.yaml
 
   Background: Common IoT SIM Fraud Prevention Callbacks setup
     Given an environment at the callback sink URL
