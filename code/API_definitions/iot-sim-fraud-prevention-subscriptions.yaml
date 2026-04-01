@@ -16,13 +16,13 @@ info:
 
     # API Functionality
     The API provides endpoints to manage subscriptions:
-    - `POST /subscribe` – create a subscription.
+    - `POST /subscriptions` – create a subscription.
     - `GET /subscriptions/{subscriptionId}` – retrieve a subscription.
     - `DELETE /subscriptions/{subscriptionId}` – delete a subscription.
 
     # Notifications
     When a subscribed event occurs, the server sends a `POST` request to the `sink` URL provided by the subscriber.
-    The notification payload conforms to the `NoticeEvent` schema.
+    The notification payload conforms to the CloudEvents specification.
 
     # Authorization and authentication
     The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
@@ -40,7 +40,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.7
+  x-camara-commonalities: 0.7.0
 externalDocs:
   description: CAMARA API Design Guidelines
   url: https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design/API-design.md
@@ -51,14 +51,14 @@ servers:
         default: http://localhost:9091
         description: API root
 paths:
-  /subscribe:
+  /subscriptions:
     post:
       tags:
         - Subscription sim card fraud prevention
       summary: Subscribe to IMEI or area change events
       description: |
         Create a subscription to receive notifications when the IMEI of a device changes or when it enters/leaves a restricted area.
-      operationId: SubscribeFraudPrevention
+      operationId: subscribeFraudPrevention
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       requestBody:
@@ -82,11 +82,14 @@ paths:
                           publicAddress: "203.0.113.0"
                           publicPort: 59765
                   types:
-                    - "IMEIBIND"
-                  sink: "http://notificationSendServer12.supertelco.com"
+                    - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                  sink: "https://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
                   sinkCredential:
-                    credentialType: "PLAIN"
+                    credentialType: "ACCESSTOKEN"
+                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                    accessTokenExpiresUtc: "2024-03-23T05:40:58.469Z"
+                    accessTokenType: "bearer"
               INPUT_IPV6_ADDRESS:
                 summary: Subscription For One Device By IPV6 Address
                 description: Use the IPv6 address of a device for subscription operations
@@ -99,11 +102,14 @@ paths:
                       device:
                         ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
                   types:
-                    - "IMEIBIND"
-                  sink: "http://notificationSendServer12.supertelco.com"
+                    - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                  sink: "https://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
                   sinkCredential:
-                    credentialType: "PLAIN"
+                    credentialType: "ACCESSTOKEN"
+                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                    accessTokenExpiresUtc: "2024-03-23T05:40:58.469Z"
+                    accessTokenType: "bearer"
               INPUT_PHONE_NUMBER:
                 summary: Subscription For One Device By Device Number
                 description: Use a device's phone number for subscription operation
@@ -116,11 +122,14 @@ paths:
                       device:
                         phoneNumber: "+123456789"
                   types:
-                    - "IMEIBIND"
-                  sink: "http://notificationSendServer12.supertelco.com"
+                    - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                  sink: "https://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
                   sinkCredential:
-                    credentialType: "PLAIN"
+                    credentialType: "ACCESSTOKEN"
+                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                    accessTokenExpiresUtc: "2024-03-23T05:40:58.469Z"
+                    accessTokenType: "bearer"
               INPUT_NETWORK_ACCESS_IDENTIFIER:
                 summary: Subscription For One Device By Network Access Identification
                 description: Use a device's network access identifier for subscription operations
@@ -133,28 +142,14 @@ paths:
                       device:
                         networkAccessIdentifier: "123456789@domain.com"
                   types:
-                    - "IMEIBIND"
-                  sink: "http://notificationSendServer12.supertelco.com"
+                    - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                  sink: "https://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
                   sinkCredential:
-                    credentialType: "PLAIN"
-              INPUT_CONFIG:
-                summary: Subscription For One Device By 2 Legged Token (with device identifiers)
-                description: Use a 2‑legged token and provide device identifiers in the request body.
-                value:
-                  config:
-                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
-                    initialEvent: true
-                    subscriptionMaxEvents: 10
-                    subscriptionDetail:
-                      device:
-                        phoneNumber: "+123456789"
-                  types:
-                    - "IMEIBIND"
-                  sink: "http://notificationSendServer12.supertelco.com"
-                  protocol: "HTTP"
-                  sinkCredential:
-                    credentialType: "PLAIN"
+                    credentialType: "ACCESSTOKEN"
+                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                    accessTokenExpiresUtc: "2024-03-23T05:40:58.469Z"
+                    accessTokenType: "bearer"
       callbacks:
         notifications:
           "{$request.body#/sink}":
@@ -169,37 +164,41 @@ paths:
               requestBody:
                 required: true
                 content:
-                  application/json:
+                  application/cloudevents+json:
                     schema:
-                      $ref: "#/components/schemas/NoticeEvent"
+                      $ref: "#/components/schemas/NotificationEvent"
                     examples:
-                      AREA_CHANGE:
-                        description: The trigger event when the device area has changed
-                        value:
-                          id: "123655"
-                          type: "AREA_CHANGE"
-                          datacontenttype: "application/json"
-                          time: "2023-03-22T05:40:23.682Z"
-                          data:
-                            subscriptionId: "987654321"
-                            area:
-                              areaType: "CIRCLE"
-                              center:
-                                latitude: "5wip35851"
-                                longitude: "7.10066"
-                              radius: 2000
-                            device:
-                              phoneNumber: "+123456789"
                       IMEI_CHANGE:
                         description: The trigger event when the device IMEI has changed
                         value:
-                          id: "123655"
-                          type: "IMEI_CHANGE"
+                          specversion: "1.0"
+                          source: "https://api.example.com"
+                          id: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                          type: "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
                           datacontenttype: "application/json"
                           time: "2023-03-22T05:40:23.682Z"
                           data:
                             subscriptionId: "987654321"
                             imei: "35-209900-176148-1"
+                            device:
+                              phoneNumber: "+123456789"
+                      AREA_CHANGE:
+                        description: The trigger event when the device area has changed
+                        value:
+                          specversion: "1.0"
+                          source: "https://api.example.com"
+                          id: "b4333c46-49c0-4f62-80d7-f0ef930f1c47"
+                          type: "org.camaraproject.iot-sim-fraud-prevention.v0.area-change"
+                          datacontenttype: "application/json"
+                          time: "2023-03-22T05:41:23.682Z"
+                          data:
+                            subscriptionId: "987654321"
+                            area:
+                              areaType: "CIRCLE"
+                              center:
+                                latitude: 50.735851
+                                longitude: 7.10066
+                              radius: 2000
                             device:
                               phoneNumber: "+123456789"
               responses:
@@ -221,6 +220,7 @@ paths:
                 "429":
                   $ref: "#/components/responses/Generic429"
               security:
+                - {}
                 - notificationsBearerAuth: []
       responses:
         "201":
@@ -265,7 +265,42 @@ paths:
         - openId:
             - "iot-sim-fraud-prevention-subscriptions:subscribe"
 
-  # ===== NEW ENDPOINTS =====
+    get:
+      tags:
+        - Subscription management
+      summary: List subscriptions
+      description: Retrieve a list of existing subscriptions.
+      operationId: listSubscriptions
+      parameters:
+        - $ref: "#/components/parameters/x-correlator"
+      responses:
+        "200":
+          description: List of subscription details.
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 0
+                maxItems: 1000
+                items:
+                  $ref: "#/components/schemas/Subscription"
+        "400":
+          $ref: "#/components/responses/Generic400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "404":
+          $ref: "#/components/responses/Generic404"
+        "429":
+          $ref: "#/components/responses/Generic429"
+      security:
+        - openId:
+            - "iot-sim-fraud-prevention-subscriptions:read"
+
   /subscriptions/{subscriptionId}:
     get:
       tags:
@@ -325,6 +360,15 @@ paths:
           headers:
             x-correlator:
               $ref: "#/components/headers/x-correlator"
+        "202":
+          description: Request accepted to be processed asynchronously.
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionAsync"
         "400":
           $ref: "#/components/responses/Generic400"
         "401":
@@ -344,8 +388,10 @@ components:
     notificationsBearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: "JWT, as provided in sinkCredential.accessToken of the subscription"
-      description: Bearer token authentication for the callback endpoint. The token MUST be the same as the `accessToken` delivered in the `sinkCredential` during subscription creation.
+      bearerFormat: "{$request.body#/sinkCredential.credentialType}"
+      description: |
+        Bearer token authentication for the callback endpoint. The token format is determined
+        by `sinkCredential.credentialType` in the subscription request.
     openId:
       description: OpenID Connect authentication
       type: openIdConnect
@@ -366,49 +412,303 @@ components:
     XCorrelator:
       type: string
       description: Correlation id for the request
-      example: "123e4567-e89b-12d3-a456-426614174000"
-      pattern: ^[a-zA-Z0-9-]{0,55}$
+      example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
 
     # ---------- Notification ----------
-    NoticeEvent:
-      description: The notification callback payload.
+    CloudEvent:
+      type: object
+      description: |
+        CloudEvents 1.0 specification envelope.
+        This schema is the stable base for all CAMARA event notifications.
       required:
         - id
+        - source
+        - specversion
         - type
         - time
-        - data
       properties:
         id:
           type: string
-          description: Unique identifier of this event.
+          maxLength: 256
+          description: Identifier of this event, unique within the source context.
+        source:
+          $ref: "#/components/schemas/Source"
         type:
-          $ref: "#/components/schemas/NotificationEventType"
+          type: string
+          maxLength: 512
+          description: |
+            Identifies the event type. CAMARA APIs use reverse-DNS notation:
+            `org.camaraproject.<api-name>.<event-version>.<event-name>`
+        specversion:
+          type: string
+          description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
+          enum:
+            - "1.0"
         datacontenttype:
           type: string
-          description: 'Must be "application/json" for Notice APIs'
+          description: 'media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs'
           enum:
             - application/json
         data:
           type: object
-          description: Event details (varies by type).
+          description: Event details payload. Structure is defined by each concrete event schema.
         time:
           $ref: "#/components/schemas/DateTime"
+
+    Source:
+      type: string
+      format: uri-reference
+      minLength: 1
+      maxLength: 2048
+      description: |
+        Identifies the context in which an event happened - be a non-empty `URI-reference` like:
+        - URI with a DNS authority:
+          * https://github.com/cloudevents
+          * mailto:cncf-wg-serverless@lists.cncf.io
+        - Universally-unique URN with a UUID:
+          * urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
+        - Application-specific identifier:
+          * /cloudevents/spec/pull/123
+          * 1-555-123-4567
+      example: "https://api.example.com"
 
     DateTime:
       type: string
       format: date-time
-      description: Timestamp adhering to RFC 3339.
+      maxLength: 64
+      description: Timestamp of when the occurrence happened. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
       example: "2018-04-05T17:31:00Z"
 
-    NotificationEventType:
+    # ─────────────────────────────────────────────────────────────────────────
+    # API-specific notification event group
+    # ─────────────────────────────────────────────────────────────────────────
+
+    ApiNotificationEvent:
+      description: |
+        API-specific notification event group.
+        Extends the CloudEvent envelope and constrains `type` to the set of
+        event types defined by this API project.
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            type:
+              $ref: "#/components/schemas/ApiEventType"
+      discriminator:
+        propertyName: "type"
+        mapping:
+          org.camaraproject.iot-sim-fraud-prevention.v0.imei-change: "#/components/schemas/ImeiChangeEvent"
+          org.camaraproject.iot-sim-fraud-prevention.v0.area-change: "#/components/schemas/AreaChangeEvent"
+
+    ApiEventType:
       type: string
       description: |
-        Type of the event that triggered the notification.
-        - `IMEI_CHANGE` – the device IMEI has changed.
-        - `AREA_CHANGE` – the device has entered or left a restricted area.
+        Enum of API-specific event type strings for this API project.
+        The reverse-DNS prefix `org.camaraproject.iot-sim-fraud-prevention` makes each value
+        globally unique.
       enum:
-        - IMEI_CHANGE
-        - AREA_CHANGE
+        - org.camaraproject.iot-sim-fraud-prevention.v0.imei-change
+        - org.camaraproject.iot-sim-fraud-prevention.v0.area-change
+
+    ImeiChangeEvent:
+      description: Event structure for IMEI change notification
+      allOf:
+        - $ref: "#/components/schemas/ApiNotificationEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ImeiChangeEventData"
+
+    ImeiChangeEventData:
+      type: object
+      required:
+        - subscriptionId
+        - imei
+        - device
+      properties:
+        subscriptionId:
+          type: string
+          description: The ID of the subscription that triggered this notification
+          example: "987654321"
+        imei:
+          type: string
+          description: The new IMEI of the device
+          example: "35-209900-176148-1"
+        device:
+          $ref: "#/components/schemas/Device"
+
+    AreaChangeEvent:
+      description: Event structure for area change notification
+      allOf:
+        - $ref: "#/components/schemas/ApiNotificationEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/AreaChangeEventData"
+
+    AreaChangeEventData:
+      type: object
+      required:
+        - subscriptionId
+        - area
+        - device
+      properties:
+        subscriptionId:
+          type: string
+          description: The ID of the subscription that triggered this notification
+          example: "987654321"
+        area:
+          $ref: "#/components/schemas/Area"
+        device:
+          $ref: "#/components/schemas/Device"
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Subscription lifecycle event group (Commonalities-owned)
+    # ─────────────────────────────────────────────────────────────────────────
+
+    SubscriptionLifecycleEvent:
+      description: |
+        Subscription lifecycle event group, common to all CAMARA APIs that
+        support explicit subscriptions.
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            type:
+              $ref: "#/components/schemas/SubscriptionLifecycleEventType"
+      discriminator:
+        propertyName: type
+        mapping:
+          org.camaraproject.iot-sim-fraud-prevention.v0.subscription-started: "#/components/schemas/EventSubscriptionStarted"
+          org.camaraproject.iot-sim-fraud-prevention.v0.subscription-updated: "#/components/schemas/EventSubscriptionUpdated"
+          org.camaraproject.iot-sim-fraud-prevention.v0.subscription-ended: "#/components/schemas/EventSubscriptionEnded"
+
+    SubscriptionLifecycleEventType:
+      type: string
+      description: |
+        Enum of subscription lifecycle event type strings.
+      enum:
+        - org.camaraproject.iot-sim-fraud-prevention.v0.subscription-started
+        - org.camaraproject.iot-sim-fraud-prevention.v0.subscription-updated
+        - org.camaraproject.iot-sim-fraud-prevention.v0.subscription-ended
+
+    EventSubscriptionStarted:
+      description: event structure for event subscription started
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionLifecycleEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SubscriptionStarted"
+
+    SubscriptionStarted:
+      description: Event detail structure for subscription started event
+      type: object
+      required:
+        - initiationReason
+        - subscriptionId
+      properties:
+        initiationReason:
+          $ref: "#/components/schemas/InitiationReason"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+        initiationDescription:
+          type: string
+          maxLength: 512
+          description: Description of subscription initiation
+
+    InitiationReason:
+      type: string
+      description: |
+        - SUBSCRIPTION_CREATED - Subscription created by API Server
+      enum:
+        - SUBSCRIPTION_CREATED
+
+    EventSubscriptionUpdated:
+      description: event structure for event subscription updated
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionLifecycleEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SubscriptionUpdated"
+
+    SubscriptionUpdated:
+      description: Event detail structure for subscription updated event
+      type: object
+      required:
+        - updateReason
+        - subscriptionId
+      properties:
+        updateReason:
+          $ref: "#/components/schemas/UpdateReason"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+        updateDescription:
+          type: string
+          maxLength: 512
+          description: Description of subscription update
+
+    UpdateReason:
+      type: string
+      description: |
+        - SUBSCRIPTION_ACTIVE - API server transitioned subscription status to `ACTIVE`
+        - SUBSCRIPTION_INACTIVE - API server transitioned subscription status to `INACTIVE`
+      enum:
+        - SUBSCRIPTION_ACTIVE
+        - SUBSCRIPTION_INACTIVE
+
+    EventSubscriptionEnded:
+      description: event structure for event subscription ended
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionLifecycleEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SubscriptionEnded"
+
+    SubscriptionEnded:
+      description: Event detail structure for subscription ended event
+      type: object
+      required:
+        - terminationReason
+        - subscriptionId
+      properties:
+        terminationReason:
+          $ref: "#/components/schemas/TerminationReason"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+        terminationDescription:
+          type: string
+          maxLength: 512
+          description: Description of subscription termination
+
+    TerminationReason:
+      type: string
+      description: |
+        - NETWORK_TERMINATED - API server stopped sending notification
+        - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+        - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
+        - ACCESS_TOKEN_EXPIRED - Access Token sinkCredential (optionally set by the requester with credential type `ACCESSTOKEN`) expiration time has been reached
+        - SUBSCRIPTION_DELETED - Subscription was deleted by the requester
+      enum:
+        - MAX_EVENTS_REACHED
+        - NETWORK_TERMINATED
+        - SUBSCRIPTION_EXPIRED
+        - ACCESS_TOKEN_EXPIRED
+        - SUBSCRIPTION_DELETED
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Callback union (API project-owned)
+    # ─────────────────────────────────────────────────────────────────────────
+
+    NotificationEvent:
+      description: |
+        Union of all valid notification event groups at the callback endpoint.
+      oneOf:
+        - $ref: "#/components/schemas/ApiNotificationEvent"
+        - $ref: "#/components/schemas/SubscriptionLifecycleEvent"
 
     # ---------- Subscription schemas ----------
     Subscription:
@@ -427,15 +727,19 @@ components:
         sink:
           type: string
           format: uri
+          maxLength: 2048
+          pattern: ^https:\/\/.+$
           description: The address to which events shall be delivered.
           example: "https://endpoint.example.com/sink"
         types:
           description: Event types eligible to be delivered.
           type: array
+          minItems: 1
+          maxItems: 1
           items:
             type: string
           example:
-            - IMEIBIND
+            - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
         config:
           $ref: "#/components/schemas/Config"
         id:
@@ -471,6 +775,21 @@ components:
           NATS: "#/components/schemas/NATSSubscriptionResponse"
           KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
 
+    SubscriptionAsync:
+      description: Response for a subscription request managed asynchronously
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          $ref: "#/components/schemas/SubscriptionId"
+
+    SubscriptionId:
+      type: string
+      maxLength: 256
+      description: The unique identifier of the subscription
+      example: "1119920371"
+
     SubscribeFraudPreventionResponseAsync:
       description: Response for an asynchronous subscription creation.
       type: object
@@ -499,12 +818,14 @@ components:
           minItems: 1
           maxItems: 1
           items:
-            $ref: "#/components/schemas/SubscriptionType"
+            $ref: "#/components/schemas/ApiEventType"
         protocol:
           $ref: "#/components/schemas/Protocol"
         sink:
           type: string
           format: uri
+          maxLength: 2048
+          pattern: ^https:\/\/.+$
           description: The callback URL where notifications will be sent.
           example: "https://endpoint.example.com/sink"
         sinkCredential:
@@ -547,13 +868,6 @@ components:
       required:
         - device
 
-    SubscriptionType:
-      type: string
-      description: The type of event to subscribe to.
-      enum:
-        - AREALIMIT
-        - IMEIBIND
-
     Protocol:
       type: string
       enum: ["HTTP", "MQTT3", "MQTT5", "AMQP", "NATS", "KAFKA"]
@@ -570,13 +884,13 @@ components:
           enum:
             - PLAIN
             - ACCESSTOKEN
-            - REFRESHTOKEN
+            - PRIVATE_KEY_JWT
       discriminator:
         propertyName: credentialType
         mapping:
           PLAIN: "#/components/schemas/PlainCredential"
           ACCESSTOKEN: "#/components/schemas/AccessTokenCredential"
-          REFRESHTOKEN: "#/components/schemas/RefreshTokenCredential"
+          PRIVATE_KEY_JWT: "#/components/schemas/PrivateKeyJWTCredential"
       required:
         - credentialType
 
@@ -617,33 +931,11 @@ components:
             - accessTokenExpiresUtc
             - accessTokenType
 
-    RefreshTokenCredential:
+    PrivateKeyJWTCredential:
       type: object
-      description: Token credential with refresh capability.
+      description: Use PRIVATE_KEY_JWT to get an access token. The authorization server information needed for this type of sink credential (token endpoint, client ID, JWKS URL) is shared upfront between the client and the CAMARA entity. This type of credential is to be used by clients that have an authorization server.
       allOf:
         - $ref: "#/components/schemas/SinkCredential"
-        - type: object
-          properties:
-            accessToken:
-              type: string
-            accessTokenExpiresUtc:
-              type: string
-              format: date-time
-            accessTokenType:
-              type: string
-              enum:
-                - bearer
-            refreshToken:
-              type: string
-            refreshTokenEndpoint:
-              type: string
-              format: uri
-          required:
-            - accessToken
-            - accessTokenExpiresUtc
-            - accessTokenType
-            - refreshToken
-            - refreshTokenEndpoint
 
     # ---------- Device identification (same as main API) ----------
     Device:
@@ -787,6 +1079,182 @@ components:
         message:
           type: string
 
+    # ---------- Protocol-specific subscription schemas ----------
+    HTTPSubscriptionRequest:
+      description: Subscription request for HTTP-based event delivery.
+      allOf:
+        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/HTTPSettings"
+
+    HTTPSubscriptionResponse:
+      description: Subscription resource returned for HTTP-based event delivery.
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/HTTPSettings"
+
+    HTTPSettings:
+      type: object
+      description: HTTP protocol settings for event delivery.
+      properties:
+        headers:
+          type: object
+          description: |-
+            A set of key/value pairs that is copied into the HTTP request as custom headers.
+          additionalProperties:
+            type: string
+            maxLength: 512
+        method:
+          type: string
+          description: The HTTP method to use for sending the message.
+          enum:
+            - POST
+
+    # Other protocol schemas (MQTT, AMQP, etc.) would be defined here if needed
+    MQTTSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/MQTTSettings"
+
+    MQTTSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/MQTTSettings"
+
+    MQTTSettings:
+      type: object
+      properties:
+        topicName:
+          type: string
+          maxLength: 256
+          description: MQTT topic name
+        qos:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2
+          description: Quality of Service level (0, 1, or 2)
+        retain:
+          type: boolean
+        expiry:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2147483647
+          description: Message expiry interval in seconds
+        userProperties:
+          type: object
+      required:
+        - topicName
+
+    AMQPSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/AMQPSettings"
+
+    AMQPSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/AMQPSettings"
+
+    AMQPSettings:
+      type: object
+      properties:
+        address:
+          type: string
+          maxLength: 512
+        linkName:
+          type: string
+          maxLength: 256
+        senderSettlementMode:
+          type: string
+          enum: ["settled", "unsettled"]
+        linkProperties:
+          type: object
+          additionalProperties:
+            type: string
+            maxLength: 1024
+
+    ApacheKafkaSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/ApacheKafkaSettings"
+
+    ApacheKafkaSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/ApacheKafkaSettings"
+
+    ApacheKafkaSettings:
+      type: object
+      properties:
+        topicName:
+          type: string
+          maxLength: 249
+        partitionKeyExtractor:
+          type: string
+          maxLength: 512
+        clientId:
+          type: string
+          maxLength: 256
+        ackMode:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2
+          description: Acknowledgment mode (0=no ack, 1=leader ack, 2=all replicas ack)
+      required:
+        - topicName
+
+    NATSSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/NATSSettings"
+
+    NATSSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/NATSSettings"
+
+    NATSSettings:
+      type: object
+      properties:
+        subject:
+          type: string
+          maxLength: 256
+          description: NATS subject
+      required:
+        - subject
+
   # ---------- Responses ----------
   responses:
     SubscribeBadRequest400:
@@ -808,6 +1276,9 @@ components:
                     enum:
                       - INVALID_ARGUMENT
                       - OUT_OF_RANGE
+                      - INVALID_PROTOCOL
+                      - INVALID_CREDENTIAL
+                      - INVALID_SINK
           examples:
             Insufficient Device Parameters:
               description: Sufficient parameters must be provided to allow the target UE to be identified
@@ -820,72 +1291,16 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: "SubscriptionType must be specified"
-            Insufficient Sink Parameters:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Sink must be specified"
-            Insufficient Protocol Parameters:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Protocol must be specified"
-            Inconsistent Device Properties:
-              description: Device parameters provided identify different devices
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Multiple inconsistent device parameters specified"
-            Invalid Network Access Identifier:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid format: networkAccessIdentifier"
-            Invalid Phone Number:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid format: phoneNumber"
-            Invalid IPv4 Address:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid format: ipv4Address"
-            Invalid IPv6 Address:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid format: ipv6Address"
-            Invalid Port Value:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid value: ipv4Address.publicPort"
-            Invalid SubscriptionType Value:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "The value of SubscriptionType can only be IMEIBIND,AREALIMIT"
-            Invalid Protocol Value:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "The value of Protocol can only be HTTP, MQTT3, MQTT5, AMQP, NATS, KAFKA"
             Invalid Sink Value:
               value:
                 status: 400
-                code: INVALID_ARGUMENT
+                code: INVALID_SINK
                 message: "The sink field must be an accessible client address in order to notify the other end when an event occurs"
-            Invalid SinkCredential Value:
+            Invalid Protocol Value:
               value:
                 status: 400
-                code: INVALID_ARGUMENT
-                message: "The value of SinkCredential can only be PLAIN,ACCESSTOKEN or REFRESHTOKEN"
-            Out of range SubscriptionMaxEvents Value:
-              value:
-                status: 400
-                code: OUT_OF_RANGE
-                message: "The value of SubscriptionMaxEvents out of range"
+                code: INVALID_PROTOCOL
+                message: "The value of Protocol can only be HTTP, MQTT3, MQTT5, AMQP, NATS, KAFKA"
 
     CallbackBadRequest400:
       description: Bad Request
@@ -926,53 +1341,6 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: "Data must be specified"
-            Insufficient Device Parameters:
-              description: Sufficient parameters must be provided to allow the target UE to be identified
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified"
-            Insufficient SubscriptionId Parameters:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "SubscriptionId must be specified"
-            Inconsistent Device Properties:
-              description: Device parameters provided identify different devices
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Multiple inconsistent device parameters specified"
-            Invalid Network Access Identifier:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid format: networkAccessIdentifier"
-            Invalid Phone Number:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid format: phoneNumber"
-            Invalid IPv4 Address:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid format: ipv4Address"
-            Invalid IPv6 Address:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid format: ipv6Address"
-            Invalid Port Value:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Invalid value: ipv4Address.publicPort"
-            Invalid Type Value:
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "The value of type can only be IMEI_CHANGE,AREA_CHANGE"
 
     Generic400:
       description: Bad Request
@@ -1114,18 +1482,6 @@ components:
                 status: 422
                 code: IDENTIFIER_MISMATCH
                 message: Provided identifiers are not consistent.
-            Unsupported Identifier:
-              description: None of the provided identifiers is supported by the implementation
-              value:
-                status: 422
-                code: UNSUPPORTED_IDENTIFIER
-                message: None of the provided identifiers is supported by the implementation.
-            Unnecessary Identifier:
-              description: An explicit identifier has been provided for the device when this is already identified by the access token
-              value:
-                status: 422
-                code: UNNECESSARY_IDENTIFIER
-                message: An explicit identifier has been provided for the device when this is already identified by the access token
             Missing Identifier:
               description: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
               value:
