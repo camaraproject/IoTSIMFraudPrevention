@@ -59,7 +59,7 @@ paths:
         - Bind sim card fraud prevention
       summary: Bind device IMEI or area restrictions
       description: Associate a SIM card with a specific IMEI or restrict it to a geographic area.
-      operationId: BindDeviceImei
+      operationId: bindDeviceImei
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       requestBody:
@@ -147,7 +147,7 @@ paths:
         - Unbind sim card fraud prevention
       summary: Unbind device IMEI or area restrictions
       description: Remove an existing IMEI binding or area restriction from a device.
-      operationId: UnBindDeviceImei
+      operationId: unBindDeviceImei
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       requestBody:
@@ -349,7 +349,7 @@ components:
       type: string
       description: Correlation id for the request
       example: "123e4567-e89b-12d3-a456-426614174000"
-      pattern: ^[a-zA-Z0-9-]{0,55}$
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
 
     # ---------- Bind / Unbind / Query common schemas ----------
     Device:
