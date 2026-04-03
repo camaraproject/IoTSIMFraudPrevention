@@ -898,7 +898,6 @@ components:
                   code:
                     enum:
                       - UNAUTHENTICATED
-                      - AUTHENTICATION_REQUIRED
           examples:
             GENERIC_401_UNAUTHENTICATED:
               description: Request cannot be authenticated
@@ -906,12 +905,6 @@ components:
                 status: 401
                 code: UNAUTHENTICATED
                 message: Request not authenticated due to missing, invalid, or expired credentials.
-            GENERIC_401_AUTHENTICATION_REQUIRED:
-              description: New authentication is needed, authentication is no longer valid
-              value:
-                status: 401
-                code: AUTHENTICATION_REQUIRED
-                message: New authentication is required.
 
     Generic403:
       description: Forbidden
@@ -1006,7 +999,7 @@ components:
               value:
                 status: 422
                 code: MISSING_IDENTIFIER
-                message: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
+                message: The device cannot be identified.
             Unnecessary Unbind BINDIMEI:
               description: The IMEI of the current device has been unbound, there is no need to unbind it again
               value:
@@ -1060,7 +1053,7 @@ components:
               value:
                 status: 422
                 code: MISSING_IDENTIFIER
-                message: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
+                message: The device cannot be identified.
             Unnecessary Unbind BINDIMEI:
               description: The IMEI of the current device has been unbound, there is no need to unbind it again
               value:
@@ -1112,7 +1105,7 @@ components:
               value:
                 status: 422
                 code: MISSING_IDENTIFIER
-                message: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
+                message: The device cannot be identified.
 
     Generic429:
       description: Too Many Requests
