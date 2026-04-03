@@ -1471,17 +1471,10 @@ components:
                       - 422
                   code:
                     enum:
-                      - IDENTIFIER_MISMATCH
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
           examples:
-            Identifiers Do Not Match:
-              description: Multiple identifiers provided which do not all identify the same device
-              value:
-                status: 422
-                code: IDENTIFIER_MISMATCH
-                message: Provided identifiers are not consistent.
             Missing Identifier:
               description: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
               value:
