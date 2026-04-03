@@ -42,7 +42,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.6
+  x-camara-commonalities: 0.7.0
 externalDocs:
   description: CAMARA API Design Guidelines
   url: https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design/API-design.md
@@ -59,7 +59,7 @@ paths:
         - Bind sim card fraud prevention
       summary: Bind device IMEI or area restrictions
       description: Associate a SIM card with a specific IMEI or restrict it to a geographic area.
-      operationId: BindDeviceImei
+      operationId: bindDeviceImei
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       requestBody:
@@ -147,7 +147,7 @@ paths:
         - Unbind sim card fraud prevention
       summary: Unbind device IMEI or area restrictions
       description: Remove an existing IMEI binding or area restriction from a device.
-      operationId: UnBindDeviceImei
+      operationId: unBindDeviceImei
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       requestBody:
@@ -349,7 +349,7 @@ components:
       type: string
       description: Correlation id for the request
       example: "123e4567-e89b-12d3-a456-426614174000"
-      pattern: ^[a-zA-Z0-9-]{0,55}$
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
 
     # ---------- Bind / Unbind / Query common schemas ----------
     Device:
@@ -898,7 +898,6 @@ components:
                   code:
                     enum:
                       - UNAUTHENTICATED
-                      - AUTHENTICATION_REQUIRED
           examples:
             GENERIC_401_UNAUTHENTICATED:
               description: Request cannot be authenticated
@@ -906,12 +905,6 @@ components:
                 status: 401
                 code: UNAUTHENTICATED
                 message: Request not authenticated due to missing, invalid, or expired credentials.
-            GENERIC_401_AUTHENTICATION_REQUIRED:
-              description: New authentication is needed, authentication is no longer valid
-              value:
-                status: 401
-                code: AUTHENTICATION_REQUIRED
-                message: New authentication is required.
 
     Generic403:
       description: Forbidden
@@ -983,19 +976,12 @@ components:
                       - 422
                   code:
                     enum:
-                      - IDENTIFIER_MISMATCH
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
                       - UNNECESSARY_UNBIND_IMEI
                       - UNNECESSARY_UNBIND_AREALIMIT
           examples:
-            Identifiers Do Not Match:
-              description: Multiple identifiers provided which do not all identify the same device
-              value:
-                status: 422
-                code: IDENTIFIER_MISMATCH
-                message: Provided identifiers are not consistent.
             Unsupported Identifier:
               description: None of the provided identifiers is supported by the implementation
               value:
@@ -1013,7 +999,7 @@ components:
               value:
                 status: 422
                 code: MISSING_IDENTIFIER
-                message: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
+                message: The device cannot be identified.
             Unnecessary Unbind BINDIMEI:
               description: The IMEI of the current device has been unbound, there is no need to unbind it again
               value:
@@ -1044,19 +1030,12 @@ components:
                       - 422
                   code:
                     enum:
-                      - IDENTIFIER_MISMATCH
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
                       - UNNECESSARY_UNBIND_IMEI
                       - UNNECESSARY_UNBIND_AREALIMIT
           examples:
-            Identifiers Do Not Match:
-              description: Multiple identifiers provided which do not all identify the same device
-              value:
-                status: 422
-                code: IDENTIFIER_MISMATCH
-                message: Provided identifiers are not consistent.
             Unsupported Identifier:
               description: None of the provided identifiers is supported by the implementation
               value:
@@ -1074,7 +1053,7 @@ components:
               value:
                 status: 422
                 code: MISSING_IDENTIFIER
-                message: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
+                message: The device cannot be identified.
             Unnecessary Unbind BINDIMEI:
               description: The IMEI of the current device has been unbound, there is no need to unbind it again
               value:
@@ -1105,17 +1084,10 @@ components:
                       - 422
                   code:
                     enum:
-                      - IDENTIFIER_MISMATCH
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
           examples:
-            Identifiers Do Not Match:
-              description: Multiple identifiers provided which do not all identify the same device
-              value:
-                status: 422
-                code: IDENTIFIER_MISMATCH
-                message: Provided identifiers are not consistent.
             Unsupported Identifier:
               description: None of the provided identifiers is supported by the implementation
               value:
@@ -1133,7 +1105,7 @@ components:
               value:
                 status: 422
                 code: MISSING_IDENTIFIER
-                message: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
+                message: The device cannot be identified.
 
     Generic429:
       description: Too Many Requests

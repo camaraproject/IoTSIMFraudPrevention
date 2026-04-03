@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
+Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation bindDeviceImei
 
     # Input to be provided by the implementation to the tester
     #
@@ -13,7 +13,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
     #
     # References to OAS spec schemas refer to schemas specified in iot-sim-fraud-prevention.yaml
 
-  Background: Common BindDeviceImei setup
+  Background: Common bindDeviceImei setup
     Given an environment at "apiRoot"
     And the resource "/iot-sim-fraud-prevention/vwip/bind"
     And the header "Content-Type" is set to "application/json"
@@ -26,22 +26,22 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Successfully bind IMEI to device
     Given a valid bind request body with bindType "IMEIBIND"
     And the request body includes device identifier(s) supported by the implementation
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the schema defined by "#/components/schemas/BindDeviceImeiResponse"
+    And the response body complies with the schema defined by "#/components/schemas/bindDeviceImeiResponse"
     And the response property "$.bound" is "TRUE"
 
   @iot_sim_fraud_prevention_bind_success_arealimit
   Scenario: Successfully bind area restriction to device
     Given a valid bind request body with bindType "AREALIMIT"
     And the request body includes device identifier(s) supported by the implementation
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the schema defined by "#/components/schemas/BindDeviceImeiResponse"
+    And the response body complies with the schema defined by "#/components/schemas/bindDeviceImeiResponse"
     And the response property "$.bound" is "TRUE"
 
 ############### Error response scenarios ###########################
@@ -50,7 +50,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation with missing bindType parameter
     Given the request body does not include property "$.bindType"
     And the request body includes valid device identifier(s)
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -60,7 +60,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation with invalid bindType value
     Given the request body property "$.bindType" is set to an invalid value
     And the request body includes valid device identifier(s)
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -70,7 +70,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation with missing device identifiers
     Given the request body property "$.device" is not included
     And the header "Authorization" is set to a valid access token which does not identify a single device
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -80,7 +80,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation with expired access token
     Given the header "Authorization" is set to an expired access token
     And a valid bind request body
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -90,7 +90,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation without required scope
     Given the header "Authorization" is set to a valid access token without scope "iot-sim-fraud-prevention:bind"
     And a valid bind request body
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
@@ -100,7 +100,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation for unknown device
     Given the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "$.device" includes identifiers that cannot be matched to a registered device
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
@@ -110,7 +110,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation with unnecessary device identifier when using 3-legged token
     Given the header "Authorization" is set to a valid access token identifying a device
     And the request body property "$.device" is set to a valid device
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
@@ -120,7 +120,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation with missing device identifier when using 2-legged token
     Given the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "$.device" is not included
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
@@ -131,7 +131,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
     Given that some types of device identifiers are not supported by the implementation
     And the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "$.device" only includes device identifiers not supported by the implementation
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
@@ -141,7 +141,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation BindDeviceImei
   Scenario: Bind operation exceeding quota limit
     Given the API consumer has exceeded their quota limit
     And a valid bind request body
-    When the HTTP POST request "BindDeviceImei" is sent
+    When the HTTP POST request "bindDeviceImei" is sent
     Then the response status code is 429
     And the response property "$.status" is 429
     And the response property "$.code" is "QUOTA_EXCEEDED"
