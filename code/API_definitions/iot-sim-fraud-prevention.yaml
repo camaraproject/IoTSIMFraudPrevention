@@ -983,19 +983,12 @@ components:
                       - 422
                   code:
                     enum:
-                      - IDENTIFIER_MISMATCH
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
                       - UNNECESSARY_UNBIND_IMEI
                       - UNNECESSARY_UNBIND_AREALIMIT
           examples:
-            Identifiers Do Not Match:
-              description: Multiple identifiers provided which do not all identify the same device
-              value:
-                status: 422
-                code: IDENTIFIER_MISMATCH
-                message: Provided identifiers are not consistent.
             Unsupported Identifier:
               description: None of the provided identifiers is supported by the implementation
               value:
@@ -1044,19 +1037,12 @@ components:
                       - 422
                   code:
                     enum:
-                      - IDENTIFIER_MISMATCH
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
                       - UNNECESSARY_UNBIND_IMEI
                       - UNNECESSARY_UNBIND_AREALIMIT
           examples:
-            Identifiers Do Not Match:
-              description: Multiple identifiers provided which do not all identify the same device
-              value:
-                status: 422
-                code: IDENTIFIER_MISMATCH
-                message: Provided identifiers are not consistent.
             Unsupported Identifier:
               description: None of the provided identifiers is supported by the implementation
               value:
@@ -1105,17 +1091,10 @@ components:
                       - 422
                   code:
                     enum:
-                      - IDENTIFIER_MISMATCH
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
           examples:
-            Identifiers Do Not Match:
-              description: Multiple identifiers provided which do not all identify the same device
-              value:
-                status: 422
-                code: IDENTIFIER_MISMATCH
-                message: Provided identifiers are not consistent.
             Unsupported Identifier:
               description: None of the provided identifiers is supported by the implementation
               value:
