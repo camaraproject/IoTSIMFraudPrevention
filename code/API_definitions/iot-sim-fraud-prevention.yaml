@@ -119,12 +119,12 @@ paths:
                   summary: BOUND SUCCESSFULLY
                   description: The result of binding the device is successful
                   value:
-                    bound: "TRUE"
+                    bound: true
                 BIND_FAIL:
                   summary: BOUND FAILED
                   description: The result of binding the device is a failure
                   value:
-                    bound: "FALSE"
+                    bound: false
         "400":
           $ref: "#/components/responses/BindBadRequest400"
         "401":
@@ -207,12 +207,12 @@ paths:
                   summary: UNBOUND SUCCESSFULLY
                   description: The result of unbinding the device is successful
                   value:
-                    unbound: "TRUE"
+                    unbound: true
                 UNBIND_FAIL:
                   summary: UNBOUND FAILED
                   description: The result of unbinding the device is a failure
                   value:
-                    unbound: "FALSE"
+                    unbound: false
         "400":
           $ref: "#/components/responses/UnbindBadRequest400"
         "401":
@@ -448,9 +448,9 @@ components:
         - bound
       properties:
         bound:
-          type: string
-          description: "TRUE if binding succeeded, FALSE otherwise."
-          example: "TRUE"
+          type: boolean
+          description: "true if binding succeeded, false otherwise."
+          example: true
 
     # ---------- Unbind ----------
     UnbindType:
@@ -478,9 +478,9 @@ components:
         - unbound
       properties:
         unbound:
-          type: string
-          description: "TRUE if unbinding succeeded, FALSE otherwise."
-          example: "TRUE"
+          type: boolean
+          description: "true if unbinding succeeded, false otherwise."
+          example: true
 
     # ---------- Query ----------
     QueryType:
