@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention API wip - Operation bindDeviceImei
+Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
 
     # Input to be provided by the implementation to the tester
     #

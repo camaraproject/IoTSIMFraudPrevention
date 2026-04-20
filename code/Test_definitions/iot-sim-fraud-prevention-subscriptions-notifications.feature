@@ -1,4 +1,4 @@
-Feature: IoT SIM Fraud Prevention Subscriptions - Notification Delivery
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Notification Delivery
 
   This feature tests the end‑to‑end delivery of notifications for the explicit subscriptions model.
   It assumes the existence of:

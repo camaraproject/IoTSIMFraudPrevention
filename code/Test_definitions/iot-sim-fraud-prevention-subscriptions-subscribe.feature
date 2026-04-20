@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions - Operation subscribeFraudPrevention
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscribeFraudPrevention
 
     # Input to be provided by the implementation to the tester
     #
