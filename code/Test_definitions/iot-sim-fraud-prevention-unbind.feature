@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation unbindDeviceImei
+Feature: CAMARA IoT SIM Fraud Prevention API, v0.1.0-rc.1 - Operation unbindDeviceImei
 
     # Input to be provided by the implementation to the tester
     #
@@ -15,7 +15,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation unbindDeviceImei
 
   Background: Common unbindDeviceImei setup
     Given an environment at "apiRoot"
-    And the resource "/iot-sim-fraud-prevention/vwip/unbind"
+    And the resource "/iot-sim-fraud-prevention/v0.1rc1/unbind"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

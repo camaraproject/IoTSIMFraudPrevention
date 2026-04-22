@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscribeFraudPrevention
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, v0.1.0-rc.1 - Operation subscribeFraudPrevention
 
     # Input to be provided by the implementation to the tester
     #
@@ -16,7 +16,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
 
   Background: Common subscribeFraudPrevention setup
     Given an environment at "apiRoot"
-    And the resource "/iot-sim-fraud-prevention-subscriptions/vwip/subscriptions"
+    And the resource "/iot-sim-fraud-prevention-subscriptions/v0.1rc1/subscriptions"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:subscribe"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
