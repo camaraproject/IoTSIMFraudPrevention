@@ -31,13 +31,17 @@ Sandbox API Repository to describe, develop, document, and test the IoT SIM Frau
 > [!NOTE]
 > This repository has only pre-release versions available yet. Pre-releases are for testing and may change before public release.
 
-* The latest pre-release is [r1.1](https://github.com/camaraproject/IoTSIMFraudPrevention/releases/tag/r1.1) (release candidate), with the following API versions:
+* The latest pre-release is [r1.1](https://github.com/camaraproject/IoTSIMFraudPrevention/releases) (release candidate), with the following API versions:
   * **iot-sim-fraud-prevention 0.1.0-rc.1**
-  [[YAML]](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/r1.1/code/API_definitions/iot-sim-fraud-prevention.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.1/code/API_definitions/iot-sim-fraud-prevention.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.1/code/API_definitions/iot-sim-fraud-prevention.yaml)
+  [[YAML]](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/main/code/API_definitions/iot-sim-fraud-prevention.yaml) 
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/main/code/API_definitions/iot-sim-fraud-prevention.yaml&nocors) 
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/main/code/API_definitions/iot-sim-fraud-prevention.yaml)
   * **iot-sim-fraud-prevention-subscriptions 0.1.0-rc.1**
-  [[YAML]](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/r1.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)
+  [[YAML]](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/main/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml) 
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/main/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml&nocors) 
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/main/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)
 
-* For changes see [CHANGELOG](https://github.com/camaraproject/IoTSIMFraudPrevention/tree/main/CHANGELOG)
+* For changes see [CHANGELOG](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/main/CHANGELOG.md)
 
 _The above section is automatically synchronized by CAMARA project-administration._
 <!-- CAMARA:RELEASE-INFO:END -->
