@@ -1,4 +1,4 @@
-Feature: IoT SIM Fraud Prevention Subscriptions - Callback Handling
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Callback Handling
 
     # This file tests the API consumer's callback endpoint.
     # It validates that the consumer correctly handles incoming notifications following CloudEvents specification.
