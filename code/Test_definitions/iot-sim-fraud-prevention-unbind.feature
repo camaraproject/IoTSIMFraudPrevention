@@ -32,7 +32,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation unbindDeviceImei
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the schema defined by "#/components/schemas/unbindDeviceImeiResponse"
-    And the response property "$.unbound" is "TRUE"
+    And the response property "$.unbound" is true
 
   @iot_sim_fraud_prevention_unbind_success_arealimit
   Scenario: Successfully unbind area restriction from device
@@ -44,7 +44,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation unbindDeviceImei
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the schema defined by "#/components/schemas/unbindDeviceImeiResponse"
-    And the response property "$.unbound" is "TRUE"
+    And the response property "$.unbound" is true
 
 ############### Error response scenarios ###########################
 
