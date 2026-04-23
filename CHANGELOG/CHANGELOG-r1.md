@@ -46,24 +46,6 @@ The API definition(s) are based on
   - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/main/code/API_definitions/iot-sim-fraud-prevention.yaml)
   - OpenAPI [YAML spec file](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/main/code/API_definitions/iot-sim-fraud-prevention.yaml)
 
-### Added
-* Initial API definition for device-card and device-area binding management
-* Risk control information query endpoints
-* Basic test definitions following CAMARA Testing Guidelines
-
-### Changed
-* Updated OperationId to follow CAMARA naming conventions
-* Changed bound type from string to boolean for better type safety
-* Updated URL paths to match CAMARA API design standards
-
-### Fixed
-* Fixed CloudEvents schema compliance issues
-* Aligned error responses with Commonalities r3.4 requirements
-* Fixed various documentation typos and formatting issues
-
-### Removed
-* Removed placeholder operations from initial draft
-
 ## iot-sim-fraud-prevention-subscriptions 0.1.0-rc.1
 
 **iot-sim-fraud-prevention-subscriptions 0.1.0-rc.1 is the companion API for subscription-based notifications.**
@@ -72,23 +54,5 @@ The API definition(s) are based on
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/main/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml&nocors)
   - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/main/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)
   - OpenAPI [YAML spec file](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/main/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)
-
-### Added
-* Subscription management endpoints for real-time fraud alerts
-* Webhook configuration and validation endpoints
-* Initial test definitions for subscription workflows
-
-### Changed
-* Renamed API file to standard naming convention
-* Updated event schema to comply with CloudEvents specification
-* Improved parameter descriptions and examples
-
-### Fixed
-* Fixed subscription ID format validation
-* Corrected webhook security scheme references
-* Fixed various schema validation errors
-
-### Removed
-* Removed experimental endpoints not ready for release candidate
 
 **Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/commits/r1.1
