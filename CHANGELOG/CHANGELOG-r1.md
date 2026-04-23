@@ -91,4 +91,4 @@ The API definition(s) are based on
 ### Removed
 * Removed experimental endpoints not ready for release candidate
 
-**Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/commits/main
+**Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/commits/r1.1
