@@ -2,7 +2,7 @@ repository:
   repository_name: IoTSIMFraudPrevention
   release_tag: r1.1
   release_type: pre-release-rc
-  release_date: null
+  release_date: '2026-04-27T01:17:02Z'
   src_commit_sha: b7773ee01b6fd233ad07897b227db0ca0347ae80
 apis:
 - api_name: iot-sim-fraud-prevention
