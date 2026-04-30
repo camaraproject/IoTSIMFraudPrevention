@@ -41,7 +41,7 @@ apis:
       - XunliYang
   - api_name: iot-sim-fraud-prevention-subscriptions
     target_api_version: 0.1.0
-    target_api_status: rc
+    target_api_status: public
     main_contacts:
       - chenfr2-ChinaTelecom
       - XunliYang
