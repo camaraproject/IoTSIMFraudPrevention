@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Notification Delivery
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, v0.1.0 - Notification Delivery
 
   This feature tests the end‑to‑end delivery of notifications for the explicit subscriptions model.
   It assumes the existence of:
@@ -8,7 +8,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Notification Deli
 
   Background: Common setup
     Given an environment at "apiRoot"
-    And the resource "/iot-sim-fraud-prevention-subscriptions/vwip/subscriptions"
+    And the resource "/iot-sim-fraud-prevention-subscriptions/v0.1/subscriptions"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:subscribe"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

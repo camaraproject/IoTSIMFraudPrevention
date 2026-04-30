@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
+Feature: CAMARA IoT SIM Fraud Prevention API, v0.1.0 - Operation bindDeviceImei
 
     # Input to be provided by the implementation to the tester
     #
@@ -15,7 +15,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
 
   Background: Common bindDeviceImei setup
     Given an environment at "apiRoot"
-    And the resource "/iot-sim-fraud-prevention/vwip/bind"
+    And the resource "/iot-sim-fraud-prevention/v0.1/bind"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

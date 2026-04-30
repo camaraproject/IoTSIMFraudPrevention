@@ -1,0 +1,16 @@
+repository:
+  repository_name: IoTSIMFraudPrevention
+  release_tag: r1.2
+  release_type: public-release
+  release_date: null
+  src_commit_sha: bfd4d4b7532b716687afc61452b37d98ea226fd6
+apis:
+- api_name: iot-sim-fraud-prevention
+  api_version: 0.1.0
+  api_title: IoT SIM Fraud Prevention
+- api_name: iot-sim-fraud-prevention-subscriptions
+  api_version: 0.1.0
+  api_title: IoT SIM Fraud Prevention Subscriptions
+dependencies:
+  commonalities_release: r3.4 (0.6.1)
+  identity_consent_management_release: r3.3 (0.4.0)
