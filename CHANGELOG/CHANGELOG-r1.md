@@ -75,7 +75,7 @@ The API definition(s) are based on
 
 ## iot-sim-fraud-prevention 0.1.0
 
-**iot-sim-fraud-prevention 0.1.0 is ...**
+**iot-sim-fraud-prevention 0.1.0 is the first initial public version of the IoT Sim Fraud Prevention API**.
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.2/code/API_definitions/iot-sim-fraud-prevention.yaml&nocors)
