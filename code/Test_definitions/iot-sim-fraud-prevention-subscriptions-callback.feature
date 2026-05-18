@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Callback Handling
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, v0.1.0 - Callback Handling
 
     # This file tests the API consumer's callback endpoint.
     # It validates that the consumer correctly handles incoming notifications following CloudEvents specification.
@@ -13,7 +13,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Callback Handling
 
   Background: Common IoT SIM Fraud Prevention Callbacks setup
     Given an environment at the callback sink URL
-    And the resource "/iot-sim-fraud-prevention-subscriptions/vwip/subscriptions"
+    And the resource "/iot-sim-fraud-prevention-subscriptions/v0.1/subscriptions"
     And the header "Content-Type" is set to "application/cloudevents+json"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
