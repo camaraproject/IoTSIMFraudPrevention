@@ -1,4 +1,11 @@
 openapi: 3.0.3
+tags:
+  - name: Bind sim card fraud prevention
+    description: Operations for binding SIM cards to devices or areas
+  - name: Unbind sim card fraud prevention
+    description: Operations for removing SIM card bindings or area restrictions
+  - name: Query card fraud prevention
+    description: Operations for querying current binding and restriction status
 info:
   title: IoT SIM Fraud Prevention
   description: |
