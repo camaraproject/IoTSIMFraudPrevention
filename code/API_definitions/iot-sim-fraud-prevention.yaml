@@ -44,8 +44,8 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   x-camara-commonalities: 0.7.0
 externalDocs:
-  description: CAMARA API Design Guidelines
-  url: https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design/API-design.md
+  description: Project repository and documentation
+  url: https://github.com/camaraproject/IoTSIMFraudPrevention
 servers:
   - url: "{apiRoot}/iot-sim-fraud-prevention/vwip"
     variables:
