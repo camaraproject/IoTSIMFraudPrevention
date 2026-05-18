@@ -50,6 +50,11 @@ servers:
       apiRoot:
         default: http://localhost:9091
         description: API root
+tags:
+  - name: Subscription sim card fraud prevention
+    description: Operations for creating fraud prevention event subscriptions
+  - name: Subscription management
+    description: Operations for managing existing subscriptions (list, retrieve, delete)
 paths:
   /subscriptions:
     post:

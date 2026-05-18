@@ -52,6 +52,13 @@ servers:
       apiRoot:
         default: http://localhost:9091
         description: API root
+tags:
+  - name: Bind sim card fraud prevention
+    description: Operations for binding SIM cards to devices or areas
+  - name: Unbind sim card fraud prevention
+    description: Operations for removing SIM card bindings or area restrictions
+  - name: Query card fraud prevention
+    description: Operations for querying current binding and restriction status
 paths:
   /bind:
     post:
