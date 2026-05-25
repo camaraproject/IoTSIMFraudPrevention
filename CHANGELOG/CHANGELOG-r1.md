@@ -88,19 +88,26 @@ The API definition(s) are based on
 
 ### Added
 
-* _To be filled during release review_
+* Initial API definition for IoT SIM Fraud Prevention
+* First draft of test definition following CAMARA Testing Guidelines
+* API documentation with inline examples and descriptions
 
 ### Changed
 
-* _To be filled during release review_
+* Updated API naming convention to follow CAMARA standards (IoTSIMFraudPrevention → iot-sim-fraud-prevention)
+* Updated OperationId and URL structure for consistency
+* Enhanced CloudEvents compliance for event notifications
+* Updated bound parameter type from string to boolean
 
 ### Fixed
 
-* _To be filled during release review_
+* Fixed boolean type definition for bound parameter (string → boolean)
+* Aligned .feature Feature line with CAMARA Testing Guidelines
+* Corrected API documentation links and references
 
 ### Removed
 
-* _To be filled during release review_
+* Removed placeholder README.MD file from API_definitions directory
 
 ## iot-sim-fraud-prevention-subscriptions 0.1.0
 
@@ -113,19 +120,25 @@ The API definition(s) are based on
 
 ### Added
 
-* _To be filled during release review_
+* Initial API definition for IoT SIM Fraud Prevention Subscriptions
+* Event subscription endpoints for fraud detection notifications
+* Tags and metadata for API categorization and discovery
+* CloudEvents-compliant notification payload structure
 
 ### Changed
 
-* _To be filled during release review_
+* Renamed API definition file to follow CAMARA naming conventions
+* Updated API structure to align with Commonalities 0.6.1 and Identity and Consent Management 0.4.0
+* Updated API structure to align with Commonalities 0.6.1 and Identity and Consent Management 0.4.0
 
 ### Fixed
 
-* _To be filled during release review_
+* Corrected API documentation links and references
+* Fixed YAML syntax and formatting issues in the specification file
 
 ### Removed
 
-* _To be filled during release review_
+* Removed redundant configuration files and placeholders
 
 **Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/commits/r1.2
 
