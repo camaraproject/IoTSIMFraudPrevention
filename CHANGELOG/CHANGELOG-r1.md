@@ -129,7 +129,6 @@ The API definition(s) are based on
 
 * Renamed API definition file to follow CAMARA naming conventions
 * Updated API structure to align with Commonalities 0.6.1 and Identity and Consent Management 0.4.0
-* Updated API structure to align with Commonalities 0.6.1 and Identity and Consent Management 0.4.0
 
 ### Fixed
 
