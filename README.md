@@ -15,11 +15,28 @@ Sandbox API Repository to describe, develop, document, and test the IoT SIM Frau
 
 ## Scope
 
-* Service API(s) “IoTSIMFraudPrevention” (see APIBacklog.md) 
-* The API(s) provide(s) the API consumer with the ability to:  
-  * manage device-card binding, includes bindng/unbinding imei to the card, when the imei is not match with the bind information, operator will block the network, when the imei is match, resume the network.. 
-  * manage device-area binding, includes binding/unbinding area to the card, when the area is not match with the bind information, operator will block the network, when the area is match, resume the network.
-  * query risk control information related to IoT SIM cards, includes machine-card binding and region restriction.
+This repository contains two related APIs:
+
+### 1. IoT SIM Fraud Prevention API (iot-sim-fraud-prevention)
+* Provides real-time fraud detection capabilities for IoT SIM cards
+* Allows querying fraud status and risk assessment for specific SIMs
+* Manages device-card binding (IMEI binding/unbinding)
+* Manages device-area binding (geographic restrictions)
+* Queries risk control information related to IoT SIM cards
+
+### 2. IoT SIM Fraud Prevention Subscriptions API (iot-sim-fraud-prevention-subscriptions)
+* Enables subscription-based notifications for fraud events
+* Supports webhook callbacks when fraud is detected on monitored SIMs
+* Provides event-driven capabilities for real-time fraud monitoring
+* Supports multiple transport protocols (MQTT, AMQP, Apache Kafka, NATS)
+* Complements the main API with asynchronous notification capabilities
+
+**Key Capabilities:**
+* **Device-Card Binding**: Bind/unbind IMEI to SIM cards. When IMEI doesn't match binding information, operator blocks network access. When IMEI matches, network access is resumed.
+* **Device-Area Binding**: Bind/unbind geographic areas to SIM cards. When device location doesn't match binding information, operator blocks network access. When location matches, network access is resumed.
+* **Risk Control Query**: Query risk control information including machine-card binding status and region restrictions.
+* **Event Notifications**: Subscribe to fraud detection events via multiple messaging protocols.
+
 * Describe, develop, document, and test the API(s)
 * Started: March 2025
 
