@@ -15,11 +15,28 @@ Sandbox API Repository to describe, develop, document, and test the IoT SIM Frau
 
 ## Scope
 
-* Service API(s) “IoTSIMFraudPrevention” (see APIBacklog.md) 
-* The API(s) provide(s) the API consumer with the ability to:  
-  * manage device-card binding, includes bindng/unbinding imei to the card, when the imei is not match with the bind information, operator will block the network, when the imei is match, resume the network.. 
-  * manage device-area binding, includes binding/unbinding area to the card, when the area is not match with the bind information, operator will block the network, when the area is match, resume the network.
-  * query risk control information related to IoT SIM cards, includes machine-card binding and region restriction.
+This repository contains two related APIs:
+
+### 1. IoT SIM Fraud Prevention API (iot-sim-fraud-prevention)
+* Provides real-time fraud detection capabilities for IoT SIM cards
+* Allows querying fraud status and risk assessment for specific SIMs
+* Manages device-card binding (IMEI binding/unbinding)
+* Manages device-area binding (geographic restrictions)
+* Queries risk control information related to IoT SIM cards
+
+### 2. IoT SIM Fraud Prevention Subscriptions API (iot-sim-fraud-prevention-subscriptions)
+* Enables subscription-based notifications for fraud events
+* Supports webhook callbacks when fraud is detected on monitored SIMs
+* Provides event-driven capabilities for real-time fraud monitoring
+* Supports multiple transport protocols (MQTT, AMQP, Apache Kafka, NATS)
+* Complements the main API with asynchronous notification capabilities
+
+**Key Capabilities:**
+* **Device-Card Binding**: Bind/unbind IMEI to SIM cards. When IMEI doesn't match binding information, operator blocks network access. When IMEI matches, network access is resumed.
+* **Device-Area Binding**: Bind/unbind geographic areas to SIM cards. When device location doesn't match binding information, operator blocks network access. When location matches, network access is resumed.
+* **Risk Control Query**: Query risk control information including machine-card binding status and region restrictions.
+* **Event Notifications**: Subscribe to fraud detection events via multiple messaging protocols.
+
 * Describe, develop, document, and test the API(s)
 * Started: March 2025
 
@@ -29,14 +46,16 @@ Sandbox API Repository to describe, develop, document, and test the IoT SIM Frau
 ## Release Information
 
 > [!NOTE]
-> This repository has only pre-release versions available yet. Pre-releases are for testing and may change before public release.
+> Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
-* The latest pre-release is [r1.1](https://github.com/camaraproject/IoTSIMFraudPrevention/releases/tag/r1.1) (release candidate), with the following API versions:
-  * **iot-sim-fraud-prevention 0.1.0-rc.1**
-  [[YAML]](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/r1.1/code/API_definitions/iot-sim-fraud-prevention.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.1/code/API_definitions/iot-sim-fraud-prevention.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.1/code/API_definitions/iot-sim-fraud-prevention.yaml)
-  * **iot-sim-fraud-prevention-subscriptions 0.1.0-rc.1**
-  [[YAML]](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/r1.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)
+* The latest public release is [r1.2](https://github.com/camaraproject/IoTSIMFraudPrevention/releases/tag/r1.2), with the following API versions:
+  * **iot-sim-fraud-prevention 0.1.0**
+  [[YAML]](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/r1.2/code/API_definitions/iot-sim-fraud-prevention.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.2/code/API_definitions/iot-sim-fraud-prevention.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.2/code/API_definitions/iot-sim-fraud-prevention.yaml)
+  * **iot-sim-fraud-prevention-subscriptions 0.1.0**
+  [[YAML]](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/r1.2/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.2/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r1.2/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)
 
+* The latest public release is always available here: https://github.com/camaraproject/IoTSIMFraudPrevention/releases/latest
+* Other releases of this repository are available in https://github.com/camaraproject/IoTSIMFraudPrevention/releases
 * For changes see [CHANGELOG](https://github.com/camaraproject/IoTSIMFraudPrevention/tree/main/CHANGELOG)
 
 _The above section is automatically synchronized by CAMARA project-administration._
