@@ -343,7 +343,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: "{apiRoot}/iot-sim-fraud-prevention/oauth/v3/token"
+          tokenUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention/oauth/v3/token"
           scopes:
             "iot-sim-fraud-prevention:bind": Bind device IMEI or area restriction
             "iot-sim-fraud-prevention:unbind": Unbind device IMEI or area restriction
