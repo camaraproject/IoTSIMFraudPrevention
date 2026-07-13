@@ -48,7 +48,7 @@ servers:
   - url: "{apiRoot}/iot-sim-fraud-prevention-subscriptions/vwip"
     variables:
       apiRoot:
-        default: http://localhost:9091
+        default: http://localhost:4410
         description: API root
 tags:
   - name: Subscription sim card fraud prevention
@@ -398,9 +398,18 @@ components:
         Bearer token authentication for the callback endpoint. The token format is determined
         by `sinkCredential.credentialType` in the subscription request.
     openId:
-      description: OpenID Connect authentication
-      type: openIdConnect
-      openIdConnectUrl: https://example.org/.well-known/openid-configuration
+      description: |
+        OAuth2.0 Client Credentials authentication.
+        Obtain a token via POST /iot-sim-fraud-prevention-subscriptions/oauth/v3/token
+        with grant_type=client_credentials and Basic Authorization header.
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: "{apiRoot}/iot-sim-fraud-prevention-subscriptions/oauth/v3/token"
+          scopes:
+            "iot-sim-fraud-prevention-subscriptions:subscribe": Create event subscriptions
+            "iot-sim-fraud-prevention-subscriptions:read": Read subscription details
+            "iot-sim-fraud-prevention-subscriptions:delete": Delete subscriptions
   parameters:
     x-correlator:
       name: x-correlator
@@ -503,8 +512,8 @@ components:
       discriminator:
         propertyName: "type"
         mapping:
-          org.camaraproject.iot-sim-fraud-prevention.v0.imei-change: "#/components/schemas/ImeiChangeEvent"
-          org.camaraproject.iot-sim-fraud-prevention.v0.area-change: "#/components/schemas/AreaChangeEvent"
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change: "#/components/schemas/ImeiChangeEvent"
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change: "#/components/schemas/AreaChangeEvent"
 
     ApiEventType:
       type: string
@@ -513,8 +522,8 @@ components:
         The reverse-DNS prefix `org.camaraproject.iot-sim-fraud-prevention` makes each value
         globally unique.
       enum:
-        - org.camaraproject.iot-sim-fraud-prevention.v0.imei-change
-        - org.camaraproject.iot-sim-fraud-prevention.v0.area-change
+        - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change
+        - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change
 
     ImeiChangeEvent:
       description: Event structure for IMEI change notification
@@ -585,18 +594,18 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          org.camaraproject.iot-sim-fraud-prevention.v0.subscription-started: "#/components/schemas/EventSubscriptionStarted"
-          org.camaraproject.iot-sim-fraud-prevention.v0.subscription-updated: "#/components/schemas/EventSubscriptionUpdated"
-          org.camaraproject.iot-sim-fraud-prevention.v0.subscription-ended: "#/components/schemas/EventSubscriptionEnded"
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-started: "#/components/schemas/EventSubscriptionStarted"
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-updated: "#/components/schemas/EventSubscriptionUpdated"
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-ended: "#/components/schemas/EventSubscriptionEnded"
 
     SubscriptionLifecycleEventType:
       type: string
       description: |
         Enum of subscription lifecycle event type strings.
       enum:
-        - org.camaraproject.iot-sim-fraud-prevention.v0.subscription-started
-        - org.camaraproject.iot-sim-fraud-prevention.v0.subscription-updated
-        - org.camaraproject.iot-sim-fraud-prevention.v0.subscription-ended
+        - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-started
+        - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-updated
+        - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-ended
 
     EventSubscriptionStarted:
       description: event structure for event subscription started
