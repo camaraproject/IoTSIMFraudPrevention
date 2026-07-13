@@ -48,7 +48,7 @@ servers:
   - url: "{apiRoot}/iot-sim-fraud-prevention-subscriptions/vwip"
     variables:
       apiRoot:
-        default: http://localhost:4410
+        default: https://47.251.92.242:38088
         description: API root
 tags:
   - name: Subscription sim card fraud prevention
@@ -87,7 +87,7 @@ paths:
                           publicAddress: "203.0.113.0"
                           publicPort: 59765
                   types:
-                    - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                    - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
                   sink: "https://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
                   sinkCredential:
@@ -107,7 +107,7 @@ paths:
                       device:
                         ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
                   types:
-                    - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                    - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
                   sink: "https://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
                   sinkCredential:
@@ -127,7 +127,7 @@ paths:
                       device:
                         phoneNumber: "+123456789"
                   types:
-                    - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                    - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
                   sink: "https://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
                   sinkCredential:
@@ -147,7 +147,7 @@ paths:
                       device:
                         networkAccessIdentifier: "123456789@domain.com"
                   types:
-                    - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                    - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
                   sink: "https://notificationSendServer12.supertelco.com"
                   protocol: "HTTP"
                   sinkCredential:
@@ -179,7 +179,7 @@ paths:
                           specversion: "1.0"
                           source: "https://api.example.com"
                           id: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
-                          type: "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+                          type: "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
                           datacontenttype: "application/json"
                           time: "2023-03-22T05:40:23.682Z"
                           data:
@@ -193,7 +193,7 @@ paths:
                           specversion: "1.0"
                           source: "https://api.example.com"
                           id: "b4333c46-49c0-4f62-80d7-f0ef930f1c47"
-                          type: "org.camaraproject.iot-sim-fraud-prevention.v0.area-change"
+                          type: "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change"
                           datacontenttype: "application/json"
                           time: "2023-03-22T05:41:23.682Z"
                           data:
@@ -405,7 +405,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: "{apiRoot}/iot-sim-fraud-prevention-subscriptions/oauth/v3/token"
+          tokenUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention-subscriptions/oauth/v3/token"
           scopes:
             "iot-sim-fraud-prevention-subscriptions:subscribe": Create event subscriptions
             "iot-sim-fraud-prevention-subscriptions:read": Read subscription details
