@@ -50,7 +50,7 @@ servers:
   - url: "{apiRoot}/iot-sim-fraud-prevention/vwip"
     variables:
       apiRoot:
-        default: http://localhost:9091
+        default: https://47.251.92.242:38088
         description: API root
 tags:
   - name: Bind sim card fraud prevention
@@ -336,9 +336,19 @@ paths:
 components:
   securitySchemes:
     openId:
-      description: OpenID Connect authentication
-      type: openIdConnect
-      openIdConnectUrl: https://example.org/.well-known/openid-configuration
+      description: |
+        OAuth2.0 Client Credentials authentication.
+        Obtain a token via POST /iot-sim-fraud-prevention/oauth/v3/token
+        with grant_type=client_credentials and Basic Authorization header.
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention/oauth/v3/token"
+          refreshUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention/oauth/v3/token"
+          scopes:
+            "iot-sim-fraud-prevention:bind": Bind device IMEI or area restriction
+            "iot-sim-fraud-prevention:unbind": Unbind device IMEI or area restriction
+            "iot-sim-fraud-prevention:query": Query device binding status
   parameters:
     x-correlator:
       name: x-correlator
