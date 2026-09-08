@@ -24,17 +24,33 @@ info:
     When a subscribed event occurs, the server sends a `POST` request to the `sink` URL provided by the subscriber.
     The notification payload conforms to the CloudEvents specification.
 
+    <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
+
     # Authorization and authentication
     The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
 
     The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
 
     In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
+    <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
+
+    <!-- CAMARA:MANDATORY:request-body-strictness:BEGIN -->
+
+    # Request body strictness
+
+    This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level. Unknown properties result in a `400 INVALID_ARGUMENT` response.
+    <!-- CAMARA:MANDATORY:request-body-strictness:END -->
+
+    <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
 
     # Additional CAMARA error responses
+
     The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
-    Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
+
+    Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified from the `x-camara-commonalities` field, the changelog and the metadata of the released API version.
+
     As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
+    <!-- CAMARA:MANDATORY:additional-error-responses:END -->
 
   version: wip
   license:
@@ -320,6 +336,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 256
           description: Identifier of the subscription.
       responses:
         "200":
@@ -358,6 +375,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 256
           description: Identifier of the subscription.
       responses:
         "204":
@@ -426,75 +444,12 @@ components:
   schemas:
     XCorrelator:
       type: string
+      maxLength: 256
       description: Correlation id for the request
       example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
       pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
 
     # ---------- Notification ----------
-    CloudEvent:
-      type: object
-      description: |
-        CloudEvents 1.0 specification envelope.
-        This schema is the stable base for all CAMARA event notifications.
-      required:
-        - id
-        - source
-        - specversion
-        - type
-        - time
-      properties:
-        id:
-          type: string
-          maxLength: 256
-          description: Identifier of this event, unique within the source context.
-        source:
-          $ref: "#/components/schemas/Source"
-        type:
-          type: string
-          maxLength: 512
-          description: |
-            Identifies the event type. CAMARA APIs use reverse-DNS notation:
-            `org.camaraproject.<api-name>.<event-version>.<event-name>`
-        specversion:
-          type: string
-          description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
-          enum:
-            - "1.0"
-        datacontenttype:
-          type: string
-          description: 'media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs'
-          enum:
-            - application/json
-        data:
-          type: object
-          description: Event details payload. Structure is defined by each concrete event schema.
-        time:
-          $ref: "#/components/schemas/DateTime"
-
-    Source:
-      type: string
-      format: uri-reference
-      minLength: 1
-      maxLength: 2048
-      description: |
-        Identifies the context in which an event happened - be a non-empty `URI-reference` like:
-        - URI with a DNS authority:
-          * https://github.com/cloudevents
-          * mailto:cncf-wg-serverless@lists.cncf.io
-        - Universally-unique URN with a UUID:
-          * urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
-        - Application-specific identifier:
-          * /cloudevents/spec/pull/123
-          * 1-555-123-4567
-      example: "https://api.example.com"
-
-    DateTime:
-      type: string
-      format: date-time
-      maxLength: 64
-      description: Timestamp of when the occurrence happened. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-      example: "2018-04-05T17:31:00Z"
-
     # ─────────────────────────────────────────────────────────────────────────
     # API-specific notification event group
     # ─────────────────────────────────────────────────────────────────────────
@@ -505,7 +460,7 @@ components:
         Extends the CloudEvent envelope and constrains `type` to the set of
         event types defined by this API project.
       allOf:
-        - $ref: "#/components/schemas/CloudEvent"
+        - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/CloudEvent"
         - type: object
           properties:
             type:
@@ -536,6 +491,7 @@ components:
               $ref: "#/components/schemas/ImeiChangeEventData"
 
     ImeiChangeEventData:
+      description: Event details for the IMEI change notification.
       type: object
       required:
         - subscriptionId
@@ -544,10 +500,12 @@ components:
       properties:
         subscriptionId:
           type: string
+          maxLength: 256
           description: The ID of the subscription that triggered this notification
           example: "987654321"
         imei:
           type: string
+          maxLength: 20
           description: The new IMEI of the device
           example: "35-209900-176148-1"
         device:
@@ -563,6 +521,7 @@ components:
               $ref: "#/components/schemas/AreaChangeEventData"
 
     AreaChangeEventData:
+      description: Event details for the area change notification.
       type: object
       required:
         - subscriptionId
@@ -571,6 +530,7 @@ components:
       properties:
         subscriptionId:
           type: string
+          maxLength: 256
           description: The ID of the subscription that triggered this notification
           example: "987654321"
         area:
@@ -587,7 +547,7 @@ components:
         Subscription lifecycle event group, common to all CAMARA APIs that
         support explicit subscriptions.
       allOf:
-        - $ref: "#/components/schemas/CloudEvent"
+        - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/CloudEvent"
         - type: object
           properties:
             type:
@@ -753,22 +713,27 @@ components:
           maxItems: 1
           items:
             type: string
+            maxLength: 512
+            description: Event type string in reverse-DNS notation, as defined in ApiEventType.
           example:
             - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
         config:
           $ref: "#/components/schemas/Config"
         id:
           type: string
+          maxLength: 256
           description: Unique identifier of the subscription.
           example: "1119920371"
         startsAt:
           type: string
           format: date-time
+          maxLength: 64
           description: Date when the subscription begins.
           example: "2023-07-03T12:27:08.312Z"
         expiresAt:
           type: string
           format: date-time
+          maxLength: 64
           description: Date when the subscription expires (if applicable).
           example: "2023-07-03T12:27:08.312Z"
         status:
@@ -811,6 +776,7 @@ components:
       properties:
         subscriptionId:
           type: string
+          maxLength: 256
           description: The unique identifier of the subscription.
           example: "1119920371"
       required:
@@ -866,13 +832,19 @@ components:
         subscriptionExpireTime:
           type: string
           format: date-time
+          maxLength: 64
+          description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
           example: "2023-01-17T13:18:23.682Z"
         subscriptionMaxEvents:
           type: integer
+          format: int32
           minimum: 1
+          maximum: 1000000
+          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
           example: 5
         initialEvent:
           type: boolean
+          description: Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
 
     SubscriptionDetail:
       description: Details specific to the subscribed events.
@@ -896,6 +868,7 @@ components:
       properties:
         credentialType:
           type: string
+          description: The type of the credential.
           enum:
             - PLAIN
             - ACCESSTOKEN
@@ -921,8 +894,10 @@ components:
           properties:
             identifier:
               type: string
+              maxLength: 256
             secret:
               type: string
+              maxLength: 512
 
     AccessTokenCredential:
       type: object
@@ -933,12 +908,16 @@ components:
           properties:
             accessToken:
               type: string
+              maxLength: 4096
+              writeOnly: true
             accessTokenExpiresUtc:
               type: string
               format: date-time
+              maxLength: 64
               example: "2023-07-03T12:27:08.312Z"
             accessTokenType:
               type: string
+              writeOnly: true
               enum:
                 - bearer
           required:
@@ -968,15 +947,20 @@ components:
       minProperties: 1
 
     PhoneNumber:
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
+      maxLength: 16
       example: "+123456789"
 
     NetworkAccessIdentifier:
+      description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
       type: string
+      maxLength: 2048
       example: "123456789@domain.com"
 
     DeviceIpv4Addr:
+      description: The device should be identified by either the public (observed) IP address and port as seen by the application server, or the private (local) and any public (observed) IP addresses in use by the device.
       type: object
       properties:
         publicAddress:
@@ -993,18 +977,24 @@ components:
         publicPort: 59765
 
     SingleIpv4Addr:
+      description: A single IPv4 address with no subnet mask
       type: string
       format: ipv4
+      maxLength: 15
       example: "84.125.93.10"
 
     Port:
+      description: TCP or UDP port number
       type: integer
+      format: int32
       minimum: 0
       maximum: 65535
 
     DeviceIpv6Address:
+      description: The device should be identified by the observed IPv6 address, or by any single IPv6 address from within the subnet allocated to the device (e.g. adding ::0 to the /64 prefix).
       type: string
       format: ipv6
+      maxLength: 45
       example: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
 
     # ---------- Geographic area (used in AREA_CHANGE notification) ----------
@@ -1024,6 +1014,9 @@ components:
           CIRCLE: "#/components/schemas/Circle"
 
     AreaType:
+      description: |
+        Type of this area.
+        CIRCLE - The area is defined as a circle.
       type: string
       enum:
         - CIRCLE
@@ -1038,6 +1031,7 @@ components:
               $ref: "#/components/schemas/Point"
             radius:
               type: integer
+              format: int32
               minimum: 1
               maximum: 200000
           required:
@@ -1051,6 +1045,7 @@ components:
         radius: 50000
 
     Point:
+      description: Coordinates (latitude, longitude) defining a location in a map
       type: object
       required:
         - latitude
@@ -1065,6 +1060,7 @@ components:
         longitude: 7.10066
 
     Latitude:
+      description: Latitude component of a location
       type: number
       format: double
       minimum: -90
@@ -1072,6 +1068,7 @@ components:
       example: 50.735851
 
     Longitude:
+      description: Longitude component of location
       type: number
       format: double
       minimum: -180
@@ -1089,10 +1086,18 @@ components:
       properties:
         status:
           type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
+          description: HTTP response status code
         code:
           type: string
+          maxLength: 96
+          description: A human-readable code to describe the error
         message:
           type: string
+          maxLength: 512
+          description: A human-readable description of what the event represents
 
     # ---------- Protocol-specific subscription schemas ----------
     HTTPSubscriptionRequest:
@@ -1132,6 +1137,7 @@ components:
 
     # Other protocol schemas (MQTT, AMQP, etc.) would be defined here if needed
     MQTTSubscriptionRequest:
+      description: Subscription request for MQTT-based event delivery.
       allOf:
         - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
         - type: object
@@ -1140,6 +1146,7 @@ components:
               $ref: "#/components/schemas/MQTTSettings"
 
     MQTTSubscriptionResponse:
+      description: Subscription resource returned for MQTT-based event delivery.
       allOf:
         - $ref: "#/components/schemas/Subscription"
         - type: object
@@ -1148,6 +1155,7 @@ components:
               $ref: "#/components/schemas/MQTTSettings"
 
     MQTTSettings:
+      description: MQTT protocol settings for event delivery.
       type: object
       properties:
         topicName:
@@ -1162,6 +1170,7 @@ components:
           description: Quality of Service level (0, 1, or 2)
         retain:
           type: boolean
+          description: Whether the broker should retain the last message published on the topic.
         expiry:
           type: integer
           format: int32
@@ -1170,10 +1179,12 @@ components:
           description: Message expiry interval in seconds
         userProperties:
           type: object
+          description: A set of key/value pairs copied into the MQTT message as user properties.
       required:
         - topicName
 
     AMQPSubscriptionRequest:
+      description: Subscription request for AMQP-based event delivery.
       allOf:
         - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
         - type: object
@@ -1182,6 +1193,7 @@ components:
               $ref: "#/components/schemas/AMQPSettings"
 
     AMQPSubscriptionResponse:
+      description: Subscription resource returned for AMQP-based event delivery.
       allOf:
         - $ref: "#/components/schemas/Subscription"
         - type: object
@@ -1190,24 +1202,30 @@ components:
               $ref: "#/components/schemas/AMQPSettings"
 
     AMQPSettings:
+      description: AMQP protocol settings for event delivery.
       type: object
       properties:
         address:
           type: string
           maxLength: 512
+          description: AMQP address (node) the link attaches to.
         linkName:
           type: string
           maxLength: 256
+          description: Name of the AMQP link.
         senderSettlementMode:
           type: string
+          description: Sender settlement mode for the AMQP link.
           enum: ["settled", "unsettled"]
         linkProperties:
           type: object
+          description: Additional AMQP link properties as key/value pairs.
           additionalProperties:
             type: string
             maxLength: 1024
 
     ApacheKafkaSubscriptionRequest:
+      description: Subscription request for Apache Kafka-based event delivery.
       allOf:
         - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
         - type: object
@@ -1216,6 +1234,7 @@ components:
               $ref: "#/components/schemas/ApacheKafkaSettings"
 
     ApacheKafkaSubscriptionResponse:
+      description: Subscription resource returned for Apache Kafka-based event delivery.
       allOf:
         - $ref: "#/components/schemas/Subscription"
         - type: object
@@ -1224,17 +1243,21 @@ components:
               $ref: "#/components/schemas/ApacheKafkaSettings"
 
     ApacheKafkaSettings:
+      description: Apache Kafka protocol settings for event delivery.
       type: object
       properties:
         topicName:
           type: string
           maxLength: 249
+          description: Kafka topic name.
         partitionKeyExtractor:
           type: string
           maxLength: 512
+          description: Key or expression used to extract the partition key from the event.
         clientId:
           type: string
           maxLength: 256
+          description: Kafka client identifier.
         ackMode:
           type: integer
           format: int32
@@ -1245,6 +1268,7 @@ components:
         - topicName
 
     NATSSubscriptionRequest:
+      description: Subscription request for NATS-based event delivery.
       allOf:
         - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
         - type: object
@@ -1253,6 +1277,7 @@ components:
               $ref: "#/components/schemas/NATSSettings"
 
     NATSSubscriptionResponse:
+      description: Subscription resource returned for NATS-based event delivery.
       allOf:
         - $ref: "#/components/schemas/Subscription"
         - type: object
@@ -1261,6 +1286,7 @@ components:
               $ref: "#/components/schemas/NATSSettings"
 
     NATSSettings:
+      description: NATS protocol settings for event delivery.
       type: object
       properties:
         subject:
