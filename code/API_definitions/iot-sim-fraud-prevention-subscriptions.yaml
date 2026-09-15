@@ -1058,7 +1058,6 @@ components:
       maximum: 180
       example: 7.10066
 
-    # ---------- Error ----------
     # ---------- Protocol-specific subscription schemas ----------
     HTTPSubscriptionRequest:
       description: Subscription request for HTTP-based event delivery.
