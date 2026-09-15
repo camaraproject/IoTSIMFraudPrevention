@@ -652,7 +652,6 @@ components:
       maximum: 180
       example: 7.10066
 
-    # ---------- Error ----------
   # ---------- Responses ----------
   responses:
     BindBadRequest400:
