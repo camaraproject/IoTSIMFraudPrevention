@@ -56,7 +56,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.8.0
+  x-camara-commonalities: 0.9.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/IoTSIMFraudPrevention
@@ -149,15 +149,15 @@ paths:
         "400":
           $ref: "#/components/responses/BindBadRequest400"
         "401":
-          $ref: "#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
-          $ref: "#/components/responses/Generic404"
+          $ref: "#/components/responses/DeviceNotFound404"
         "422":
           $ref: "#/components/responses/Bind422"
         "429":
-          $ref: "#/components/responses/Generic429"
+          $ref: "#/components/responses/QuotaOrRateLimit429"
       security:
         - openId:
             - "iot-sim-fraud-prevention:bind"
@@ -237,15 +237,15 @@ paths:
         "400":
           $ref: "#/components/responses/UnbindBadRequest400"
         "401":
-          $ref: "#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
-          $ref: "#/components/responses/Generic404"
+          $ref: "#/components/responses/DeviceNotFound404"
         "422":
           $ref: "#/components/responses/Unbind422"
         "429":
-          $ref: "#/components/responses/Generic429"
+          $ref: "#/components/responses/QuotaOrRateLimit429"
       security:
         - openId:
             - "iot-sim-fraud-prevention:unbind"
@@ -334,15 +334,15 @@ paths:
         "400":
           $ref: "#/components/responses/QueryBadRequest400"
         "401":
-          $ref: "#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
-          $ref: "#/components/responses/Generic404"
+          $ref: "#/components/responses/DeviceNotFound404"
         "422":
           $ref: "#/components/responses/Query422"
         "429":
-          $ref: "#/components/responses/Generic429"
+          $ref: "#/components/responses/QuotaOrRateLimit429"
       security:
         - openId:
             - "iot-sim-fraud-prevention:query"
@@ -898,59 +898,7 @@ components:
                 code: INVALID_ARGUMENT
                 message: "The value of queryType can only be IMEIBIND,AREALIMIT"
 
-    Generic401:
-      description: Unauthorized
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 401
-                  code:
-                    enum:
-                      - UNAUTHENTICATED
-          examples:
-            GENERIC_401_UNAUTHENTICATED:
-              description: Request cannot be authenticated
-              value:
-                status: 401
-                code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials.
-
-    Generic403:
-      description: Forbidden
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 403
-                  code:
-                    enum:
-                      - PERMISSION_DENIED
-          examples:
-            GENERIC_403_PERMISSION_DENIED:
-              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
-              value:
-                status: 403
-                code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action.
-
-    Generic404:
+    DeviceNotFound404:
       description: Not found
       headers:
         x-correlator:
@@ -971,12 +919,9 @@ components:
                       - IDENTIFIER_NOT_FOUND
           examples:
             GENERIC_404_NOT_FOUND:
-              description: Resource is not found
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: The specified resource is not found.
-
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_NOT_FOUND"
+            GENERIC_404_IDENTIFIER_NOT_FOUND:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_IDENTIFIER_NOT_FOUND"
     Bind422:
       description: Unprocessable Content
       headers:
@@ -1125,7 +1070,7 @@ components:
                 code: MISSING_IDENTIFIER
                 message: The device cannot be identified.
 
-    Generic429:
+    QuotaOrRateLimit429:
       description: Too Many Requests
       headers:
         x-correlator:
@@ -1146,14 +1091,6 @@ components:
                       - TOO_MANY_REQUESTS
           examples:
             GENERIC_429_QUOTA_EXCEEDED:
-              description: Request is rejected due to exceeding a business quota limit
-              value:
-                status: 429
-                code: QUOTA_EXCEEDED
-                message: Rejected due to exceeding a business quota limit.
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_429_QUOTA_EXCEEDED"
             GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
-              value:
-                status: 429
-                code: TOO_MANY_REQUESTS
-                message: Rejected due to request rate limit overpassed.
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_429_TOO_MANY_REQUESTS"
