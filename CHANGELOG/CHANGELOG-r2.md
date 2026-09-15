@@ -61,15 +61,31 @@ Changes documented below are compared to version 0.1.0.
 
 ### Breaking changes
 
-* N/A
+* Compatibility risk: additional length and format constraints were added to several request fields, aligned with the CAMARA common schemas (see the `Changed` section for the full list). Requests that previously passed with values exceeding the new limits may now be rejected with `400 INVALID_ARGUMENT`.
 
 ### Added
 
-* N/A
+* The mandatory `info.description` sections required by CAMARA Commonalities, each bracketed by its `CAMARA:MANDATORY` markers:
+  * "Authorization and authentication"
+  * "Request body strictness" — new for this API version. This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level; unknown properties result in a `400 INVALID_ARGUMENT` response.
+  * "Additional CAMARA error responses"
 
 ### Changed
 
-* N/A
+* Error responses realigned to the Commonalities r4.4 named error-response catalogue. The locally defined `Generic400`, `Generic401`, `Generic403`, `Generic404` and `Generic429` responses were replaced by:
+  * references to the shared catalogue responses `BadRequest400`, `Unauthenticated401`, `PermissionDenied403` and `TooManyRequests429`;
+  * two locally defined responses covering the code combinations that the catalogue does not carry: `DeviceNotFound404` (`NOT_FOUND`, `IDENTIFIER_NOT_FOUND`) and `QuotaOrRateLimit429` (`QUOTA_EXCEEDED`, `TOO_MANY_REQUESTS`).
+
+  The set of error codes an API consumer can receive is unchanged.
+* Error `description` and `message` wording now comes from the shared CAMARA examples, so it is consistent across CAMARA APIs.
+* The API definition is now aligned with Commonalities r4.4 (`x-camara-commonalities: 0.9.0`, previously `0.6.1`).
+* Additional constraints on request and response fields, aligned with the CAMARA common schemas:
+  * `PhoneNumber`: `maxLength: 16`
+  * `SingleIpv4Addr`: `maxLength: 15`
+  * `DeviceIpv6Address`: `maxLength: 45`
+  * `NetworkAccessIdentifier`: `maxLength: 2048`
+  * `BindImei`: `maxLength: 20`
+  * `Port` and `Circle.radius`: `format: int32`
 
 ### Fixed
 
@@ -92,15 +108,47 @@ Changes documented below are compared to version 0.1.0.
 
 ### Breaking changes
 
-* N/A
+* The CloudEvents `type` namespace of notification events changed from `iot-sim-fraud-prevention` to `iot-sim-fraud-prevention-subscriptions`:
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.imei-change` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change`
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.area-change` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change`
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.subscription-started` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-started`
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.subscription-updated` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-updated`
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.subscription-ended` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-ended`
+
+  API consumers that select or filter notifications on the exact `type` string must be updated.
+* Compatibility risk: additional length and format constraints were added to several request, response and notification fields, aligned with the CAMARA common schemas (see the `Changed` section for the full list). Requests that previously passed with values exceeding the new limits may now be rejected with `400 INVALID_ARGUMENT`.
 
 ### Added
 
-* N/A
+* The mandatory `info.description` sections required by CAMARA Commonalities, each bracketed by its `CAMARA:MANDATORY` markers:
+  * "Authorization and authentication"
+  * "Request body strictness" — new for this API version. This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level; unknown properties result in a `400 INVALID_ARGUMENT` response.
+  * "Additional CAMARA error responses"
 
 ### Changed
 
-* N/A
+* The `CloudEvent` schema and its supporting schemas (`DateTime`, `Source`) are now referenced from the CAMARA common event schemas (`CAMARA_event_common.yaml`) instead of being defined inline in this specification.
+* Error responses realigned to the Commonalities r4.4 named error-response catalogue. The locally defined `Generic400`, `Generic401`, `Generic403`, `Generic404` and `Generic429` responses were replaced by:
+  * references to the shared catalogue responses `BadRequest400`, `Unauthenticated401`, `PermissionDenied403` and `TooManyRequests429`;
+  * two locally defined responses covering the code combinations that the catalogue does not carry: `DeviceNotFound404` (`NOT_FOUND`, `IDENTIFIER_NOT_FOUND`) and `QuotaOrRateLimit429` (`QUOTA_EXCEEDED`, `TOO_MANY_REQUESTS`).
+
+  The set of error codes an API consumer can receive is unchanged.
+* Error `description` and `message` wording now comes from the shared CAMARA examples, so it is consistent across CAMARA APIs.
+* The API definition is now aligned with Commonalities r4.4 (`x-camara-commonalities: 0.9.0`, previously `0.6.1`).
+* Additional constraints on request, response and notification fields, aligned with the CAMARA common schemas:
+  * `Subscription`: `id` `maxLength: 256`, `expiresAt` `maxLength: 64`, `startsAt` `maxLength: 64`, `types` items `maxLength: 512`
+  * `Config`: `subscriptionExpireTime` `maxLength: 64`; `subscriptionMaxEvents` `format: int32` and `maximum: 1000000`
+  * `ImeiChangeEventData`: `imei` `maxLength: 20`, `subscriptionId` `maxLength: 256`
+  * `AreaChangeEventData`: `subscriptionId` `maxLength: 256`
+  * `SubscribeFraudPreventionResponseAsync`: `subscriptionId` `maxLength: 256`
+  * `PlainCredential`: `identifier` `maxLength: 256`, `secret` `maxLength: 512`
+  * `AccessTokenCredential`: `accessToken` `maxLength: 4096`, `accessTokenExpiresUtc` `maxLength: 64`
+  * `PhoneNumber`: `maxLength: 16`
+  * `SingleIpv4Addr`: `maxLength: 15`
+  * `DeviceIpv6Address`: `maxLength: 45`
+  * `NetworkAccessIdentifier`: `maxLength: 2048`
+  * `Port` and `Circle.radius`: `format: int32`
+* `AccessTokenCredential.accessToken` and `AccessTokenCredential.accessTokenType` are now marked `writeOnly`.
 
 ### Fixed
 
@@ -111,4 +159,3 @@ Changes documented below are compared to version 0.1.0.
 * N/A
 
 **Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/compare/r1.2...r2.1
-
