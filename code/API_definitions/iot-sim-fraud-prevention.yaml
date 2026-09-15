@@ -54,17 +54,13 @@ info:
 
     As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
     <!-- CAMARA:MANDATORY:additional-error-responses:END -->
-
-  version: wip
+  version: 0.2.0-rc.1
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   x-camara-commonalities: 0.9.0
-externalDocs:
-  description: Product documentation at CAMARA
-  url: https://github.com/camaraproject/IoTSIMFraudPrevention
 servers:
-  - url: "{apiRoot}/iot-sim-fraud-prevention/vwip"
+  - url: '{apiRoot}/iot-sim-fraud-prevention/v0.2rc1'
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -76,6 +72,9 @@ tags:
     description: Operations for removing SIM card bindings or area restrictions
   - name: Query Card Fraud Prevention
     description: Operations for querying current binding and restriction status
+externalDocs:
+  description: Product documentation at CAMARA
+  url: https://github.com/camaraproject/IoTSIMFraudPrevention
 paths:
   /bind:
     post:
@@ -85,13 +84,13 @@ paths:
       description: Associate a SIM card with a specific IMEI or restrict it to a geographic area.
       operationId: bindDeviceImei
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '#/components/parameters/x-correlator'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BindDeviceImeiRequest"
+              $ref: '#/components/schemas/BindDeviceImeiRequest'
             examples:
               INPUT_IPV4_ADDRESS:
                 summary: bind imei For One Device By IPv4 Address
@@ -99,45 +98,45 @@ paths:
                 value:
                   device:
                     ipv4Address:
-                      publicAddress: "203.0.113.0"
+                      publicAddress: 203.0.113.0
                       publicPort: 59765
-                  bindType: "IMEIBIND"
+                  bindType: IMEIBIND
               INPUT_IPV6_ADDRESS:
                 summary: bind imei For One Device By IPv6 Address
                 description: Use the IPv6 address of a device for binding operations
                 value:
                   device:
-                    ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
-                  bindType: "IMEIBIND"
+                    ipv6Address: 2001:db8:85a3:8d3:1319:8a2e:370:7344
+                  bindType: IMEIBIND
               INPUT_PHONE_NUMBER:
                 summary: bind imei For One Device By Phone Number
                 description: Use a device's number for binding operation
                 value:
                   device:
-                    phoneNumber: "+123456789"
-                  bindType: "IMEIBIND"
+                    phoneNumber: '+123456789'
+                  bindType: IMEIBIND
               INPUT_NETWORK_ACCESS_IDENTIFIER:
                 summary: bind imei For One Device By Network Access Identifier
                 description: Use a device's network access identifier for binding operations
                 value:
                   device:
-                    networkAccessIdentifier: "123456789@domain.com"
-                  bindType: "IMEIBIND"
+                    networkAccessIdentifier: 123456789@domain.com
+                  bindType: IMEIBIND
               INPUT_BIND_TYPE:
                 summary: bind imei For One Device By 3 Legged Token
                 description: Use a 3 Legged Token for binding operations (no device object needed)
                 value:
-                  bindType: "IMEIBIND"
+                  bindType: IMEIBIND
       responses:
-        "200":
+        '200':
           description: The result of binding the device
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BindDeviceImeiResponse"
+                $ref: '#/components/schemas/BindDeviceImeiResponse'
               examples:
                 BIND_SUCCESS:
                   summary: BOUND SUCCESSFULLY
@@ -149,22 +148,21 @@ paths:
                   description: The result of binding the device is a failure
                   value:
                     bound: false
-        "400":
-          $ref: "#/components/responses/BindBadRequest400"
-        "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
-        "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
-        "404":
-          $ref: "#/components/responses/DeviceNotFound404"
-        "422":
-          $ref: "#/components/responses/Bind422"
-        "429":
-          $ref: "#/components/responses/QuotaOrRateLimit429"
+        '400':
+          $ref: '#/components/responses/BindBadRequest400'
+        '401':
+          $ref: '#/components/responses/Unauthenticated401'
+        '403':
+          $ref: '#/components/responses/PermissionDenied403'
+        '404':
+          $ref: '#/components/responses/DeviceNotFound404'
+        '422':
+          $ref: '#/components/responses/Bind422'
+        '429':
+          $ref: '#/components/responses/QuotaOrRateLimit429'
       security:
         - openId:
-            - "iot-sim-fraud-prevention:bind"
-
+            - iot-sim-fraud-prevention:bind
   /unbind:
     post:
       tags:
@@ -173,13 +171,13 @@ paths:
       description: Remove an existing IMEI binding or area restriction from a device.
       operationId: unBindDeviceImei
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '#/components/parameters/x-correlator'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UnBindDeviceImeiRequest"
+              $ref: '#/components/schemas/UnBindDeviceImeiRequest'
             examples:
               INPUT_IPV4_ADDRESS:
                 summary: unbind imei For One Device By IPv4 Address
@@ -187,45 +185,45 @@ paths:
                 value:
                   device:
                     ipv4Address:
-                      publicAddress: "203.0.113.0"
+                      publicAddress: 203.0.113.0
                       publicPort: 59765
-                  unBindType: "IMEIBIND"
+                  unBindType: IMEIBIND
               INPUT_IPV6_ADDRESS:
                 summary: unbind imei For One Device By IPv6 Address
                 description: Use the IPv6 address of a device for unbinding operations
                 value:
                   device:
-                    ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
-                  unBindType: "IMEIBIND"
+                    ipv6Address: 2001:db8:85a3:8d3:1319:8a2e:370:7344
+                  unBindType: IMEIBIND
               INPUT_PHONE_NUMBER:
                 summary: unbind imei For One Device By Phone Number
                 description: Use a device's number for unbinding operation
                 value:
                   device:
-                    phoneNumber: "+123456789"
-                  unBindType: "IMEIBIND"
+                    phoneNumber: '+123456789'
+                  unBindType: IMEIBIND
               INPUT_NETWORK_ACCESS_IDENTIFIER:
                 summary: unbind imei For One Device By Network Access Identifier
                 description: Use a device's network access identifier for unbinding operations
                 value:
                   device:
-                    networkAccessIdentifier: "123456789@domain.com"
-                  unBindType: "IMEIBIND"
+                    networkAccessIdentifier: 123456789@domain.com
+                  unBindType: IMEIBIND
               INPUT_UNBIND_TYPE:
                 summary: unbind imei For One Device By 3 Legged Token
                 description: Use a 3 Legged Token for unbinding operations (no device object needed)
                 value:
-                  unBindType: "IMEIBIND"
+                  unBindType: IMEIBIND
       responses:
-        "200":
+        '200':
           description: The result of unbinding the device
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UnBindDeviceImeiResponse"
+                $ref: '#/components/schemas/UnBindDeviceImeiResponse'
               examples:
                 UNBIND_SUCCESS:
                   summary: UNBOUND SUCCESSFULLY
@@ -237,22 +235,21 @@ paths:
                   description: The result of unbinding the device is a failure
                   value:
                     unbound: false
-        "400":
-          $ref: "#/components/responses/UnbindBadRequest400"
-        "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
-        "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
-        "404":
-          $ref: "#/components/responses/DeviceNotFound404"
-        "422":
-          $ref: "#/components/responses/Unbind422"
-        "429":
-          $ref: "#/components/responses/QuotaOrRateLimit429"
+        '400':
+          $ref: '#/components/responses/UnbindBadRequest400'
+        '401':
+          $ref: '#/components/responses/Unauthenticated401'
+        '403':
+          $ref: '#/components/responses/PermissionDenied403'
+        '404':
+          $ref: '#/components/responses/DeviceNotFound404'
+        '422':
+          $ref: '#/components/responses/Unbind422'
+        '429':
+          $ref: '#/components/responses/QuotaOrRateLimit429'
       security:
         - openId:
-            - "iot-sim-fraud-prevention:unbind"
-
+            - iot-sim-fraud-prevention:unbind
   /query:
     post:
       tags:
@@ -261,13 +258,13 @@ paths:
       description: Retrieve the current IMEI binding status or area restriction for a device.
       operationId: query
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '#/components/parameters/x-correlator'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/QueryRequest"
+              $ref: '#/components/schemas/QueryRequest'
             examples:
               INPUT_IPV4_ADDRESS:
                 summary: query For One Device By IPv4 Address
@@ -275,54 +272,54 @@ paths:
                 value:
                   device:
                     ipv4Address:
-                      publicAddress: "203.0.113.0"
+                      publicAddress: 203.0.113.0
                       publicPort: 59765
-                  queryType: "IMEIBIND"
+                  queryType: IMEIBIND
               INPUT_IPV6_ADDRESS:
                 summary: query For One Device By IPv6 Address
                 description: Use the IPv6 address of a device for query operations
                 value:
                   device:
-                    ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
-                  queryType: "IMEIBIND"
+                    ipv6Address: 2001:db8:85a3:8d3:1319:8a2e:370:7344
+                  queryType: IMEIBIND
               INPUT_PHONE_NUMBER:
                 summary: query For One Device By Phone Number
                 description: Use a device's number for query operation
                 value:
                   device:
-                    phoneNumber: "+123456789"
-                  queryType: "IMEIBIND"
+                    phoneNumber: '+123456789'
+                  queryType: IMEIBIND
               INPUT_NETWORK_ACCESS_IDENTIFIER:
                 summary: query For One Device By Network Access Identifier
                 description: Use a device's network access identifier for query operations
                 value:
                   device:
-                    networkAccessIdentifier: "123456789@domain.com"
-                  queryType: "IMEIBIND"
+                    networkAccessIdentifier: 123456789@domain.com
+                  queryType: IMEIBIND
               INPUT_UNBIND_TYPE:
                 summary: query For One Device By 3 Legged Token
                 description: Use a 3 Legged Token for query operations (no device object needed)
                 value:
-                  queryType: "IMEIBIND"
+                  queryType: IMEIBIND
       responses:
-        "200":
+        '200':
           description: The result of query the device
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/QueryFraudPreventionResponse"
+                $ref: '#/components/schemas/QueryFraudPreventionResponse'
               examples:
                 AREA_LIMIT_RESULT:
                   summary: AREALIMIT RESULT
                   description: The result of query sim card area limit
                   value:
                     areaLimit:
-                      areaLimitStatus: "RESTRICTED"
+                      areaLimitStatus: RESTRICTED
                       limitArea:
-                        areaType: "CIRCLE"
+                        areaType: CIRCLE
                         center:
                           latitude: 50.735851
                           longitude: 7.10066
@@ -332,24 +329,23 @@ paths:
                   description: The result of query sim card imei bind
                   value:
                     imeiBind:
-                      bindImei: "35-209900-176148-1"
-                      bindStatus: "BOUND"
-        "400":
-          $ref: "#/components/responses/QueryBadRequest400"
-        "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
-        "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
-        "404":
-          $ref: "#/components/responses/DeviceNotFound404"
-        "422":
-          $ref: "#/components/responses/Query422"
-        "429":
-          $ref: "#/components/responses/QuotaOrRateLimit429"
+                      bindImei: 35-209900-176148-1
+                      bindStatus: BOUND
+        '400':
+          $ref: '#/components/responses/QueryBadRequest400'
+        '401':
+          $ref: '#/components/responses/Unauthenticated401'
+        '403':
+          $ref: '#/components/responses/PermissionDenied403'
+        '404':
+          $ref: '#/components/responses/DeviceNotFound404'
+        '422':
+          $ref: '#/components/responses/Query422'
+        '429':
+          $ref: '#/components/responses/QuotaOrRateLimit429'
       security:
         - openId:
-            - "iot-sim-fraud-prevention:query"
-
+            - iot-sim-fraud-prevention:query
 components:
   securitySchemes:
     openId:
@@ -360,14 +356,13 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention/oauth/v3/token"
-          refreshUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention/oauth/v3/token"
+          tokenUrl: https://47.251.92.242:38088/iot-sim-fraud-prevention/oauth/v3/token
+          refreshUrl: https://47.251.92.242:38088/iot-sim-fraud-prevention/oauth/v3/token
           scopes:
-            "iot-sim-fraud-prevention:bind": Bind device IMEI or area restriction
-            "iot-sim-fraud-prevention:unbind": Unbind device IMEI or area restriction
-            "iot-sim-fraud-prevention:query": Query device binding status
+            iot-sim-fraud-prevention:bind: Bind device IMEI or area restriction
+            iot-sim-fraud-prevention:unbind: Unbind device IMEI or area restriction
+            iot-sim-fraud-prevention:query: Query device binding status
   schemas:
-    # ---------- Bind / Unbind / Query common schemas ----------
     Device:
       description: |
         End-user device able to connect to a mobile network.
@@ -380,28 +375,25 @@ components:
       type: object
       properties:
         phoneNumber:
-          $ref: "#/components/schemas/PhoneNumber"
+          $ref: '#/components/schemas/PhoneNumber'
         networkAccessIdentifier:
-          $ref: "#/components/schemas/NetworkAccessIdentifier"
+          $ref: '#/components/schemas/NetworkAccessIdentifier'
         ipv4Address:
-          $ref: "#/components/schemas/DeviceIpv4Addr"
+          $ref: '#/components/schemas/DeviceIpv4Addr'
         ipv6Address:
-          $ref: "#/components/schemas/DeviceIpv6Address"
+          $ref: '#/components/schemas/DeviceIpv6Address'
       minProperties: 1
-
     PhoneNumber:
       description: A public identifier addressing a telephone subscription, formatted according to E.164 with a leading '+'.
       type: string
-      pattern: '^\+[1-9][0-9]{4,14}$'
+      pattern: ^\+[1-9][0-9]{4,14}$
       maxLength: 16
-      example: "+123456789"
-
+      example: '+123456789'
     NetworkAccessIdentifier:
       description: A public identifier addressing a subscription in a mobile network (e.g., GPSI formatted as External Identifier).
       type: string
       maxLength: 2048
-      example: "123456789@domain.com"
-
+      example: 123456789@domain.com
     DeviceIpv4Addr:
       type: object
       description: |
@@ -409,59 +401,56 @@ components:
         At least one of `privateAddress` or `publicPort` must be provided together with `publicAddress`.
       properties:
         publicAddress:
-          $ref: "#/components/schemas/SingleIpv4Addr"
+          $ref: '#/components/schemas/SingleIpv4Addr'
         privateAddress:
-          $ref: "#/components/schemas/SingleIpv4Addr"
+          $ref: '#/components/schemas/SingleIpv4Addr'
         publicPort:
-          $ref: "#/components/schemas/Port"
+          $ref: '#/components/schemas/Port'
       anyOf:
-        - required: [publicAddress, privateAddress]
-        - required: [publicAddress, publicPort]
+        - required:
+            - publicAddress
+            - privateAddress
+        - required:
+            - publicAddress
+            - publicPort
       example:
-        publicAddress: "84.125.93.10"
+        publicAddress: 84.125.93.10
         publicPort: 59765
-
     SingleIpv4Addr:
       description: A single IPv4 address with no subnet mask.
       type: string
       format: ipv4
       maxLength: 15
-      example: "84.125.93.10"
-
+      example: 84.125.93.10
     Port:
       description: TCP or UDP port number.
       type: integer
       format: int32
       minimum: 0
       maximum: 65535
-
     DeviceIpv6Address:
       description: |
         A single IPv6 address identifying the device.
       type: string
       format: ipv6
       maxLength: 45
-      example: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
-
-    # ---------- Bind ----------
+      example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
     BindType:
       type: string
       description: The type of binding operation (IMEI or area limit).
       enum:
         - AREALIMIT
         - IMEIBIND
-
     BindDeviceImeiRequest:
       description: Request to bind IMEI or area limit to a device.
       type: object
       properties:
         device:
-          $ref: "#/components/schemas/Device"
+          $ref: '#/components/schemas/Device'
         bindType:
-          $ref: "#/components/schemas/BindType"
+          $ref: '#/components/schemas/BindType'
       required:
         - bindType
-
     BindDeviceImeiResponse:
       description: Response indicating whether the binding operation succeeded.
       type: object
@@ -470,28 +459,24 @@ components:
       properties:
         bound:
           type: boolean
-          description: "true if binding succeeded, false otherwise."
+          description: true if binding succeeded, false otherwise.
           example: true
-
-    # ---------- Unbind ----------
     UnbindType:
       type: string
       description: The type of unbinding operation (IMEI or area limit).
       enum:
         - AREALIMIT
         - IMEIBIND
-
     UnBindDeviceImeiRequest:
       description: Request to unbind IMEI or area limit from a device.
       type: object
       properties:
         device:
-          $ref: "#/components/schemas/Device"
+          $ref: '#/components/schemas/Device'
         unBindType:
-          $ref: "#/components/schemas/UnbindType"
+          $ref: '#/components/schemas/UnbindType'
       required:
         - unBindType
-
     UnBindDeviceImeiResponse:
       description: Response indicating whether the unbinding operation succeeded.
       type: object
@@ -500,52 +485,45 @@ components:
       properties:
         unbound:
           type: boolean
-          description: "true if unbinding succeeded, false otherwise."
+          description: true if unbinding succeeded, false otherwise.
           example: true
-
-    # ---------- Query ----------
     QueryType:
       type: string
       description: The type of query (IMEI binding or area limit).
       enum:
         - AREALIMIT
         - IMEIBIND
-
     QueryRequest:
       description: Request to query the current status.
       type: object
       properties:
         device:
-          $ref: "#/components/schemas/Device"
+          $ref: '#/components/schemas/Device'
         queryType:
-          $ref: "#/components/schemas/QueryType"
+          $ref: '#/components/schemas/QueryType'
       required:
         - queryType
-
     QueryFraudPreventionResponse:
       description: Response containing the requested status.
       type: object
       properties:
         areaLimit:
-          $ref: "#/components/schemas/AreaLimit"
+          $ref: '#/components/schemas/AreaLimit'
         imeiBind:
-          $ref: "#/components/schemas/ImeiBind"
-
+          $ref: '#/components/schemas/ImeiBind'
     ImeiBind:
       description: IMEI binding status and bound IMEI (if any).
       type: object
       properties:
         bindImei:
-          $ref: "#/components/schemas/BindImei"
+          $ref: '#/components/schemas/BindImei'
         bindStatus:
-          $ref: "#/components/schemas/BindStatus"
-
+          $ref: '#/components/schemas/BindStatus'
     BindImei:
       description: The IMEI currently bound to the SIM card (15 digits).
       type: string
       maxLength: 20
-      example: "35-209900-176148-1"
-
+      example: 35-209900-176148-1
     BindStatus:
       description: |
         Status of the IMEI binding.
@@ -555,16 +533,14 @@ components:
       enum:
         - BOUND
         - UNBOUND
-
     AreaLimit:
       description: Area restriction status and details of the restricted area.
       type: object
       properties:
         limitArea:
-          $ref: "#/components/schemas/Area"
+          $ref: '#/components/schemas/Area'
         areaLimitStatus:
-          $ref: "#/components/schemas/AreaLimitStatus"
-
+          $ref: '#/components/schemas/AreaLimitStatus'
     AreaLimitStatus:
       description: |
         Current status of area restrictions.
@@ -574,37 +550,33 @@ components:
       enum:
         - RESTRICTED
         - UNRESTRICTED
-
-    # ---------- Geographic area ----------
     Area:
       description: Base schema for geographic areas.
       type: object
       properties:
         areaType:
-          $ref: "#/components/schemas/AreaType"
+          $ref: '#/components/schemas/AreaType'
         point:
-          $ref: "#/components/schemas/Point"
+          $ref: '#/components/schemas/Point'
       required:
         - areaType
       discriminator:
         propertyName: areaType
         mapping:
-          CIRCLE: "#/components/schemas/Circle"
-
+          CIRCLE: '#/components/schemas/Circle'
     AreaType:
       type: string
       description: Type of the area.
       enum:
         - CIRCLE
-
     Circle:
       description: A circular area defined by a center point and a radius.
       allOf:
-        - $ref: "#/components/schemas/Area"
+        - $ref: '#/components/schemas/Area'
         - type: object
           properties:
             center:
-              $ref: "#/components/schemas/Point"
+              $ref: '#/components/schemas/Point'
             radius:
               type: integer
               format: int32
@@ -620,7 +592,6 @@ components:
           latitude: 50.735851
           longitude: 7.10066
         radius: 50000
-
     Point:
       type: object
       description: Coordinates (latitude, longitude).
@@ -629,13 +600,12 @@ components:
         - longitude
       properties:
         latitude:
-          $ref: "#/components/schemas/Latitude"
+          $ref: '#/components/schemas/Latitude'
         longitude:
-          $ref: "#/components/schemas/Longitude"
+          $ref: '#/components/schemas/Longitude'
       example:
         latitude: 50.735851
         longitude: 7.10066
-
     Latitude:
       description: Latitude component (-90 to 90).
       type: number
@@ -643,7 +613,6 @@ components:
       minimum: -90
       maximum: 90
       example: 50.735851
-
     Longitude:
       description: Longitude component (-180 to 180).
       type: number
@@ -651,19 +620,45 @@ components:
       minimum: -180
       maximum: 180
       example: 7.10066
-
-  # ---------- Responses ----------
+    XCorrelator:
+      type: string
+      description: Correlator string, UUID format recommended but any string matching the pattern can be used
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      maxLength: 256
+      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+    ErrorInfo:
+      type: object
+      description: A structured error response providing details about a failed request, including the HTTP status code, an error code, and a human-readable message
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
+          description: HTTP response status code
+        code:
+          type: string
+          maxLength: 96
+          description: A human-readable code to describe the error
+        message:
+          type: string
+          maxLength: 512
+          description: A human-readable description of what the event represents
   responses:
     BindBadRequest400:
       description: Bad Request
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -679,59 +674,58 @@ components:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified"
+                message: At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified
             Insufficient BindType Parameters:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "BindType must be specified"
+                message: BindType must be specified
             Inconsistent Device Properties:
               description: Device parameters provided identify different devices
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Multiple inconsistent device parameters specified"
+                message: Multiple inconsistent device parameters specified
             Invalid Network Access Identifier:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: networkAccessIdentifier"
+                message: 'Invalid format: networkAccessIdentifier'
             Invalid Phone Number:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: phoneNumber"
+                message: 'Invalid format: phoneNumber'
             Invalid IPv4 Address:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: ipv4Address"
+                message: 'Invalid format: ipv4Address'
             Invalid IPv6 Address:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: ipv6Address"
+                message: 'Invalid format: ipv6Address'
             Invalid Port Value:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid value: ipv4Address.publicPort"
+                message: 'Invalid value: ipv4Address.publicPort'
             Invalid BindType Value:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "The value of bindType can only be IMEIBIND,AREALIMIT"
-
+                message: The value of bindType can only be IMEIBIND,AREALIMIT
     UnbindBadRequest400:
       description: Bad Request
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -747,59 +741,58 @@ components:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified"
+                message: At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified
             Insufficient UnbindType Parameters:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "UnbindType must be specified"
+                message: UnbindType must be specified
             Inconsistent Device Properties:
               description: Device parameters provided identify different devices
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Multiple inconsistent device parameters specified"
+                message: Multiple inconsistent device parameters specified
             Invalid Network Access Identifier:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: networkAccessIdentifier"
+                message: 'Invalid format: networkAccessIdentifier'
             Invalid Phone Number:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: phoneNumber"
+                message: 'Invalid format: phoneNumber'
             Invalid IPv4 Address:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: ipv4Address"
+                message: 'Invalid format: ipv4Address'
             Invalid IPv6 Address:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: ipv6Address"
+                message: 'Invalid format: ipv6Address'
             Invalid Port Value:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid value: ipv4Address.publicPort"
+                message: 'Invalid value: ipv4Address.publicPort'
             Invalid UnbindType Value:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "The value of unbindType can only be IMEIBIND,AREALIMIT"
-
+                message: The value of unbindType can only be IMEIBIND,AREALIMIT
     QueryBadRequest400:
       description: Bad Request
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -815,59 +808,58 @@ components:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified"
+                message: At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified
             Insufficient QueryType Parameters:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "QueryType must be specified"
+                message: QueryType must be specified
             Inconsistent Device Properties:
               description: Device parameters provided identify different devices
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Multiple inconsistent device parameters specified"
+                message: Multiple inconsistent device parameters specified
             Invalid Network Access Identifier:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: networkAccessIdentifier"
+                message: 'Invalid format: networkAccessIdentifier'
             Invalid Phone Number:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: phoneNumber"
+                message: 'Invalid format: phoneNumber'
             Invalid IPv4 Address:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: ipv4Address"
+                message: 'Invalid format: ipv4Address'
             Invalid IPv6 Address:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid format: ipv6Address"
+                message: 'Invalid format: ipv6Address'
             Invalid Port Value:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Invalid value: ipv4Address.publicPort"
+                message: 'Invalid value: ipv4Address.publicPort'
             Invalid QueryType Value:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "The value of queryType can only be IMEIBIND,AREALIMIT"
-
+                message: The value of queryType can only be IMEIBIND,AREALIMIT
     DeviceNotFound404:
       description: Not found
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -879,19 +871,19 @@ components:
                       - IDENTIFIER_NOT_FOUND
           examples:
             GENERIC_404_NOT_FOUND:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_NOT_FOUND"
+              $ref: '#/components/examples/GENERIC_404_NOT_FOUND'
             GENERIC_404_IDENTIFIER_NOT_FOUND:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_IDENTIFIER_NOT_FOUND"
+              $ref: '#/components/examples/GENERIC_404_IDENTIFIER_NOT_FOUND'
     Bind422:
       description: Unprocessable Content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -935,17 +927,16 @@ components:
                 status: 422
                 code: UNNECESSARY_UNBIND_AREALIMIT
                 message: The current device area limit has been unbound
-
     Unbind422:
       description: Unprocessable Content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -989,17 +980,16 @@ components:
                 status: 422
                 code: UNNECESSARY_UNBIND_AREALIMIT
                 message: The current device area limit has been unbound
-
     Query422:
       description: Unprocessable Content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1029,17 +1019,16 @@ components:
                 status: 422
                 code: MISSING_IDENTIFIER
                 message: The device cannot be identified.
-
     QuotaOrRateLimit429:
       description: Too Many Requests
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1051,6 +1040,97 @@ components:
                       - TOO_MANY_REQUESTS
           examples:
             GENERIC_429_QUOTA_EXCEEDED:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_429_QUOTA_EXCEEDED"
+              $ref: '#/components/examples/GENERIC_429_QUOTA_EXCEEDED'
             GENERIC_429_TOO_MANY_REQUESTS:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_429_TOO_MANY_REQUESTS"
+              $ref: '#/components/examples/GENERIC_429_TOO_MANY_REQUESTS'
+    Unauthenticated401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 401
+                  code:
+                    enum:
+                      - UNAUTHENTICATED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              $ref: '#/components/examples/GENERIC_401_UNAUTHENTICATED'
+    PermissionDenied403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              $ref: '#/components/examples/GENERIC_403_PERMISSION_DENIED'
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  examples:
+    GENERIC_401_UNAUTHENTICATED:
+      description: Request cannot be authenticated and a new authentication is required
+      value:
+        status: 401
+        code: UNAUTHENTICATED
+        message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
+    GENERIC_403_PERMISSION_DENIED:
+      description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+      value:
+        status: 403
+        code: PERMISSION_DENIED
+        message: Client does not have sufficient permissions to perform this action.
+    GENERIC_404_NOT_FOUND:
+      description: Resource is not found
+      value:
+        status: 404
+        code: NOT_FOUND
+        message: The specified resource is not found.
+    GENERIC_404_IDENTIFIER_NOT_FOUND:
+      description: The identifier cannot be matched to a device or phone number
+      value:
+        status: 404
+        code: IDENTIFIER_NOT_FOUND
+        message: The identifier is not found.
+    GENERIC_429_QUOTA_EXCEEDED:
+      description: Request is rejected due to exceeding a business quota limit
+      value:
+        status: 429
+        code: QUOTA_EXCEEDED
+        message: Out of resource quota.
+    GENERIC_429_TOO_MANY_REQUESTS:
+      description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
+      value:
+        status: 429
+        code: TOO_MANY_REQUESTS
+        message: Rate limit reached.

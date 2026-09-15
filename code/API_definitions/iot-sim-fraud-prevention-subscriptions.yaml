@@ -52,17 +52,13 @@ info:
 
     As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
     <!-- CAMARA:MANDATORY:additional-error-responses:END -->
-
-  version: wip
+  version: 0.2.0-rc.1
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   x-camara-commonalities: 0.9.0
-externalDocs:
-  description: Product documentation at CAMARA
-  url: https://github.com/camaraproject/IoTSIMFraudPrevention
 servers:
-  - url: "{apiRoot}/iot-sim-fraud-prevention-subscriptions/vwip"
+  - url: '{apiRoot}/iot-sim-fraud-prevention-subscriptions/v0.2rc1'
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -72,6 +68,9 @@ tags:
     description: Operations for creating fraud prevention event subscriptions
   - name: Subscription Management
     description: Operations for managing existing subscriptions (list, retrieve, delete)
+externalDocs:
+  description: Product documentation at CAMARA
+  url: https://github.com/camaraproject/IoTSIMFraudPrevention
 paths:
   /subscriptions:
     post:
@@ -82,211 +81,210 @@ paths:
         Create a subscription to receive notifications when the IMEI of a device changes or when it enters/leaves a restricted area.
       operationId: subscribeFraudPrevention
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '#/components/parameters/x-correlator'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+              $ref: '#/components/schemas/SubscribeFraudPreventionRequest'
             examples:
               INPUT_IPV4_ADDRESS:
                 summary: Subscription For One Device By IPv4 Address
                 description: Use the IPv4 address of a device for subscription operations
                 value:
                   config:
-                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    subscriptionExpireTime: '2024-03-22T05:40:58.469Z'
                     initialEvent: true
                     subscriptionMaxEvents: 10
                     subscriptionDetail:
                       device:
                         ipv4Address:
-                          publicAddress: "203.0.113.0"
+                          publicAddress: 203.0.113.0
                           publicPort: 59765
                   types:
-                    - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
-                  sink: "https://notificationSendServer12.supertelco.com"
-                  protocol: "HTTP"
+                    - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change
+                  sink: https://notificationSendServer12.supertelco.com
+                  protocol: HTTP
                   sinkCredential:
-                    credentialType: "ACCESSTOKEN"
-                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                    accessTokenExpiresUtc: "2024-03-23T05:40:58.469Z"
-                    accessTokenType: "bearer"
+                    credentialType: ACCESSTOKEN
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    accessTokenExpiresUtc: '2024-03-23T05:40:58.469Z'
+                    accessTokenType: bearer
               INPUT_IPV6_ADDRESS:
                 summary: Subscription For One Device By IPV6 Address
                 description: Use the IPv6 address of a device for subscription operations
                 value:
                   config:
-                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    subscriptionExpireTime: '2024-03-22T05:40:58.469Z'
                     initialEvent: true
                     subscriptionMaxEvents: 10
                     subscriptionDetail:
                       device:
-                        ipv6Address: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
+                        ipv6Address: 2001:db8:85a3:8d3:1319:8a2e:370:7344
                   types:
-                    - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
-                  sink: "https://notificationSendServer12.supertelco.com"
-                  protocol: "HTTP"
+                    - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change
+                  sink: https://notificationSendServer12.supertelco.com
+                  protocol: HTTP
                   sinkCredential:
-                    credentialType: "ACCESSTOKEN"
-                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                    accessTokenExpiresUtc: "2024-03-23T05:40:58.469Z"
-                    accessTokenType: "bearer"
+                    credentialType: ACCESSTOKEN
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    accessTokenExpiresUtc: '2024-03-23T05:40:58.469Z'
+                    accessTokenType: bearer
               INPUT_PHONE_NUMBER:
                 summary: Subscription For One Device By Device Number
                 description: Use a device's phone number for subscription operation
                 value:
                   config:
-                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    subscriptionExpireTime: '2024-03-22T05:40:58.469Z'
                     initialEvent: true
                     subscriptionMaxEvents: 10
                     subscriptionDetail:
                       device:
-                        phoneNumber: "+123456789"
+                        phoneNumber: '+123456789'
                   types:
-                    - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
-                  sink: "https://notificationSendServer12.supertelco.com"
-                  protocol: "HTTP"
+                    - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change
+                  sink: https://notificationSendServer12.supertelco.com
+                  protocol: HTTP
                   sinkCredential:
-                    credentialType: "ACCESSTOKEN"
-                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                    accessTokenExpiresUtc: "2024-03-23T05:40:58.469Z"
-                    accessTokenType: "bearer"
+                    credentialType: ACCESSTOKEN
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    accessTokenExpiresUtc: '2024-03-23T05:40:58.469Z'
+                    accessTokenType: bearer
               INPUT_NETWORK_ACCESS_IDENTIFIER:
                 summary: Subscription For One Device By Network Access Identification
                 description: Use a device's network access identifier for subscription operations
                 value:
                   config:
-                    subscriptionExpireTime: "2024-03-22T05:40:58.469Z"
+                    subscriptionExpireTime: '2024-03-22T05:40:58.469Z'
                     initialEvent: true
                     subscriptionMaxEvents: 10
                     subscriptionDetail:
                       device:
-                        networkAccessIdentifier: "123456789@domain.com"
+                        networkAccessIdentifier: 123456789@domain.com
                   types:
-                    - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
-                  sink: "https://notificationSendServer12.supertelco.com"
-                  protocol: "HTTP"
+                    - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change
+                  sink: https://notificationSendServer12.supertelco.com
+                  protocol: HTTP
                   sinkCredential:
-                    credentialType: "ACCESSTOKEN"
-                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                    accessTokenExpiresUtc: "2024-03-23T05:40:58.469Z"
-                    accessTokenType: "bearer"
+                    credentialType: ACCESSTOKEN
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    accessTokenExpiresUtc: '2024-03-23T05:40:58.469Z'
+                    accessTokenType: bearer
       callbacks:
         notifications:
-          "{$request.body#/sink}":
+          '{$request.body#/sink}':
             post:
-              summary: "notifications callback"
+              summary: notifications callback
               description: |
                 Important note: This endpoint will be implemented by API users.
                 Whenever an IMEI or area change event occurs, the server will call this endpoint.
               operationId: postNotification
               parameters:
-                - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+                - $ref: '#/components/parameters/x-correlator'
               requestBody:
                 required: true
                 content:
                   application/cloudevents+json:
                     schema:
-                      $ref: "#/components/schemas/NotificationEvent"
+                      $ref: '#/components/schemas/NotificationEvent'
                     examples:
                       IMEI_CHANGE:
                         description: The trigger event when the device IMEI has changed
                         value:
-                          specversion: "1.0"
-                          source: "https://api.example.com"
-                          id: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
-                          type: "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
-                          datacontenttype: "application/json"
-                          time: "2023-03-22T05:40:23.682Z"
+                          specversion: '1.0'
+                          source: https://api.example.com
+                          id: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+                          type: org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change
+                          datacontenttype: application/json
+                          time: '2023-03-22T05:40:23.682Z'
                           data:
-                            subscriptionId: "987654321"
-                            imei: "35-209900-176148-1"
+                            subscriptionId: '987654321'
+                            imei: 35-209900-176148-1
                             device:
-                              phoneNumber: "+123456789"
+                              phoneNumber: '+123456789'
                       AREA_CHANGE:
                         description: The trigger event when the device area has changed
                         value:
-                          specversion: "1.0"
-                          source: "https://api.example.com"
-                          id: "b4333c46-49c0-4f62-80d7-f0ef930f1c47"
-                          type: "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change"
-                          datacontenttype: "application/json"
-                          time: "2023-03-22T05:41:23.682Z"
+                          specversion: '1.0'
+                          source: https://api.example.com
+                          id: b4333c46-49c0-4f62-80d7-f0ef930f1c47
+                          type: org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change
+                          datacontenttype: application/json
+                          time: '2023-03-22T05:41:23.682Z'
                           data:
-                            subscriptionId: "987654321"
+                            subscriptionId: '987654321'
                             area:
-                              areaType: "CIRCLE"
+                              areaType: CIRCLE
                               center:
                                 latitude: 50.735851
                                 longitude: 7.10066
                               radius: 2000
                             device:
-                              phoneNumber: "+123456789"
+                              phoneNumber: '+123456789'
               responses:
-                "204":
+                '204':
                   description: Successful notification.
                   headers:
                     x-correlator:
-                      $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-                "400":
-                  $ref: "#/components/responses/CallbackBadRequest400"
-                "401":
-                  $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
-                "403":
-                  $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
-                "404":
-                  $ref: "#/components/responses/DeviceNotFound404"
-                "410":
-                  $ref: "#/components/responses/Callback410"
-                "429":
-                  $ref: "#/components/responses/QuotaOrRateLimit429"
+                      $ref: '#/components/headers/x-correlator'
+                '400':
+                  $ref: '#/components/responses/CallbackBadRequest400'
+                '401':
+                  $ref: '#/components/responses/Unauthenticated401'
+                '403':
+                  $ref: '#/components/responses/PermissionDenied403'
+                '404':
+                  $ref: '#/components/responses/DeviceNotFound404'
+                '410':
+                  $ref: '#/components/responses/Callback410'
+                '429':
+                  $ref: '#/components/responses/QuotaOrRateLimit429'
               security:
                 - {}
                 - notificationsBearerAuth: []
       responses:
-        "201":
+        '201':
           description: Created (Successful creation of subscription).
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Subscription"
-        "202":
+                $ref: '#/components/schemas/Subscription'
+        '202':
           description: |
             The result of subscription machine card binding or region restriction change events
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubscribeFraudPreventionResponseAsync"
+                $ref: '#/components/schemas/SubscribeFraudPreventionResponseAsync'
               examples:
                 RESULT_SUBSCRIPTION_ID:
                   summary: subscription result
                   description: |
                     The result of subscription device's IMEI or region change
                   value:
-                    subscriptionId: "1119920371"
-        "400":
-          $ref: "#/components/responses/SubscribeBadRequest400"
-        "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
-        "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
-        "404":
-          $ref: "#/components/responses/DeviceNotFound404"
-        "422":
-          $ref: "#/components/responses/Subscribe422"
-        "429":
-          $ref: "#/components/responses/QuotaOrRateLimit429"
+                    subscriptionId: '1119920371'
+        '400':
+          $ref: '#/components/responses/SubscribeBadRequest400'
+        '401':
+          $ref: '#/components/responses/Unauthenticated401'
+        '403':
+          $ref: '#/components/responses/PermissionDenied403'
+        '404':
+          $ref: '#/components/responses/DeviceNotFound404'
+        '422':
+          $ref: '#/components/responses/Subscribe422'
+        '429':
+          $ref: '#/components/responses/QuotaOrRateLimit429'
       security:
         - openId:
-            - "iot-sim-fraud-prevention-subscriptions:subscribe"
-
+            - iot-sim-fraud-prevention-subscriptions:subscribe
     get:
       tags:
         - Subscription Management
@@ -294,13 +292,13 @@ paths:
       description: Retrieve a list of existing subscriptions.
       operationId: listSubscriptions
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '#/components/parameters/x-correlator'
       responses:
-        "200":
+        '200':
           description: List of subscription details.
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -308,21 +306,20 @@ paths:
                 minItems: 0
                 maxItems: 1000
                 items:
-                  $ref: "#/components/schemas/Subscription"
-        "400":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequest400"
-        "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
-        "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
-        "404":
-          $ref: "#/components/responses/DeviceNotFound404"
-        "429":
-          $ref: "#/components/responses/QuotaOrRateLimit429"
+                  $ref: '#/components/schemas/Subscription'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/Unauthenticated401'
+        '403':
+          $ref: '#/components/responses/PermissionDenied403'
+        '404':
+          $ref: '#/components/responses/DeviceNotFound404'
+        '429':
+          $ref: '#/components/responses/QuotaOrRateLimit429'
       security:
         - openId:
-            - "iot-sim-fraud-prevention-subscriptions:read"
-
+            - iot-sim-fraud-prevention-subscriptions:read
   /subscriptions/{subscriptionId}:
     get:
       tags:
@@ -331,7 +328,7 @@ paths:
       description: Retrieve the details of an existing subscription.
       operationId: getSubscription
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '#/components/parameters/x-correlator'
         - name: subscriptionId
           in: path
           required: true
@@ -340,29 +337,28 @@ paths:
             maxLength: 256
           description: Identifier of the subscription.
       responses:
-        "200":
+        '200':
           description: Subscription details.
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Subscription"
-        "400":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequest400"
-        "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
-        "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
-        "404":
-          $ref: "#/components/responses/DeviceNotFound404"
-        "429":
-          $ref: "#/components/responses/QuotaOrRateLimit429"
+                $ref: '#/components/schemas/Subscription'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/Unauthenticated401'
+        '403':
+          $ref: '#/components/responses/PermissionDenied403'
+        '404':
+          $ref: '#/components/responses/DeviceNotFound404'
+        '429':
+          $ref: '#/components/responses/QuotaOrRateLimit429'
       security:
         - openId:
-            - "iot-sim-fraud-prevention-subscriptions:read"
-
+            - iot-sim-fraud-prevention-subscriptions:read
     delete:
       tags:
         - Subscription Management
@@ -370,7 +366,7 @@ paths:
       description: Delete an existing subscription. After deletion, no further notifications will be sent.
       operationId: deleteSubscription
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '#/components/parameters/x-correlator'
         - name: subscriptionId
           in: path
           required: true
@@ -379,40 +375,39 @@ paths:
             maxLength: 256
           description: Identifier of the subscription.
       responses:
-        "204":
-          description: Subscription successfully deleted.
-          headers:
-            x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-        "202":
+        '202':
           description: Request accepted to be processed asynchronously.
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubscriptionAsync"
-        "400":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequest400"
-        "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
-        "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
-        "404":
-          $ref: "#/components/responses/DeviceNotFound404"
-        "429":
-          $ref: "#/components/responses/QuotaOrRateLimit429"
+                $ref: '#/components/schemas/SubscriptionAsync'
+        '204':
+          description: Subscription successfully deleted.
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/Unauthenticated401'
+        '403':
+          $ref: '#/components/responses/PermissionDenied403'
+        '404':
+          $ref: '#/components/responses/DeviceNotFound404'
+        '429':
+          $ref: '#/components/responses/QuotaOrRateLimit429'
       security:
         - openId:
-            - "iot-sim-fraud-prevention-subscriptions:delete"
-
+            - iot-sim-fraud-prevention-subscriptions:delete
 components:
   securitySchemes:
     notificationsBearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: "{$request.body#/sinkCredential.credentialType}"
+      bearerFormat: '{$request.body#/sinkCredential.credentialType}'
       description: |
         Bearer token authentication for the callback endpoint. The token format is determined
         by `sinkCredential.credentialType` in the subscription request.
@@ -424,35 +419,29 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention-subscriptions/oauth/v3/token"
-          refreshUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention-subscriptions/oauth/v3/token"
+          tokenUrl: https://47.251.92.242:38088/iot-sim-fraud-prevention-subscriptions/oauth/v3/token
+          refreshUrl: https://47.251.92.242:38088/iot-sim-fraud-prevention-subscriptions/oauth/v3/token
           scopes:
-            "iot-sim-fraud-prevention-subscriptions:subscribe": Create event subscriptions
-            "iot-sim-fraud-prevention-subscriptions:read": Read subscription details
-            "iot-sim-fraud-prevention-subscriptions:delete": Delete subscriptions
+            iot-sim-fraud-prevention-subscriptions:subscribe: Create event subscriptions
+            iot-sim-fraud-prevention-subscriptions:read: Read subscription details
+            iot-sim-fraud-prevention-subscriptions:delete: Delete subscriptions
   schemas:
-    # ---------- Notification ----------
-    # ─────────────────────────────────────────────────────────────────────────
-    # API-specific notification event group
-    # ─────────────────────────────────────────────────────────────────────────
-
     ApiNotificationEvent:
       description: |
         API-specific notification event group.
         Extends the CloudEvent envelope and constrains `type` to the set of
         event types defined by this API project.
       allOf:
-        - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/CloudEvent"
+        - $ref: '#/components/schemas/CloudEvent'
         - type: object
           properties:
             type:
-              $ref: "#/components/schemas/ApiEventType"
+              $ref: '#/components/schemas/ApiEventType'
       discriminator:
-        propertyName: "type"
+        propertyName: type
         mapping:
-          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change: "#/components/schemas/ImeiChangeEvent"
-          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change: "#/components/schemas/AreaChangeEvent"
-
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change: '#/components/schemas/ImeiChangeEvent'
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change: '#/components/schemas/AreaChangeEvent'
     ApiEventType:
       type: string
       description: |
@@ -462,16 +451,14 @@ components:
       enum:
         - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change
         - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change
-
     ImeiChangeEvent:
       description: Event structure for IMEI change notification
       allOf:
-        - $ref: "#/components/schemas/ApiNotificationEvent"
+        - $ref: '#/components/schemas/ApiNotificationEvent'
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/ImeiChangeEventData"
-
+              $ref: '#/components/schemas/ImeiChangeEventData'
     ImeiChangeEventData:
       description: Event details for the IMEI change notification.
       type: object
@@ -484,24 +471,22 @@ components:
           type: string
           maxLength: 256
           description: The ID of the subscription that triggered this notification
-          example: "987654321"
+          example: '987654321'
         imei:
           type: string
           maxLength: 20
           description: The new IMEI of the device
-          example: "35-209900-176148-1"
+          example: 35-209900-176148-1
         device:
-          $ref: "#/components/schemas/Device"
-
+          $ref: '#/components/schemas/Device'
     AreaChangeEvent:
       description: Event structure for area change notification
       allOf:
-        - $ref: "#/components/schemas/ApiNotificationEvent"
+        - $ref: '#/components/schemas/ApiNotificationEvent'
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/AreaChangeEventData"
-
+              $ref: '#/components/schemas/AreaChangeEventData'
     AreaChangeEventData:
       description: Event details for the area change notification.
       type: object
@@ -514,33 +499,27 @@ components:
           type: string
           maxLength: 256
           description: The ID of the subscription that triggered this notification
-          example: "987654321"
+          example: '987654321'
         area:
-          $ref: "#/components/schemas/Area"
+          $ref: '#/components/schemas/Area'
         device:
-          $ref: "#/components/schemas/Device"
-
-    # ─────────────────────────────────────────────────────────────────────────
-    # Subscription lifecycle event group (Commonalities-owned)
-    # ─────────────────────────────────────────────────────────────────────────
-
+          $ref: '#/components/schemas/Device'
     SubscriptionLifecycleEvent:
       description: |
         Subscription lifecycle event group, common to all CAMARA APIs that
         support explicit subscriptions.
       allOf:
-        - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/CloudEvent"
+        - $ref: '#/components/schemas/CloudEvent'
         - type: object
           properties:
             type:
-              $ref: "#/components/schemas/SubscriptionLifecycleEventType"
+              $ref: '#/components/schemas/SubscriptionLifecycleEventType'
       discriminator:
         propertyName: type
         mapping:
-          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-started: "#/components/schemas/EventSubscriptionStarted"
-          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-updated: "#/components/schemas/EventSubscriptionUpdated"
-          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-ended: "#/components/schemas/EventSubscriptionEnded"
-
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-started: '#/components/schemas/EventSubscriptionStarted'
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-updated: '#/components/schemas/EventSubscriptionUpdated'
+          org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-ended: '#/components/schemas/EventSubscriptionEnded'
     SubscriptionLifecycleEventType:
       type: string
       description: |
@@ -549,16 +528,14 @@ components:
         - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-started
         - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-updated
         - org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-ended
-
     EventSubscriptionStarted:
       description: event structure for event subscription started
       allOf:
-        - $ref: "#/components/schemas/SubscriptionLifecycleEvent"
+        - $ref: '#/components/schemas/SubscriptionLifecycleEvent'
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/SubscriptionStarted"
-
+              $ref: '#/components/schemas/SubscriptionStarted'
     SubscriptionStarted:
       description: Event detail structure for subscription started event
       type: object
@@ -567,30 +544,27 @@ components:
         - subscriptionId
       properties:
         initiationReason:
-          $ref: "#/components/schemas/InitiationReason"
+          $ref: '#/components/schemas/InitiationReason'
         subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
+          $ref: '#/components/schemas/SubscriptionId'
         initiationDescription:
           type: string
           maxLength: 512
           description: Description of subscription initiation
-
     InitiationReason:
       type: string
       description: |
         - SUBSCRIPTION_CREATED - Subscription created by API Server
       enum:
         - SUBSCRIPTION_CREATED
-
     EventSubscriptionUpdated:
       description: event structure for event subscription updated
       allOf:
-        - $ref: "#/components/schemas/SubscriptionLifecycleEvent"
+        - $ref: '#/components/schemas/SubscriptionLifecycleEvent'
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/SubscriptionUpdated"
-
+              $ref: '#/components/schemas/SubscriptionUpdated'
     SubscriptionUpdated:
       description: Event detail structure for subscription updated event
       type: object
@@ -599,14 +573,13 @@ components:
         - subscriptionId
       properties:
         updateReason:
-          $ref: "#/components/schemas/UpdateReason"
+          $ref: '#/components/schemas/UpdateReason'
         subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
+          $ref: '#/components/schemas/SubscriptionId'
         updateDescription:
           type: string
           maxLength: 512
           description: Description of subscription update
-
     UpdateReason:
       type: string
       description: |
@@ -615,16 +588,14 @@ components:
       enum:
         - SUBSCRIPTION_ACTIVE
         - SUBSCRIPTION_INACTIVE
-
     EventSubscriptionEnded:
       description: event structure for event subscription ended
       allOf:
-        - $ref: "#/components/schemas/SubscriptionLifecycleEvent"
+        - $ref: '#/components/schemas/SubscriptionLifecycleEvent'
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/SubscriptionEnded"
-
+              $ref: '#/components/schemas/SubscriptionEnded'
     SubscriptionEnded:
       description: Event detail structure for subscription ended event
       type: object
@@ -633,14 +604,13 @@ components:
         - subscriptionId
       properties:
         terminationReason:
-          $ref: "#/components/schemas/TerminationReason"
+          $ref: '#/components/schemas/TerminationReason'
         subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
+          $ref: '#/components/schemas/SubscriptionId'
         terminationDescription:
           type: string
           maxLength: 512
           description: Description of subscription termination
-
     TerminationReason:
       type: string
       description: |
@@ -655,19 +625,12 @@ components:
         - SUBSCRIPTION_EXPIRED
         - ACCESS_TOKEN_EXPIRED
         - SUBSCRIPTION_DELETED
-
-    # ─────────────────────────────────────────────────────────────────────────
-    # Callback union (API project-owned)
-    # ─────────────────────────────────────────────────────────────────────────
-
     NotificationEvent:
       description: |
         Union of all valid notification event groups at the callback endpoint.
       oneOf:
-        - $ref: "#/components/schemas/ApiNotificationEvent"
-        - $ref: "#/components/schemas/SubscriptionLifecycleEvent"
-
-    # ---------- Subscription schemas ----------
+        - $ref: '#/components/schemas/ApiNotificationEvent'
+        - $ref: '#/components/schemas/SubscriptionLifecycleEvent'
     Subscription:
       description: Represents an event-type subscription.
       type: object
@@ -680,14 +643,14 @@ components:
         - startsAt
       properties:
         protocol:
-          $ref: "#/components/schemas/Protocol"
+          $ref: '#/components/schemas/Protocol'
         sink:
           type: string
           format: uri
           maxLength: 2048
           pattern: ^https:\/\/.+$
           description: The address to which events shall be delivered.
-          example: "https://endpoint.example.com/sink"
+          example: https://endpoint.example.com/sink
         types:
           description: Event types eligible to be delivered.
           type: array
@@ -698,26 +661,26 @@ components:
             maxLength: 512
             description: Event type string in reverse-DNS notation, as defined in ApiEventType.
           example:
-            - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+            - org.camaraproject.iot-sim-fraud-prevention.v0.imei-change
         config:
-          $ref: "#/components/schemas/Config"
+          $ref: '#/components/schemas/Config'
         id:
           type: string
           maxLength: 256
           description: Unique identifier of the subscription.
-          example: "1119920371"
+          example: '1119920371'
         startsAt:
           type: string
           format: date-time
           maxLength: 64
           description: Date when the subscription begins. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-          example: "2023-07-03T12:27:08.312Z"
+          example: '2023-07-03T12:27:08.312Z'
         expiresAt:
           type: string
           format: date-time
           maxLength: 64
           description: Date when the subscription expires (if applicable). It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-          example: "2023-07-03T12:27:08.312Z"
+          example: '2023-07-03T12:27:08.312Z'
         status:
           type: string
           description: Current status of the subscription.
@@ -730,13 +693,12 @@ components:
       discriminator:
         propertyName: protocol
         mapping:
-          HTTP: "#/components/schemas/HTTPSubscriptionResponse"
-          MQTT3: "#/components/schemas/MQTTSubscriptionResponse"
-          MQTT5: "#/components/schemas/MQTTSubscriptionResponse"
-          AMQP: "#/components/schemas/AMQPSubscriptionResponse"
-          NATS: "#/components/schemas/NATSSubscriptionResponse"
-          KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
-
+          HTTP: '#/components/schemas/HTTPSubscriptionResponse'
+          MQTT3: '#/components/schemas/MQTTSubscriptionResponse'
+          MQTT5: '#/components/schemas/MQTTSubscriptionResponse'
+          AMQP: '#/components/schemas/AMQPSubscriptionResponse'
+          NATS: '#/components/schemas/NATSSubscriptionResponse'
+          KAFKA: '#/components/schemas/ApacheKafkaSubscriptionResponse'
     SubscriptionAsync:
       description: Response for a subscription request managed asynchronously
       type: object
@@ -744,14 +706,12 @@ components:
         - id
       properties:
         id:
-          $ref: "#/components/schemas/SubscriptionId"
-
+          $ref: '#/components/schemas/SubscriptionId'
     SubscriptionId:
       type: string
       maxLength: 256
       description: The unique identifier of the subscription
-      example: "1119920371"
-
+      example: '1119920371'
     SubscribeFraudPreventionResponseAsync:
       description: Response for an asynchronous subscription creation.
       type: object
@@ -760,10 +720,9 @@ components:
           type: string
           maxLength: 256
           description: The unique identifier of the subscription.
-          example: "1119920371"
+          example: '1119920371'
       required:
         - subscriptionId
-
     SubscribeFraudPreventionRequest:
       description: Request to create a subscription.
       type: object
@@ -774,35 +733,34 @@ components:
         - types
       properties:
         config:
-          $ref: "#/components/schemas/Config"
+          $ref: '#/components/schemas/Config'
         types:
           description: Event types to subscribe to (only one allowed per subscription).
           type: array
           minItems: 1
           maxItems: 1
           items:
-            $ref: "#/components/schemas/ApiEventType"
+            $ref: '#/components/schemas/ApiEventType'
         protocol:
-          $ref: "#/components/schemas/Protocol"
+          $ref: '#/components/schemas/Protocol'
         sink:
           type: string
           format: uri
           maxLength: 2048
           pattern: ^https:\/\/.+$
           description: The callback URL where notifications will be sent.
-          example: "https://endpoint.example.com/sink"
+          example: https://endpoint.example.com/sink
         sinkCredential:
-          $ref: "#/components/schemas/SinkCredential"
+          $ref: '#/components/schemas/SinkCredential'
       discriminator:
         propertyName: protocol
         mapping:
-          HTTP: "#/components/schemas/HTTPSubscriptionRequest"
-          MQTT3: "#/components/schemas/MQTTSubscriptionRequest"
-          MQTT5: "#/components/schemas/MQTTSubscriptionRequest"
-          AMQP: "#/components/schemas/AMQPSubscriptionRequest"
-          NATS: "#/components/schemas/NATSSubscriptionRequest"
-          KAFKA: "#/components/schemas/ApacheKafkaSubscriptionRequest"
-
+          HTTP: '#/components/schemas/HTTPSubscriptionRequest'
+          MQTT3: '#/components/schemas/MQTTSubscriptionRequest'
+          MQTT5: '#/components/schemas/MQTTSubscriptionRequest'
+          AMQP: '#/components/schemas/AMQPSubscriptionRequest'
+          NATS: '#/components/schemas/NATSSubscriptionRequest'
+          KAFKA: '#/components/schemas/ApacheKafkaSubscriptionRequest'
     Config:
       description: Configuration parameters for the subscription.
       type: object
@@ -810,13 +768,13 @@ components:
         - subscriptionDetail
       properties:
         subscriptionDetail:
-          $ref: "#/components/schemas/SubscriptionDetail"
+          $ref: '#/components/schemas/SubscriptionDetail'
         subscriptionExpireTime:
           type: string
           format: date-time
           maxLength: 64
           description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-          example: "2023-01-17T13:18:23.682Z"
+          example: '2023-01-17T13:18:23.682Z'
         subscriptionMaxEvents:
           type: integer
           format: int32
@@ -827,23 +785,25 @@ components:
         initialEvent:
           type: boolean
           description: Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
-
     SubscriptionDetail:
       description: Details specific to the subscribed events.
       type: object
       properties:
         device:
-          $ref: "#/components/schemas/Device"
+          $ref: '#/components/schemas/Device'
       required:
         - device
-
     Protocol:
       type: string
-      enum: ["HTTP", "MQTT3", "MQTT5", "AMQP", "NATS", "KAFKA"]
+      enum:
+        - HTTP
+        - MQTT3
+        - MQTT5
+        - AMQP
+        - NATS
+        - KAFKA
       description: Delivery protocol (only HTTP is currently allowed).
-      example: "HTTP"
-
-    # ---------- Sink credentials ----------
+      example: HTTP
     SinkCredential:
       type: object
       description: Authentication/authorization information for the callback sink.
@@ -858,17 +818,16 @@ components:
       discriminator:
         propertyName: credentialType
         mapping:
-          PLAIN: "#/components/schemas/PlainCredential"
-          ACCESSTOKEN: "#/components/schemas/AccessTokenCredential"
-          PRIVATE_KEY_JWT: "#/components/schemas/PrivateKeyJWTCredential"
+          PLAIN: '#/components/schemas/PlainCredential'
+          ACCESSTOKEN: '#/components/schemas/AccessTokenCredential'
+          PRIVATE_KEY_JWT: '#/components/schemas/PrivateKeyJWTCredential'
       required:
         - credentialType
-
     PlainCredential:
       type: object
       description: Plain username/password credential.
       allOf:
-        - $ref: "#/components/schemas/SinkCredential"
+        - $ref: '#/components/schemas/SinkCredential'
         - type: object
           required:
             - identifier
@@ -880,12 +839,11 @@ components:
             secret:
               type: string
               maxLength: 512
-
     AccessTokenCredential:
       type: object
       description: Bearer token credential.
       allOf:
-        - $ref: "#/components/schemas/SinkCredential"
+        - $ref: '#/components/schemas/SinkCredential'
         - type: object
           properties:
             accessToken:
@@ -897,7 +855,7 @@ components:
               format: date-time
               maxLength: 64
               description: An absolute (UTC) timestamp at which the token shall be considered expired. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-              example: "2023-07-03T12:27:08.312Z"
+              example: '2023-07-03T12:27:08.312Z'
             accessTokenType:
               type: string
               writeOnly: true
@@ -907,95 +865,87 @@ components:
             - accessToken
             - accessTokenExpiresUtc
             - accessTokenType
-
     PrivateKeyJWTCredential:
       type: object
       description: Use PRIVATE_KEY_JWT to get an access token. The authorization server information needed for this type of sink credential (token endpoint, client ID, JWKS URL) is shared upfront between the client and the CAMARA entity. This type of credential is to be used by clients that have an authorization server.
       allOf:
-        - $ref: "#/components/schemas/SinkCredential"
-
-    # ---------- Device identification (same as main API) ----------
+        - $ref: '#/components/schemas/SinkCredential'
     Device:
       description: End-user device identification.
       type: object
       properties:
         phoneNumber:
-          $ref: "#/components/schemas/PhoneNumber"
+          $ref: '#/components/schemas/PhoneNumber'
         networkAccessIdentifier:
-          $ref: "#/components/schemas/NetworkAccessIdentifier"
+          $ref: '#/components/schemas/NetworkAccessIdentifier'
         ipv4Address:
-          $ref: "#/components/schemas/DeviceIpv4Addr"
+          $ref: '#/components/schemas/DeviceIpv4Addr'
         ipv6Address:
-          $ref: "#/components/schemas/DeviceIpv6Address"
+          $ref: '#/components/schemas/DeviceIpv6Address'
       minProperties: 1
-
     PhoneNumber:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
-      pattern: '^\+[1-9][0-9]{4,14}$'
+      pattern: ^\+[1-9][0-9]{4,14}$
       maxLength: 16
-      example: "+123456789"
-
+      example: '+123456789'
     NetworkAccessIdentifier:
       description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
       type: string
       maxLength: 2048
-      example: "123456789@domain.com"
-
+      example: 123456789@domain.com
     DeviceIpv4Addr:
       description: The device should be identified by either the public (observed) IP address and port as seen by the application server, or the private (local) and any public (observed) IP addresses in use by the device.
       type: object
       properties:
         publicAddress:
-          $ref: "#/components/schemas/SingleIpv4Addr"
+          $ref: '#/components/schemas/SingleIpv4Addr'
         privateAddress:
-          $ref: "#/components/schemas/SingleIpv4Addr"
+          $ref: '#/components/schemas/SingleIpv4Addr'
         publicPort:
-          $ref: "#/components/schemas/Port"
+          $ref: '#/components/schemas/Port'
       anyOf:
-        - required: [publicAddress, privateAddress]
-        - required: [publicAddress, publicPort]
+        - required:
+            - publicAddress
+            - privateAddress
+        - required:
+            - publicAddress
+            - publicPort
       example:
-        publicAddress: "84.125.93.10"
+        publicAddress: 84.125.93.10
         publicPort: 59765
-
     SingleIpv4Addr:
       description: A single IPv4 address with no subnet mask
       type: string
       format: ipv4
       maxLength: 15
-      example: "84.125.93.10"
-
+      example: 84.125.93.10
     Port:
       description: TCP or UDP port number
       type: integer
       format: int32
       minimum: 0
       maximum: 65535
-
     DeviceIpv6Address:
       description: The device should be identified by the observed IPv6 address, or by any single IPv6 address from within the subnet allocated to the device (e.g. adding ::0 to the /64 prefix).
       type: string
       format: ipv6
       maxLength: 45
-      example: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
-
-    # ---------- Geographic area (used in AREA_CHANGE notification) ----------
+      example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
     Area:
       description: Geographic area.
       type: object
       properties:
         areaType:
-          $ref: "#/components/schemas/AreaType"
+          $ref: '#/components/schemas/AreaType'
         point:
-          $ref: "#/components/schemas/Point"
+          $ref: '#/components/schemas/Point'
       required:
         - areaType
       discriminator:
         propertyName: areaType
         mapping:
-          CIRCLE: "#/components/schemas/Circle"
-
+          CIRCLE: '#/components/schemas/Circle'
     AreaType:
       description: |
         Type of this area.
@@ -1003,15 +953,14 @@ components:
       type: string
       enum:
         - CIRCLE
-
     Circle:
       description: Circular area.
       allOf:
-        - $ref: "#/components/schemas/Area"
+        - $ref: '#/components/schemas/Area'
         - type: object
           properties:
             center:
-              $ref: "#/components/schemas/Point"
+              $ref: '#/components/schemas/Point'
             radius:
               type: integer
               format: int32
@@ -1026,7 +975,6 @@ components:
           latitude: 50.735851
           longitude: 7.10066
         radius: 50000
-
     Point:
       description: Coordinates (latitude, longitude) defining a location in a map
       type: object
@@ -1035,13 +983,12 @@ components:
         - longitude
       properties:
         latitude:
-          $ref: "#/components/schemas/Latitude"
+          $ref: '#/components/schemas/Latitude'
         longitude:
-          $ref: "#/components/schemas/Longitude"
+          $ref: '#/components/schemas/Longitude'
       example:
         latitude: 50.735851
         longitude: 7.10066
-
     Latitude:
       description: Latitude component of a location
       type: number
@@ -1049,7 +996,6 @@ components:
       minimum: -90
       maximum: 90
       example: 50.735851
-
     Longitude:
       description: Longitude component of location
       type: number
@@ -1057,34 +1003,29 @@ components:
       minimum: -180
       maximum: 180
       example: 7.10066
-
-    # ---------- Protocol-specific subscription schemas ----------
     HTTPSubscriptionRequest:
       description: Subscription request for HTTP-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - $ref: '#/components/schemas/SubscribeFraudPreventionRequest'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/HTTPSettings"
-
+              $ref: '#/components/schemas/HTTPSettings'
     HTTPSubscriptionResponse:
       description: Subscription resource returned for HTTP-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/Subscription"
+        - $ref: '#/components/schemas/Subscription'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/HTTPSettings"
-
+              $ref: '#/components/schemas/HTTPSettings'
     HTTPSettings:
       type: object
       description: HTTP protocol settings for event delivery.
       properties:
         headers:
           type: object
-          description: |-
-            A set of key/value pairs that is copied into the HTTP request as custom headers.
+          description: A set of key/value pairs that is copied into the HTTP request as custom headers.
           additionalProperties:
             type: string
             maxLength: 512
@@ -1093,26 +1034,22 @@ components:
           description: The HTTP method to use for sending the message.
           enum:
             - POST
-
-    # Other protocol schemas (MQTT, AMQP, etc.) would be defined here if needed
     MQTTSubscriptionRequest:
       description: Subscription request for MQTT-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - $ref: '#/components/schemas/SubscribeFraudPreventionRequest'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/MQTTSettings"
-
+              $ref: '#/components/schemas/MQTTSettings'
     MQTTSubscriptionResponse:
       description: Subscription resource returned for MQTT-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/Subscription"
+        - $ref: '#/components/schemas/Subscription'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/MQTTSettings"
-
+              $ref: '#/components/schemas/MQTTSettings'
     MQTTSettings:
       description: MQTT protocol settings for event delivery.
       type: object
@@ -1141,25 +1078,22 @@ components:
           description: A set of key/value pairs copied into the MQTT message as user properties.
       required:
         - topicName
-
     AMQPSubscriptionRequest:
       description: Subscription request for AMQP-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - $ref: '#/components/schemas/SubscribeFraudPreventionRequest'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/AMQPSettings"
-
+              $ref: '#/components/schemas/AMQPSettings'
     AMQPSubscriptionResponse:
       description: Subscription resource returned for AMQP-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/Subscription"
+        - $ref: '#/components/schemas/Subscription'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/AMQPSettings"
-
+              $ref: '#/components/schemas/AMQPSettings'
     AMQPSettings:
       description: AMQP protocol settings for event delivery.
       type: object
@@ -1175,32 +1109,31 @@ components:
         senderSettlementMode:
           type: string
           description: Sender settlement mode for the AMQP link.
-          enum: ["settled", "unsettled"]
+          enum:
+            - settled
+            - unsettled
         linkProperties:
           type: object
           description: Additional AMQP link properties as key/value pairs.
           additionalProperties:
             type: string
             maxLength: 1024
-
     ApacheKafkaSubscriptionRequest:
       description: Subscription request for Apache Kafka-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - $ref: '#/components/schemas/SubscribeFraudPreventionRequest'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/ApacheKafkaSettings"
-
+              $ref: '#/components/schemas/ApacheKafkaSettings'
     ApacheKafkaSubscriptionResponse:
       description: Subscription resource returned for Apache Kafka-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/Subscription"
+        - $ref: '#/components/schemas/Subscription'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/ApacheKafkaSettings"
-
+              $ref: '#/components/schemas/ApacheKafkaSettings'
     ApacheKafkaSettings:
       description: Apache Kafka protocol settings for event delivery.
       type: object
@@ -1225,25 +1158,22 @@ components:
           description: Acknowledgment mode (0=no ack, 1=leader ack, 2=all replicas ack)
       required:
         - topicName
-
     NATSSubscriptionRequest:
       description: Subscription request for NATS-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
+        - $ref: '#/components/schemas/SubscribeFraudPreventionRequest'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/NATSSettings"
-
+              $ref: '#/components/schemas/NATSSettings'
     NATSSubscriptionResponse:
       description: Subscription resource returned for NATS-based event delivery.
       allOf:
-        - $ref: "#/components/schemas/Subscription"
+        - $ref: '#/components/schemas/Subscription'
         - type: object
           properties:
             protocolSettings:
-              $ref: "#/components/schemas/NATSSettings"
-
+              $ref: '#/components/schemas/NATSSettings'
     NATSSettings:
       description: NATS protocol settings for event delivery.
       type: object
@@ -1254,19 +1184,109 @@ components:
           description: NATS subject
       required:
         - subject
-
-  # ---------- Responses ----------
+    XCorrelator:
+      type: string
+      description: Correlator string, UUID format recommended but any string matching the pattern can be used
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      maxLength: 256
+      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+    ErrorInfo:
+      type: object
+      description: A structured error response providing details about a failed request, including the HTTP status code, an error code, and a human-readable message
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
+          description: HTTP response status code
+        code:
+          type: string
+          maxLength: 96
+          description: A human-readable code to describe the error
+        message:
+          type: string
+          maxLength: 512
+          description: A human-readable description of what the event represents
+    Source:
+      type: string
+      format: uri-reference
+      minLength: 1
+      maxLength: 2048
+      description: |
+        Identifies the context in which an event happened - be a non-empty `URI-reference` like:
+        - URI with a DNS authority:
+          * https://github.com/cloudevents
+          * mailto:cncf-wg-serverless@lists.cncf.io
+        - Universally-unique URN with a UUID:
+          * urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
+        - Application-specific identifier:
+          * /cloudevents/spec/pull/123
+          * 1-555-123-4567
+      example: https://notificationSendServer12.example.com
+    DateTime:
+      type: string
+      format: date-time
+      maxLength: 64
+      description: Timestamp. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+      example: '2018-04-05T17:31:00Z'
+    CloudEvent:
+      type: object
+      description: |
+        CloudEvents 1.0 specification envelope.
+        This schema is the stable base for all CAMARA event notifications.
+        It imposes no constraints on `type` values or `data` structure —
+        those concerns belong to the API-specific and lifecycle group schemas.
+      required:
+        - id
+        - source
+        - specversion
+        - type
+        - time
+      properties:
+        id:
+          type: string
+          maxLength: 256
+          description: Identifier of this event, unique within the source context.
+        source:
+          $ref: '#/components/schemas/Source'
+        type:
+          type: string
+          maxLength: 512
+          description: |
+            Identifies the event type. CAMARA APIs use reverse-DNS notation:
+            `org.camaraproject.<api-name>.<event-version>.<event-name>`
+            The api-name segment makes each type globally unique across API groups.
+        specversion:
+          type: string
+          description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
+          enum:
+            - '1.0'
+        datacontenttype:
+          type: string
+          description: media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs
+          enum:
+            - application/json
+        data:
+          type: object
+          description: Event details payload. Structure is defined by each concrete event schema.
+        time:
+          $ref: '#/components/schemas/DateTime'
   responses:
     SubscribeBadRequest400:
       description: Bad Request
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1285,33 +1305,32 @@ components:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified"
+                message: At least one of phoneNumber, networkAccessIdentifier, ipv4Address and ipv6Address must be specified
             Insufficient Types Parameters:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "SubscriptionType must be specified"
+                message: SubscriptionType must be specified
             Invalid Sink Value:
               value:
                 status: 400
                 code: INVALID_SINK
-                message: "The sink field must be an accessible client address in order to notify the other end when an event occurs"
+                message: The sink field must be an accessible client address in order to notify the other end when an event occurs
             Invalid Protocol Value:
               value:
                 status: 400
                 code: INVALID_PROTOCOL
-                message: "The value of Protocol can only be HTTP, MQTT3, MQTT5, AMQP, NATS, KAFKA"
-
+                message: The value of Protocol can only be HTTP, MQTT3, MQTT5, AMQP, NATS, KAFKA
     CallbackBadRequest400:
       description: Bad Request
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1325,33 +1344,32 @@ components:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Id must be specified"
+                message: Id must be specified
             Insufficient Type Parameters:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Type must be specified"
+                message: Type must be specified
             Insufficient Time Parameters:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Time must be specified"
+                message: Time must be specified
             Insufficient Data Parameters:
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: "Data must be specified"
-
+                message: Data must be specified
     DeviceNotFound404:
       description: Not found
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1363,19 +1381,19 @@ components:
                       - IDENTIFIER_NOT_FOUND
           examples:
             GENERIC_404_NOT_FOUND:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_NOT_FOUND"
+              $ref: '#/components/examples/GENERIC_404_NOT_FOUND'
             GENERIC_404_IDENTIFIER_NOT_FOUND:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_IDENTIFIER_NOT_FOUND"
+              $ref: '#/components/examples/GENERIC_404_IDENTIFIER_NOT_FOUND'
     Subscribe422:
       description: Unprocessable Content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1393,17 +1411,16 @@ components:
                 status: 422
                 code: MISSING_IDENTIFIER
                 message: The device cannot be identified.
-
     Callback410:
       description: Gone
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1418,19 +1435,17 @@ components:
               value:
                 status: 410
                 code: GONE
-                message:
-                  Access to the target resource is no longer available.
-
+                message: Access to the target resource is no longer available.
     QuotaOrRateLimit429:
       description: Too Many Requests
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1442,6 +1457,124 @@ components:
                       - TOO_MANY_REQUESTS
           examples:
             GENERIC_429_QUOTA_EXCEEDED:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_429_QUOTA_EXCEEDED"
+              $ref: '#/components/examples/GENERIC_429_QUOTA_EXCEEDED'
             GENERIC_429_TOO_MANY_REQUESTS:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_429_TOO_MANY_REQUESTS"
+              $ref: '#/components/examples/GENERIC_429_TOO_MANY_REQUESTS'
+    BadRequest400:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              $ref: '#/components/examples/GENERIC_400_INVALID_ARGUMENT'
+    Unauthenticated401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 401
+                  code:
+                    enum:
+                      - UNAUTHENTICATED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              $ref: '#/components/examples/GENERIC_401_UNAUTHENTICATED'
+    PermissionDenied403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              $ref: '#/components/examples/GENERIC_403_PERMISSION_DENIED'
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  examples:
+    GENERIC_400_INVALID_ARGUMENT:
+      description: Invalid Argument. Generic Syntax Exception
+      value:
+        status: 400
+        code: INVALID_ARGUMENT
+        message: Client specified an invalid argument, request body or query param.
+    GENERIC_401_UNAUTHENTICATED:
+      description: Request cannot be authenticated and a new authentication is required
+      value:
+        status: 401
+        code: UNAUTHENTICATED
+        message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
+    GENERIC_403_PERMISSION_DENIED:
+      description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+      value:
+        status: 403
+        code: PERMISSION_DENIED
+        message: Client does not have sufficient permissions to perform this action.
+    GENERIC_404_NOT_FOUND:
+      description: Resource is not found
+      value:
+        status: 404
+        code: NOT_FOUND
+        message: The specified resource is not found.
+    GENERIC_404_IDENTIFIER_NOT_FOUND:
+      description: The identifier cannot be matched to a device or phone number
+      value:
+        status: 404
+        code: IDENTIFIER_NOT_FOUND
+        message: The identifier is not found.
+    GENERIC_429_QUOTA_EXCEEDED:
+      description: Request is rejected due to exceeding a business quota limit
+      value:
+        status: 429
+        code: QUOTA_EXCEEDED
+        message: Out of resource quota.
+    GENERIC_429_TOO_MANY_REQUESTS:
+      description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
+      value:
+        status: 429
+        code: TOO_MANY_REQUESTS
+        message: Rate limit reached.
