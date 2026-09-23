@@ -679,7 +679,7 @@ components:
             maxLength: 512
             description: Event type string in reverse-DNS notation, as defined in ApiEventType.
           example:
-            - "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+            - "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
         config:
           $ref: "#/components/schemas/Config"
         id:
