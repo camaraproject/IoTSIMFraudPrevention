@@ -342,16 +342,12 @@ paths:
                           latitude: 50.735851
                           longitude: 7.10066
                         radius: 50000
-                    imeiBind:
-                      bindStatus: "UNBOUND"
                 IMEI_BIND_RESULT:
                   summary: BINDIMEI RESULT
                   description: The result of query sim card imei bind
                   value:
                     imeiBind:
                       bindStatus: "BOUND"
-                    areaLimit:
-                      areaLimitStatus: "UNRESTRICTED"
         "400":
           $ref: "#/components/responses/QueryBadRequest400"
         "401":
