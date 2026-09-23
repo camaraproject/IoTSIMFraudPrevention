@@ -62,15 +62,38 @@ Changes documented below are compared to version 0.1.0.
 
 ### Breaking changes
 
-* N/A
+* The `POST /query` response now always contains both `areaLimit` and `imeiBind`; previously either property could be absent.
+* The `bindImei` property has been removed from the `imeiBind` object of the `POST /query` response; only `bindStatus` is returned. The bound IMEI is no longer disclosed to the API consumer.
+* Compatibility risk: length and format constraints were added to several request fields, aligned with the CAMARA common schemas (see the `Changed` section for the full list). Requests that previously passed with values exceeding the new limits may now be rejected with `400 INVALID_ARGUMENT`.
 
 ### Added
 
-* N/A
+* The mandatory `info.description` sections required by CAMARA Commonalities, each bracketed by its `CAMARA:MANDATORY` markers:
+  * "Authorization and authentication"
+  * "Request body strictness" — new for this API version. This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level; unknown properties result in a `400 INVALID_ARGUMENT` response.
+  * "Additional CAMARA error responses"
+* An optional `device` property using the `DeviceResponse` schema in the `200` response of `POST /bind`, `POST /unbind` and `POST /query`, allowing the API provider to indicate which device identifier was used when more than one was supplied.
+* The `DeviceResponse` schema, which constrains the response to a single device identifier.
+* A `409` response on `POST /bind` and `POST /unbind`, with error code `INCOMPATIBLE_STATE`, indicating that the device is already in the requested state.
+* Documentation clarifying that a SIM card can be bound to a device (IMEI) and to a geographic area at the same time, and a new "Area restrictions" section describing that the area is determined by the API provider and made known to the API consumer out of band.
 
 ### Changed
 
-* N/A
+* Error responses realigned to the Commonalities r4.4 named error-response catalogue. The locally defined `Generic400`, `Generic401`, `Generic403`, `Generic404` and `Generic429` responses were replaced by:
+  * references to the shared catalogue responses `BadRequest400`, `Unauthenticated401`, `PermissionDenied403` and `TooManyRequests429`;
+  * locally defined responses covering the code combinations that the catalogue does not carry: `DeviceNotFound404`, `QuotaOrRateLimit429` and `IncompatibleState409`.
+* The `404` error code changed from `NOT_FOUND` to `IDENTIFIER_NOT_FOUND`, matching the Commonalities `IdentifierNotFound404` for APIs that identify their subject by device or phone number.
+* The `422` responses no longer declare `UNNECESSARY_UNBIND_IMEI` and `UNNECESSARY_UNBIND_AREALIMIT`; that situation is now reported as `409 INCOMPATIBLE_STATE`.
+* The `400 INVALID_ARGUMENT` example "Multiple inconsistent device parameters specified" was removed. Per the CAMARA API Design Guide, an error must not be returned when the supplied device identifiers do not match.
+* Error `description` and `message` wording now comes from the shared CAMARA examples, so it is consistent across CAMARA APIs.
+* The API definition is now aligned with Commonalities r4.4 (`x-camara-commonalities: 0.9.0`, previously `0.6.1`).
+* Additional constraints on request fields, aligned with the CAMARA common schemas:
+  * `PhoneNumber`: `maxLength: 16`
+  * `SingleIpv4Addr`: `maxLength: 15`
+  * `DeviceIpv6Address`: `maxLength: 45`
+  * `NetworkAccessIdentifier`: `maxLength: 2048`
+  * `Port` and `Circle.radius`: `format: int32`
+* Documentation of the bind and query operations changed from "IMEI or area" to "IMEI and/or area" to reflect that both can be set at the same time.
 
 ### Fixed
 
@@ -78,7 +101,9 @@ Changes documented below are compared to version 0.1.0.
 
 ### Removed
 
-* N/A
+* The `bindImei` property and the `BindImei` schema.
+* The `400 INVALID_ARGUMENT` example "Multiple inconsistent device parameters specified".
+* The `422` error codes `UNNECESSARY_UNBIND_IMEI` and `UNNECESSARY_UNBIND_AREALIMIT`.
 
 ## iot-sim-fraud-prevention-subscriptions 0.2.0-rc.1
 
@@ -93,15 +118,44 @@ Changes documented below are compared to version 0.1.0.
 
 ### Breaking changes
 
-* N/A
+* The CloudEvents `type` namespace of notification events changed from `iot-sim-fraud-prevention` to `iot-sim-fraud-prevention-subscriptions`:
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.imei-change` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change`
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.area-change` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change`
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.subscription-started` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-started`
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.subscription-updated` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-updated`
+  * `org.camaraproject.iot-sim-fraud-prevention.v0.subscription-ended` → `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.subscription-ended`
+
+  API consumers that select or filter notifications on the exact `type` string must be updated.
+* The event data of the `imei-change` and `area-change` notifications no longer carries the actual IMEI or the geographic area. Both events now use a single `BindBreachEventData` payload containing `subscriptionId`, `bindBreach` (boolean) and `device`. API consumers that read `data.imei` or `data.area` must be updated to use `data.bindBreach`.
+* Compatibility risk: length and format constraints were added to several request, response and notification fields, aligned with the CAMARA common schemas (see the `Changed` section for the full list). Requests that previously passed with values exceeding the new limits may now be rejected with `400 INVALID_ARGUMENT`.
 
 ### Added
 
-* N/A
+* The mandatory `info.description` sections required by CAMARA Commonalities, each bracketed by its `CAMARA:MANDATORY` markers:
+  * "Authorization and authentication"
+  * "Request body strictness" — new for this API version. This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level; unknown properties result in a `400 INVALID_ARGUMENT` response.
+  * "Additional CAMARA error responses"
+* The `BindBreachEventData` schema, used by both API-specific notification events.
 
 ### Changed
 
-* N/A
+* The `CloudEvent` schema and its supporting schemas (`DateTime`, `Source`) are now referenced from the CAMARA common event schemas (`CAMARA_event_common.yaml`) instead of being defined inline in this specification.
+* Error responses realigned to the Commonalities r4.4 named error-response catalogue, and the `404` error code changed from `NOT_FOUND` to `IDENTIFIER_NOT_FOUND` (see the `iot-sim-fraud-prevention` entry for details).
+* Error `description` and `message` wording now comes from the shared CAMARA examples, so it is consistent across CAMARA APIs.
+* The API definition is now aligned with Commonalities r4.4 (`x-camara-commonalities: 0.9.0`, previously `0.6.1`).
+* Additional constraints on request, response and notification fields, aligned with the CAMARA common schemas:
+  * `Subscription`: `id` `maxLength: 256`, `expiresAt` `maxLength: 64`, `startsAt` `maxLength: 64`, `types` items `maxLength: 512`
+  * `Config`: `subscriptionExpireTime` `maxLength: 64`; `subscriptionMaxEvents` `format: int32` and `maximum: 1000000`
+  * `SubscribeFraudPreventionResponseAsync`: `subscriptionId` `maxLength: 256`
+  * `PlainCredential`: `identifier` `maxLength: 256`, `secret` `maxLength: 512`
+  * `AccessTokenCredential`: `accessToken` `maxLength: 4096`, `accessTokenExpiresUtc` `maxLength: 64`
+  * `PhoneNumber`: `maxLength: 16`
+  * `SingleIpv4Addr`: `maxLength: 15`
+  * `DeviceIpv6Address`: `maxLength: 45`
+  * `NetworkAccessIdentifier`: `maxLength: 2048`
+  * `Port`: `format: int32`
+* `AccessTokenCredential.accessToken` and `AccessTokenCredential.accessTokenType` are now marked `writeOnly`.
+* The `Subscription.types` example now uses the notification event type namespace described in the `Breaking changes` section.
 
 ### Fixed
 
@@ -109,7 +163,7 @@ Changes documented below are compared to version 0.1.0.
 
 ### Removed
 
-* N/A
+* The `ImeiChangeEventData` and `AreaChangeEventData` schemas, replaced by `BindBreachEventData`.
+* The geographic area schemas `Area`, `AreaType`, `Circle`, `Point`, `Latitude` and `Longitude`, which were only used by the removed `area-change` event data.
 
 **Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/compare/r1.2...r2.1
-
