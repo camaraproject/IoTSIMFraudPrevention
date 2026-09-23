@@ -6,9 +6,12 @@ info:
 
     # Introduction
     This API provides operations to manage security mechanisms for IoT SIM cards:
-    - **Bind**: associate a SIM card with a specific device (IMEI) or restrict its operation to a geographic area.
-    - **Unbind**: remove an existing binding or area restriction.
-    - **Query**: retrieve the current binding status or area restriction for a device.
+    - **Bind**: associate a SIM card with a specific device (IMEI) and/or restrict its operation to a geographic area.
+    - **Unbind**: remove an existing binding and/or area restriction.
+    - **Query**: retrieve the current binding status and/or area restriction for a device.
+
+    A SIM card can be bound to a device (IMEI) and to a geographic area at the same time. When both are
+    set, both restrictions are checked independently.
 
     When a device attempts to use the network, the operator checks the binding/restriction.
     If the IMEI reported does not match the bound one, or the device location is outside the allowed area,
@@ -22,9 +25,17 @@ info:
 
     # API Functionality
     The API exposes three endpoints:
-    - `POST /bind` – bind IMEI or area to a card.
-    - `POST /unbind` – unbind IMEI or area from a card.
+    - `POST /bind` – bind IMEI and/or area to a card.
+    - `POST /unbind` – unbind IMEI and/or area from a card.
     - `POST /query` – query binding/restriction status.
+
+    # Area restrictions
+
+    The API consumer does not specify the geographic area to which a device is restricted: the location
+    and size of that area are determined by the API provider. The API provider makes the applicable areas
+    known to the API consumer out of band, for example as part of the commercial agreement or in the
+    product documentation, so that the consumer can decide whether to apply an area restriction without
+    first binding a device in order to discover which area would be used.
 
     <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
 
@@ -157,6 +168,8 @@ paths:
           $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
           $ref: "#/components/responses/DeviceNotFound404"
+        "409":
+          $ref: "#/components/responses/IncompatibleState409"
         "422":
           $ref: "#/components/responses/Bind422"
         "429":
@@ -245,6 +258,8 @@ paths:
           $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
           $ref: "#/components/responses/DeviceNotFound404"
+        "409":
+          $ref: "#/components/responses/IncompatibleState409"
         "422":
           $ref: "#/components/responses/Unbind422"
         "429":
@@ -332,7 +347,6 @@ paths:
                   description: The result of query sim card imei bind
                   value:
                     imeiBind:
-                      bindImei: "35-209900-176148-1"
                       bindStatus: "BOUND"
         "400":
           $ref: "#/components/responses/QueryBadRequest400"
@@ -376,7 +390,6 @@ components:
         * `ipv6Address`
         * `phoneNumber`
         * `networkAccessIdentifier`
-        If multiple identifiers are provided, they MUST belong to the same device.
       type: object
       properties:
         phoneNumber:
@@ -388,6 +401,15 @@ components:
         ipv6Address:
           $ref: "#/components/schemas/DeviceIpv6Address"
       minProperties: 1
+
+    DeviceResponse:
+      description: |
+        An identifier for the end-user equipment able to connect to the network that the response refers to. This parameter is only returned when the API consumer includes the `device` parameter in their request, and is relevant when more than one device identifier is specified, as only one of those device identifiers is allowed in the response.
+
+        If more than one device identifier is provided, the API provider returns a single identifier which is the one used to fulfil the request. The API provider does not validate or correlate that the provided identifiers belong to the same device, and no error is returned when they do not.
+      allOf:
+        - $ref: "#/components/schemas/Device"
+        - maxProperties: 1
 
     PhoneNumber:
       description: A public identifier addressing a telephone subscription, formatted according to E.164 with a leading '+'.
@@ -468,6 +490,8 @@ components:
       required:
         - bound
       properties:
+        device:
+          $ref: "#/components/schemas/DeviceResponse"
         bound:
           type: boolean
           description: "true if binding succeeded, false otherwise."
@@ -498,6 +522,8 @@ components:
       required:
         - unbound
       properties:
+        device:
+          $ref: "#/components/schemas/DeviceResponse"
         unbound:
           type: boolean
           description: "true if unbinding succeeded, false otherwise."
@@ -526,25 +552,24 @@ components:
       description: Response containing the requested status.
       type: object
       properties:
+        device:
+          $ref: "#/components/schemas/DeviceResponse"
         areaLimit:
           $ref: "#/components/schemas/AreaLimit"
         imeiBind:
           $ref: "#/components/schemas/ImeiBind"
+      required:
+        - areaLimit
+        - imeiBind
 
     ImeiBind:
-      description: IMEI binding status and bound IMEI (if any).
+      description: IMEI binding status.
       type: object
       properties:
-        bindImei:
-          $ref: "#/components/schemas/BindImei"
         bindStatus:
           $ref: "#/components/schemas/BindStatus"
-
-    BindImei:
-      description: The IMEI currently bound to the SIM card (15 digits).
-      type: string
-      maxLength: 20
-      example: "35-209900-176148-1"
+      required:
+        - bindStatus
 
     BindStatus:
       description: |
@@ -564,6 +589,8 @@ components:
           $ref: "#/components/schemas/Area"
         areaLimitStatus:
           $ref: "#/components/schemas/AreaLimitStatus"
+      required:
+        - areaLimitStatus
 
     AreaLimitStatus:
       description: |
@@ -685,12 +712,6 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: "BindType must be specified"
-            Inconsistent Device Properties:
-              description: Device parameters provided identify different devices
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Multiple inconsistent device parameters specified"
             Invalid Network Access Identifier:
               value:
                 status: 400
@@ -753,12 +774,6 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: "UnbindType must be specified"
-            Inconsistent Device Properties:
-              description: Device parameters provided identify different devices
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Multiple inconsistent device parameters specified"
             Invalid Network Access Identifier:
               value:
                 status: 400
@@ -821,12 +836,6 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: "QueryType must be specified"
-            Inconsistent Device Properties:
-              description: Device parameters provided identify different devices
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Multiple inconsistent device parameters specified"
             Invalid Network Access Identifier:
               value:
                 status: 400
@@ -875,13 +884,38 @@ components:
                       - 404
                   code:
                     enum:
-                      - NOT_FOUND
                       - IDENTIFIER_NOT_FOUND
           examples:
-            GENERIC_404_NOT_FOUND:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_NOT_FOUND"
             GENERIC_404_IDENTIFIER_NOT_FOUND:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_IDENTIFIER_NOT_FOUND"
+    IncompatibleState409:
+      description: Conflict
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 409
+                  code:
+                    enum:
+                      - INCOMPATIBLE_STATE
+          examples:
+            GENERIC_409_INCOMPATIBLE_STATE:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_409_INCOMPATIBLE_STATE"
+            Device Already In Requested State:
+              description: The device is already in the state requested by the operation, so the operation cannot be completed
+              value:
+                status: 409
+                code: INCOMPATIBLE_STATE
+                message: The device is already unbound for the requested bind type.
+
     Bind422:
       description: Unprocessable Content
       headers:
@@ -902,8 +936,6 @@ components:
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
-                      - UNNECESSARY_UNBIND_IMEI
-                      - UNNECESSARY_UNBIND_AREALIMIT
           examples:
             Unsupported Identifier:
               description: None of the provided identifiers is supported by the implementation
@@ -923,18 +955,6 @@ components:
                 status: 422
                 code: MISSING_IDENTIFIER
                 message: The device cannot be identified.
-            Unnecessary Unbind BINDIMEI:
-              description: The IMEI of the current device has been unbound, there is no need to unbind it again
-              value:
-                status: 422
-                code: UNNECESSARY_UNBIND_IMEI
-                message: The current device imei has been unbound
-            Unnecessary Unbind AREALIMIT:
-              description: The area limit of the current device has been unbound, there is no need to unbind it again
-              value:
-                status: 422
-                code: UNNECESSARY_UNBIND_AREALIMIT
-                message: The current device area limit has been unbound
 
     Unbind422:
       description: Unprocessable Content
@@ -956,8 +976,6 @@ components:
                       - MISSING_IDENTIFIER
                       - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
-                      - UNNECESSARY_UNBIND_IMEI
-                      - UNNECESSARY_UNBIND_AREALIMIT
           examples:
             Unsupported Identifier:
               description: None of the provided identifiers is supported by the implementation
@@ -977,18 +995,6 @@ components:
                 status: 422
                 code: MISSING_IDENTIFIER
                 message: The device cannot be identified.
-            Unnecessary Unbind BINDIMEI:
-              description: The IMEI of the current device has been unbound, there is no need to unbind it again
-              value:
-                status: 422
-                code: UNNECESSARY_UNBIND_IMEI
-                message: The current device imei has been unbound
-            Unnecessary Unbind AREALIMIT:
-              description: The area limit of the current device has been unbound, there is no need to unbind it again
-              value:
-                status: 422
-                code: UNNECESSARY_UNBIND_AREALIMIT
-                message: The current device area limit has been unbound
 
     Query422:
       description: Unprocessable Content

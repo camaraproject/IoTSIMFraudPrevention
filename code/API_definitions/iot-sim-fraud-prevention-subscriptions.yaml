@@ -470,14 +470,14 @@ components:
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/ImeiChangeEventData"
+              $ref: "#/components/schemas/BindBreachEventData"
 
-    ImeiChangeEventData:
-      description: Event details for the IMEI change notification.
+    BindBreachEventData:
+      description: Event details for a bind breach notification.
       type: object
       required:
         - subscriptionId
-        - imei
+        - bindBreach
         - device
       properties:
         subscriptionId:
@@ -485,14 +485,13 @@ components:
           maxLength: 256
           description: The ID of the subscription that triggered this notification
           example: "987654321"
-        imei:
-          type: string
-          maxLength: 20
-          description: The new IMEI of the device
-          example: "35-209900-176148-1"
+        bindBreach:
+          type: boolean
+          description: |
+            `true` if the device no longer satisfies the bound condition (for example it is no longer the bound device, or it has moved outside the restricted area); `false` if it has returned to the bound condition.
+          example: true
         device:
           $ref: "#/components/schemas/Device"
-
     AreaChangeEvent:
       description: Event structure for area change notification
       allOf:
@@ -500,25 +499,7 @@ components:
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/AreaChangeEventData"
-
-    AreaChangeEventData:
-      description: Event details for the area change notification.
-      type: object
-      required:
-        - subscriptionId
-        - area
-        - device
-      properties:
-        subscriptionId:
-          type: string
-          maxLength: 256
-          description: The ID of the subscription that triggered this notification
-          example: "987654321"
-        area:
-          $ref: "#/components/schemas/Area"
-        device:
-          $ref: "#/components/schemas/Device"
+              $ref: "#/components/schemas/BindBreachEventData"
 
     # ─────────────────────────────────────────────────────────────────────────
     # Subscription lifecycle event group (Commonalities-owned)
@@ -980,84 +961,6 @@ components:
       maxLength: 45
       example: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
 
-    # ---------- Geographic area (used in AREA_CHANGE notification) ----------
-    Area:
-      description: Geographic area.
-      type: object
-      properties:
-        areaType:
-          $ref: "#/components/schemas/AreaType"
-        point:
-          $ref: "#/components/schemas/Point"
-      required:
-        - areaType
-      discriminator:
-        propertyName: areaType
-        mapping:
-          CIRCLE: "#/components/schemas/Circle"
-
-    AreaType:
-      description: |
-        Type of this area.
-        CIRCLE - The area is defined as a circle.
-      type: string
-      enum:
-        - CIRCLE
-
-    Circle:
-      description: Circular area.
-      allOf:
-        - $ref: "#/components/schemas/Area"
-        - type: object
-          properties:
-            center:
-              $ref: "#/components/schemas/Point"
-            radius:
-              type: integer
-              format: int32
-              minimum: 1
-              maximum: 200000
-          required:
-            - center
-            - radius
-      example:
-        areaType: CIRCLE
-        center:
-          latitude: 50.735851
-          longitude: 7.10066
-        radius: 50000
-
-    Point:
-      description: Coordinates (latitude, longitude) defining a location in a map
-      type: object
-      required:
-        - latitude
-        - longitude
-      properties:
-        latitude:
-          $ref: "#/components/schemas/Latitude"
-        longitude:
-          $ref: "#/components/schemas/Longitude"
-      example:
-        latitude: 50.735851
-        longitude: 7.10066
-
-    Latitude:
-      description: Latitude component of a location
-      type: number
-      format: double
-      minimum: -90
-      maximum: 90
-      example: 50.735851
-
-    Longitude:
-      description: Longitude component of location
-      type: number
-      format: double
-      minimum: -180
-      maximum: 180
-      example: 7.10066
-
     # ---------- Protocol-specific subscription schemas ----------
     HTTPSubscriptionRequest:
       description: Subscription request for HTTP-based event delivery.
@@ -1359,11 +1262,8 @@ components:
                       - 404
                   code:
                     enum:
-                      - NOT_FOUND
                       - IDENTIFIER_NOT_FOUND
           examples:
-            GENERIC_404_NOT_FOUND:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_NOT_FOUND"
             GENERIC_404_IDENTIFIER_NOT_FOUND:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_IDENTIFIER_NOT_FOUND"
     Subscribe422:
