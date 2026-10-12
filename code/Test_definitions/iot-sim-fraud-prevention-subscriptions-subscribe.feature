@@ -147,3 +147,11 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     And the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
     And the response property "$.message" contains "An identifier is not included in the request and the device cannot be identified from the 2-legged access token"
+  @iot_sim_fraud_prevention_subscriptions_subscribe_422_service_not_applicable
+  Scenario: Subscribe operation for a device the service does not apply to
+    Given a device identifier for which the IoT SIM Fraud Prevention service is not applicable
+    When the HTTP POST request "subscribeFraudPrevention" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
+    And the response property "$.message" contains a user-friendly text

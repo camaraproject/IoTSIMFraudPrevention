@@ -137,6 +137,15 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
     And the response property "$.message" contains a user-friendly text
 
+  @iot_sim_fraud_prevention_bind_422_service_not_applicable
+  Scenario: Bind operation for a device the service does not apply to
+    Given a device identifier for which the IoT SIM Fraud Prevention service is not applicable
+    When the HTTP POST request "bindDeviceImei" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
+    And the response property "$.message" contains a user-friendly text
+
   @iot_sim_fraud_prevention_bind_429_quota_exceeded
   Scenario: Bind operation exceeding quota limit
     Given the API consumer has exceeded their quota limit
@@ -146,3 +155,4 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
     And the response property "$.status" is 429
     And the response property "$.code" is "QUOTA_EXCEEDED"
     And the response property "$.message" contains a user friendly text
+
