@@ -201,7 +201,7 @@ paths:
                           time: "2023-03-22T05:40:23.682Z"
                           data:
                             subscriptionId: "987654321"
-                            imei: "35-209900-176148-1"
+                            bindBreach: true
                             device:
                               phoneNumber: "+123456789"
                       AREA_CHANGE:
@@ -215,12 +215,7 @@ paths:
                           time: "2023-03-22T05:41:23.682Z"
                           data:
                             subscriptionId: "987654321"
-                            area:
-                              areaType: "CIRCLE"
-                              center:
-                                latitude: 50.735851
-                                longitude: 7.10066
-                              radius: 2000
+                            bindBreach: true
                             device:
                               phoneNumber: "+123456789"
               responses:
@@ -280,7 +275,7 @@ paths:
         "404":
           $ref: "#/components/responses/DeviceNotFound404"
         "422":
-          $ref: "#/components/responses/Subscribe422"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/DeviceIdentifier422"
         "429":
           $ref: "#/components/responses/QuotaOrRateLimit429"
       security:
@@ -1266,34 +1261,6 @@ components:
           examples:
             GENERIC_404_IDENTIFIER_NOT_FOUND:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_404_IDENTIFIER_NOT_FOUND"
-    Subscribe422:
-      description: Unprocessable Content
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 422
-                  code:
-                    enum:
-                      - MISSING_IDENTIFIER
-                      - UNSUPPORTED_IDENTIFIER
-                      - UNNECESSARY_IDENTIFIER
-          examples:
-            Missing Identifier:
-              description: An identifier is not included in the request and the device cannot be identified from the 2-legged access token
-              value:
-                status: 422
-                code: MISSING_IDENTIFIER
-                message: The device cannot be identified.
-
     Callback410:
       description: Gone
       headers:
