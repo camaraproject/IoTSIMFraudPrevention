@@ -155,4 +155,3 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
     And the response property "$.status" is 429
     And the response property "$.code" is "QUOTA_EXCEEDED"
     And the response property "$.message" contains a user friendly text
-
