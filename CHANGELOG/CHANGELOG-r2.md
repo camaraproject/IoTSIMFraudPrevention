@@ -72,19 +72,30 @@ Changes documented below are compared to version 0.1.0.
 
 ### Added
 
-* N/A
+* `POST /query` response now includes the `device` object, so the API consumer can
+  disambiguate which device identifier was matched
+* `422 SERVICE_NOT_APPLICABLE` response, linking to the common `DeviceIdentifier422`
+  error definition, for identified devices to which this service does not apply
 
 ### Changed
 
-* N/A
+* `POST /query` `200` response now requires both `areaLimit` and `imeiBind` objects;
+  `imeiBind` contains only `bindStatus`
+* API description: "IMEI or area" clarified to "IMEI and/or area", with an added
+  explanation that a SIM card can be bound to an IMEI, an area, or both
 
 ### Fixed
 
-* N/A
+* Error responses now use the Commonalities r4.4 common definitions
+  (`DeviceIdentifier422`, `IdentifierNotFound404`, `Generic409`) instead of
+  locally defined variants
+* Removed an invalid `400 INVALID_ARGUMENT` example that violated Design Guide
+  section 3.2.2 (an error must not be returned when supplied device identifiers
+  do not match)
 
 ### Removed
 
-* N/A
+* `bindImei` property from the `imeiBind` object in `POST /query` responses
 
 ## iot-sim-fraud-prevention-subscriptions 0.2.0-rc.1
 
@@ -107,15 +118,19 @@ Changes documented below are compared to version 0.1.0.
 
 ### Changed
 
-* N/A
+* Notification event data for both event types now uses a boolean state indicator
+  (`bindBreach`), replacing the previous IMEI and area payloads
+* Notification protocol list reduced to `HTTP` only, in line with Commonalities
+  r4.4 (the other protocols remain commented out for future use)
 
 ### Fixed
 
-* N/A
+* Corrected the event type namespace in the `Subscription.types` example
 
 ### Removed
 
-* N/A
+* Notification protocols `MQTT3`, `MQTT5`, `AMQP`, `NATS` and `KAFKA`, together
+  with their local request/response and settings schemas
 
 **Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/compare/r1.2...r2.1
 
