@@ -707,11 +707,6 @@ components:
         propertyName: protocol
         mapping:
           HTTP: "#/components/schemas/HTTPSubscriptionResponse"
-          MQTT3: "#/components/schemas/MQTTSubscriptionResponse"
-          MQTT5: "#/components/schemas/MQTTSubscriptionResponse"
-          AMQP: "#/components/schemas/AMQPSubscriptionResponse"
-          NATS: "#/components/schemas/NATSSubscriptionResponse"
-          KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
 
     SubscriptionAsync:
       description: Response for a subscription request managed asynchronously
@@ -773,11 +768,6 @@ components:
         propertyName: protocol
         mapping:
           HTTP: "#/components/schemas/HTTPSubscriptionRequest"
-          MQTT3: "#/components/schemas/MQTTSubscriptionRequest"
-          MQTT5: "#/components/schemas/MQTTSubscriptionRequest"
-          AMQP: "#/components/schemas/AMQPSubscriptionRequest"
-          NATS: "#/components/schemas/NATSSubscriptionRequest"
-          KAFKA: "#/components/schemas/ApacheKafkaSubscriptionRequest"
 
     Config:
       description: Configuration parameters for the subscription.
@@ -815,7 +805,14 @@ components:
 
     Protocol:
       type: string
-      enum: ["HTTP", "MQTT3", "MQTT5", "AMQP", "NATS", "KAFKA"]
+      enum:
+        - HTTP
+        # Future protocol support (not yet used in CAMARA):
+        # - MQTT3
+        # - MQTT5
+        # - AMQP
+        # - NATS
+        # - KAFKA
       description: Delivery protocol (only HTTP is currently allowed).
       example: "HTTP"
 
@@ -992,166 +989,6 @@ components:
           enum:
             - POST
 
-    # Other protocol schemas (MQTT, AMQP, etc.) would be defined here if needed
-    MQTTSubscriptionRequest:
-      description: Subscription request for MQTT-based event delivery.
-      allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
-        - type: object
-          properties:
-            protocolSettings:
-              $ref: "#/components/schemas/MQTTSettings"
-
-    MQTTSubscriptionResponse:
-      description: Subscription resource returned for MQTT-based event delivery.
-      allOf:
-        - $ref: "#/components/schemas/Subscription"
-        - type: object
-          properties:
-            protocolSettings:
-              $ref: "#/components/schemas/MQTTSettings"
-
-    MQTTSettings:
-      description: MQTT protocol settings for event delivery.
-      type: object
-      properties:
-        topicName:
-          type: string
-          maxLength: 256
-          description: MQTT topic name
-        qos:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2
-          description: Quality of Service level (0, 1, or 2)
-        retain:
-          type: boolean
-          description: Whether the broker should retain the last message published on the topic.
-        expiry:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: Message expiry interval in seconds
-        userProperties:
-          type: object
-          description: A set of key/value pairs copied into the MQTT message as user properties.
-      required:
-        - topicName
-
-    AMQPSubscriptionRequest:
-      description: Subscription request for AMQP-based event delivery.
-      allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
-        - type: object
-          properties:
-            protocolSettings:
-              $ref: "#/components/schemas/AMQPSettings"
-
-    AMQPSubscriptionResponse:
-      description: Subscription resource returned for AMQP-based event delivery.
-      allOf:
-        - $ref: "#/components/schemas/Subscription"
-        - type: object
-          properties:
-            protocolSettings:
-              $ref: "#/components/schemas/AMQPSettings"
-
-    AMQPSettings:
-      description: AMQP protocol settings for event delivery.
-      type: object
-      properties:
-        address:
-          type: string
-          maxLength: 512
-          description: AMQP address (node) the link attaches to.
-        linkName:
-          type: string
-          maxLength: 256
-          description: Name of the AMQP link.
-        senderSettlementMode:
-          type: string
-          description: Sender settlement mode for the AMQP link.
-          enum: ["settled", "unsettled"]
-        linkProperties:
-          type: object
-          description: Additional AMQP link properties as key/value pairs.
-          additionalProperties:
-            type: string
-            maxLength: 1024
-
-    ApacheKafkaSubscriptionRequest:
-      description: Subscription request for Apache Kafka-based event delivery.
-      allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
-        - type: object
-          properties:
-            protocolSettings:
-              $ref: "#/components/schemas/ApacheKafkaSettings"
-
-    ApacheKafkaSubscriptionResponse:
-      description: Subscription resource returned for Apache Kafka-based event delivery.
-      allOf:
-        - $ref: "#/components/schemas/Subscription"
-        - type: object
-          properties:
-            protocolSettings:
-              $ref: "#/components/schemas/ApacheKafkaSettings"
-
-    ApacheKafkaSettings:
-      description: Apache Kafka protocol settings for event delivery.
-      type: object
-      properties:
-        topicName:
-          type: string
-          maxLength: 249
-          description: Kafka topic name.
-        partitionKeyExtractor:
-          type: string
-          maxLength: 512
-          description: Key or expression used to extract the partition key from the event.
-        clientId:
-          type: string
-          maxLength: 256
-          description: Kafka client identifier.
-        ackMode:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2
-          description: Acknowledgment mode (0=no ack, 1=leader ack, 2=all replicas ack)
-      required:
-        - topicName
-
-    NATSSubscriptionRequest:
-      description: Subscription request for NATS-based event delivery.
-      allOf:
-        - $ref: "#/components/schemas/SubscribeFraudPreventionRequest"
-        - type: object
-          properties:
-            protocolSettings:
-              $ref: "#/components/schemas/NATSSettings"
-
-    NATSSubscriptionResponse:
-      description: Subscription resource returned for NATS-based event delivery.
-      allOf:
-        - $ref: "#/components/schemas/Subscription"
-        - type: object
-          properties:
-            protocolSettings:
-              $ref: "#/components/schemas/NATSSettings"
-
-    NATSSettings:
-      description: NATS protocol settings for event delivery.
-      type: object
-      properties:
-        subject:
-          type: string
-          maxLength: 256
-          description: NATS subject
-      required:
-        - subject
 
   # ---------- Responses ----------
   responses:
@@ -1198,7 +1035,7 @@ components:
               value:
                 status: 400
                 code: INVALID_PROTOCOL
-                message: "The value of Protocol can only be HTTP, MQTT3, MQTT5, AMQP, NATS, KAFKA"
+                message: "The value of Protocol can only be HTTP"
 
     CallbackBadRequest400:
       description: Bad Request
