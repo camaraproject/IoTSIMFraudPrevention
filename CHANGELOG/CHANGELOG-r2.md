@@ -136,12 +136,12 @@ Changes documented below are compared to version 0.1.0.
 ### Removed
 
 - (change) iot-sim-fraud-prevention-subscriptions: reduce notification protocol list to HTTP by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/84>
-
-
   - Notification protocols `MQTT3`, `MQTT5`, `AMQP`, `NATS` and `KAFKA`, together with their local request/response and settings schemas
-* update api definition file by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+
+
+- update api definition file by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
   - `ImeiChangeEventData` and `AreaChangeEventData` schemas, together with the `Area`, `AreaType`, `Circle`, `Point`, `Latitude` and `Longitude` schemas they referenced
-* (change) iot-sim-fraud-prevention-subscriptions: update notification examples to BindBreachEventData by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82
+- (change) iot-sim-fraud-prevention-subscriptions: update notification examples to BindBreachEventData by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82
   - local `Subscribe422` response definition, replaced by the common `DeviceIdentifier422`
 
 **Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/compare/r1.2...r2.1
