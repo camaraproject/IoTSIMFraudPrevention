@@ -1,0 +1,147 @@
+# Changelog IoTSIMFraudPrevention
+
+## Table of Contents
+
+- [r2.1](#r21)
+
+**Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until it has been released. For example, changes may be reverted before a release is published. For the best results, use the latest published release.**
+
+The below sections record the changes for each API version in each release as follows:
+
+- for an alpha release, the delta with respect to the previous release
+- for the first release-candidate, all changes since the last public release
+- for subsequent release-candidate(s), only the delta to the previous release-candidate
+- for a public release, the consolidated changes since the previous public release
+
+# r2.1
+
+## Release Notes
+
+This release candidate contains the definition and documentation of
+
+- iot-sim-fraud-prevention 0.2.0-rc.1
+- iot-sim-fraud-prevention-subscriptions 0.2.0-rc.1
+
+The API definition(s) are based on
+
+- Commonalities r4.4 (0.9.0)
+- Identity and Consent Management r4.2 (0.5.0)
+
+> **Working area — candidate changes (auto-removed on merge)**  
+> Copy relevant entries into the Breaking changes/Added/Changed/Fixed/Removed sections below. List breaking changes both in Breaking changes and in their normal change category.  
+> You may edit this list while triaging; it will be removed on merge.  
+> This working-area section is removed automatically when the PR is merged.
+
+<details>
+
+<summary>Candidate changes (auto-generated from merged PRs)</summary>
+
+## What's Changed
+
+- Release Automation: Post-release sync (r1.2) by @camara-release-automation[bot] in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/54>
+- Update release-plan.yaml by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/55>
+- Sync common files from Commonalities r4.3 by @camara-release-automation[bot] in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/56>
+- Update iot-sim-fraud-prevention.yaml by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/63>
+- Update release-plan.yaml commonalities_release to 4.4 by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/65>
+- Update release-plan.yaml by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/66>
+- Sync common files from Commonalities r4.4 by @camara-release-automation[bot] in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/67>
+- Add files via upload by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/68>
+- update api definition file by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77>
+- (change) iot-sim-fraud-prevention-subscriptions: update notification examples to BindBreachEventData by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82>
+- (change) iot-sim-fraud-prevention, iot-sim-fraud-prevention-subscriptions: add 422 SERVICE_NOT_APPLICABLE and update notification examples by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/83>
+- (change) iot-sim-fraud-prevention-subscriptions: reduce notification protocol list to HTTP by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/84>
+- (fix) iot-sim-fraud-prevention-subscriptions: correct event type namespace in Subscription.types example by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/79>
+- (admin) remove spurious API definition copies from code/ by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/86>
+- Update iot-sim-fraud-prevention-bind.feature by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/88>
+
+</details>
+
+## iot-sim-fraud-prevention 0.2.0-rc.1
+
+**iot-sim-fraud-prevention 0.2.0-rc.1 is a release-candidate version of this API.**
+
+Changes documented below are compared to version 0.1.0.
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r2.1/code/API_definitions/iot-sim-fraud-prevention.yaml\&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r2.1/code/API_definitions/iot-sim-fraud-prevention.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/r2.1/code/API_definitions/iot-sim-fraud-prevention.yaml)
+
+### Breaking changes
+
+- N/A
+
+### Added
+
+- update api definition file by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77>
+  - `device` object in the `200` responses of `POST /query`, `POST /bind` and `POST /unbind`, so the API consumer can disambiguate which device identifier was matched
+- update api definition file by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77>
+  - `409 INCOMPATIBLE_STATE` response on `POST /bind` and `POST /unbind`, returned when the device is already in the state requested by the operation
+- (change) iot-sim-fraud-prevention, iot-sim-fraud-prevention-subscriptions: add 422 SERVICE_NOT_APPLICABLE and update notification examples by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/83>
+  - `SERVICE_NOT_APPLICABLE` error code in the `422` response, for identified devices to which this service does not apply
+
+### Changed
+
+- update api definition file by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77>
+  - `POST /query` `200` response now requires both `areaLimit` and `imeiBind` objects; `imeiBind` contains only `bindStatus`
+  - API description: "IMEI or area" clarified to "IMEI and/or area", with an added explanation that a SIM card can be bound to an IMEI, an area, or both
+- (change) iot-sim-fraud-prevention, iot-sim-fraud-prevention-subscriptions: add 422 SERVICE_NOT_APPLICABLE and update notification examples by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/83>
+  - `401`, `403`, `404` and `422` responses now link to the Commonalities r4.4 common responses (`Unauthenticated401`, `PermissionDenied403`, `DeviceNotFound404`, `DeviceIdentifier422`) instead of locally defined variants; `404` now returns the `IDENTIFIER_NOT_FOUND` code
+
+### Fixed
+
+- update api definition file by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77>
+  - Removed an invalid `400 INVALID_ARGUMENT` example ("Inconsistent Device Properties") that violated Design Guide section 3.2.2 (an error must not be returned when supplied device identifiers do not match)
+
+### Removed
+
+- update api definition file by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77>
+  - `bindImei` property from the `imeiBind` object in `POST /query` responses; only `bindStatus` is returned
+- (change) iot-sim-fraud-prevention, iot-sim-fraud-prevention-subscriptions: add 422 SERVICE_NOT_APPLICABLE and update notification examples by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/83>
+  - local `Bind422`, `Unbind422` and `Query422` response definitions, replaced by the common `DeviceIdentifier422`
+
+## iot-sim-fraud-prevention-subscriptions 0.2.0-rc.1
+
+**iot-sim-fraud-prevention-subscriptions 0.2.0-rc.1 is a release-candidate version of this API.**
+
+Changes documented below are compared to version 0.1.0.
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r2.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml\&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/IoTSIMFraudPrevention/r2.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/IoTSIMFraudPrevention/blob/r2.1/code/API_definitions/iot-sim-fraud-prevention-subscriptions.yaml)
+
+### Breaking changes
+
+- N/A
+
+### Added
+
+- N/A
+
+### Changed
+
+- update api definition file by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77>
+  - Notification event data for both event types now uses a boolean state indicator (`bindBreach`), replacing the previous IMEI and area payloads
+- (change) iot-sim-fraud-prevention-subscriptions: update notification examples to BindBreachEventData by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82>
+  - `422` response now links to the common `DeviceIdentifier422`, which also adds the `SERVICE_NOT_APPLICABLE` error code; `404` now uses `DeviceNotFound404` and returns the `IDENTIFIER_NOT_FOUND` code
+- (change) iot-sim-fraud-prevention-subscriptions: reduce notification protocol list to HTTP by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/84>
+  - Notification protocol list reduced to `HTTP` only, in line with Commonalities r4.4; the other protocols remain commented out for future use
+
+### Fixed
+
+- (fix) iot-sim-fraud-prevention-subscriptions: correct event type namespace in Subscription.types example by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/79>
+  - `Subscription.types` example corrected from `org.camaraproject.iot-sim-fraud-prevention.v0.imei-change` to `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change`, matching the `ApiEventType` definition
+
+### Removed
+
+- (change) iot-sim-fraud-prevention-subscriptions: reduce notification protocol list to HTTP by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/84>
+  - Notification protocols `MQTT3`, `MQTT5`, `AMQP`, `NATS` and `KAFKA`, together with their local request/response and settings schemas
+
+
+- update api definition file by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+  - `ImeiChangeEventData` and `AreaChangeEventData` schemas, together with the `Area`, `AreaType`, `Circle`, `Point`, `Latitude` and `Longitude` schemas they referenced
+- (change) iot-sim-fraud-prevention-subscriptions: update notification examples to BindBreachEventData by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82
+  - local `Subscribe422` response definition, replaced by the common `DeviceIdentifier422`
+
+**Full Changelog**: https://github.com/camaraproject/IoTSIMFraudPrevention/compare/r1.2...r2.1
