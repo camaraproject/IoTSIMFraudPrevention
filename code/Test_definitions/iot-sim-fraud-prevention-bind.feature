@@ -30,7 +30,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the schema defined by "#/components/schemas/bindDeviceImeiResponse"
+    And the response body complies with the schema defined by "#/components/schemas/BindDeviceImeiResponse"
     And the response property "$.bound" is true
 
   @iot_sim_fraud_prevention_bind_success_arealimit
@@ -41,7 +41,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the schema defined by "#/components/schemas/bindDeviceImeiResponse"
+    And the response body complies with the schema defined by "#/components/schemas/BindDeviceImeiResponse"
     And the response property "$.bound" is true
 
 ############### Error response scenarios ###########################

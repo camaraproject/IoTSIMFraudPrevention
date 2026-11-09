@@ -21,30 +21,30 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Callback Handling
 
   @iot_sim_fraud_prevention_callback_success_imei_change
   Scenario: Successfully handle IMEI change notification
-    Given a valid notification event with type "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+    Given a valid notification event with type "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
     And the notification includes required CloudEvents fields: id, source, specversion, type, time, datacontenttype, data
-    And the data includes subscriptionId, imei and device information
+    And the data includes subscriptionId, bindBreach and optional device information
     When the HTTP POST request is sent to the callback endpoint
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     # Additional payload validation (optional for consumer, but ensures correct handling)
     And the received notification body complies with the schema "#/components/schemas/NotificationEvent"
-    And the payload property "$.type" is "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
-    And the payload property "$.data.imei" is not empty
+    And the payload property "$.type" is "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
+    And the payload property "$.data.bindBreach" is present
     And the payload property "$.specversion" is "1.0"
     And the payload property "$.datacontenttype" is "application/json"
 
   @iot_sim_fraud_prevention_callback_success_area_change
   Scenario: Successfully handle area change notification
-    Given a valid notification event with type "org.camaraproject.iot-sim-fraud-prevention.v0.area-change"
+    Given a valid notification event with type "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change"
     And the notification includes required CloudEvents fields: id, source, specversion, type, time, datacontenttype, data
-    And the data includes subscriptionId, area information and device information
+    And the data includes subscriptionId, bindBreach and optional device information
     When the HTTP POST request is sent to the callback endpoint
     Then the response code is 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the received notification body complies with the schema "#/components/schemas/NotificationEvent"
-    And the payload property "$.type" is "org.camaraproject.iot-sim-fraud-prevention.v0.area-change"
-    And the payload property "$.data.area" is not empty
+    And the payload property "$.type" is "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change"
+    And the payload property "$.data.bindBreach" is present
     And the payload property "$.specversion" is "1.0"
     And the payload property "$.datacontenttype" is "application/json"
 
@@ -78,7 +78,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Callback Handling
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains "The value of type can only be org.camaraproject.iot-sim-fraud-prevention.v0.imei-change,org.camaraproject.iot-sim-fraud-prevention.v0.area-change"
+    And the response property "$.message" contains "The value of type can only be org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change,org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change"
 
   @iot_sim_fraud_prevention_callback_410_gone
   Scenario: Callback endpoint no longer available
