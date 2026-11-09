@@ -31,7 +31,7 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation unbindDeviceImei
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the schema defined by "#/components/schemas/unbindDeviceImeiResponse"
+    And the response body complies with the schema defined by "#/components/schemas/UnBindDeviceImeiResponse"
     And the response property "$.unbound" is true
 
   @iot_sim_fraud_prevention_unbind_success_arealimit
@@ -43,21 +43,21 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation unbindDeviceImei
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the schema defined by "#/components/schemas/unbindDeviceImeiResponse"
+    And the response body complies with the schema defined by "#/components/schemas/UnBindDeviceImeiResponse"
     And the response property "$.unbound" is true
 
 ############### Error response scenarios ###########################
 
-  @iot_sim_fraud_prevention_unbind_422_unnecessary_unbind_imei
+  @iot_sim_fraud_prevention_unbind_409_already_unbound
   Scenario: Unbind IMEI when already unbound
     Given a valid unbind request body with unBindType "IMEIBIND"
     And the request body includes device identifier(s) supported by the implementation
     And the device does not have existing IMEI binding
     When the HTTP POST request "unbindDeviceImei" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "UNNECESSARY_UNBIND_IMEI"
-    And the response property "$.message" contains "The current device imei has been unbound"
+    Then the response status code is 409
+    And the response property "$.status" is 409
+    And the response property "$.code" is "INCOMPATIBLE_STATE"
+    And the response property "$.message" contains "The device is already unbound for the requested bind type"
 
   # Additional error scenarios (400, 401, 403, 404, 429) for unbind
   # These are similar to bind scenarios but with unbind-specific messages.

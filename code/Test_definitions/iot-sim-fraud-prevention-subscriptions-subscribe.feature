@@ -8,7 +8,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     # Testing assets:
     # * A valid device identifier for subscription
     # * A valid sink URL and protocol (e.g., HTTP)
-    # * A valid access token with scope "iot-sim-fraud-prevention-subscriptions:subscribe"
+    # * A valid access token with scope "iot-sim-fraud-prevention-subscriptions:org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change:create"
     # * An access token that requires new authentication
     # * An access token without the required scope
     #
@@ -18,14 +18,14 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     Given an environment at "apiRoot"
     And the resource "/iot-sim-fraud-prevention-subscriptions/vwip/subscriptions"
     And the header "Content-Type" is set to "application/json"
-    And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:subscribe"
+    And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change:create"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
 ######### Happy Path Scenarios #################################
 
   @iot_sim_fraud_prevention_subscribe_success_imei_change
   Scenario: Successfully subscribe to IMEI change events
-    Given a valid subscription request body with types including "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+    Given a valid subscription request body with types including "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
     And the request body includes valid device identifier(s) in subscriptionDetail
     And the request body includes valid sink and protocol parameters
     And the sinkProtocol is "HTTP"
@@ -35,11 +35,11 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the schema defined by "#/components/schemas/Subscription"
     And the response contains a valid subscription ID
-    And the response property "$.types[0]" is "org.camaraproject.iot-sim-fraud-prevention.v0.imei-change"
+    And the response property "$.types[0]" is "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
 
   @iot_sim_fraud_prevention_subscribe_success_arealimit_change
   Scenario: Successfully subscribe to area limit change events
-    Given a valid subscription request body with types including "org.camaraproject.iot-sim-fraud-prevention.v0.area-change"
+    Given a valid subscription request body with types including "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change"
     And the request body includes valid device identifier(s) in subscriptionDetail
     And the request body includes valid sink and protocol parameters
     And the sinkProtocol is "HTTP"
@@ -49,7 +49,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the schema defined by "#/components/schemas/Subscription"
     And the response contains a valid subscription ID
-    And the response property "$.types[0]" is "org.camaraproject.iot-sim-fraud-prevention.v0.area-change"
+    And the response property "$.types[0]" is "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change"
 
   @iot_sim_fraud_prevention_subscribe_async_success
   Scenario: Successfully create subscription asynchronously
@@ -59,8 +59,8 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     Then the response code is 202
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the schema defined by "#/components/schemas/SubscribeFraudPreventionResponseAsync"
-    And the response property "$.subscriptionId" is not empty
+    And the response body complies with the schema defined by "#/components/schemas/SubscriptionAsync"
+    And the response property "$.id" is not empty
 
 ############### Error response scenarios ###########################
 
@@ -115,28 +115,18 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     When the HTTP POST request "subscribeFraudPrevention" is sent
     Then the response status code is 401
     And the response property "$.status" is 401
-    And the response property "$.code" is "AUTHENTICATION_REQUIRED"
-    And the response property "$.message" contains "New authentication is required"
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains "A new authentication is required"
 
   @iot_sim_fraud_prevention_subscribe_403_permission_denied
   Scenario: Subscribe operation without required scope
-    Given the header "Authorization" is set to a valid access token without scope "iot-sim-fraud-prevention-subscriptions:subscribe"
+    Given the header "Authorization" is set to a valid access token without scope "iot-sim-fraud-prevention-subscriptions:org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change:create"
     And a valid subscription request body
     When the HTTP POST request "subscribeFraudPrevention" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains "Client does not have sufficient permissions to perform this action"
-
-  @iot_sim_fraud_prevention_subscribe_422_identifier_mismatch
-  Scenario: Subscribe operation with inconsistent device identifiers
-    Given the header "Authorization" is set to a valid access token which does not identify a single device
-    And the request body property "$.config.subscriptionDetail.device" includes multiple identifiers that identify different devices
-    When the HTTP POST request "subscribeFraudPrevention" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "IDENTIFIER_MISMATCH"
-    And the response property "$.message" contains "Provided identifiers are not consistent"
 
   @iot_sim_fraud_prevention_subscribe_422_missing_identifier
   Scenario: Subscribe operation with missing device identifier when using 2-legged token
