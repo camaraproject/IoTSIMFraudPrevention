@@ -404,27 +404,10 @@ paths:
 
 components:
   securitySchemes:
-    notificationsBearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: "{$request.body#/sinkCredential.credentialType}"
-      description: |
-        Bearer token authentication for the callback endpoint. The token format is determined
-        by `sinkCredential.credentialType` in the subscription request.
     openId:
-      description: |
-        OAuth2.0 Client Credentials authentication.
-        Obtain a token via POST /iot-sim-fraud-prevention-subscriptions/oauth/v3/token
-        with grant_type=client_credentials and Basic Authorization header.
-      type: oauth2
-      flows:
-        clientCredentials:
-          tokenUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention-subscriptions/oauth/v3/token"
-          refreshUrl: "https://47.251.92.242:38088/iot-sim-fraud-prevention-subscriptions/oauth/v3/token"
-          scopes:
-            "iot-sim-fraud-prevention-subscriptions:subscribe": Create event subscriptions
-            "iot-sim-fraud-prevention-subscriptions:read": Read subscription details
-            "iot-sim-fraud-prevention-subscriptions:delete": Delete subscriptions
+      $ref: "../common/CAMARA_common.yaml#/components/securitySchemes/openId"
+    notificationsBearerAuth:
+      $ref: "../common/CAMARA_event_common.yaml#/components/securitySchemes/notificationsBearerAuth"
   schemas:
     # ---------- Notification ----------
     # ─────────────────────────────────────────────────────────────────────────
