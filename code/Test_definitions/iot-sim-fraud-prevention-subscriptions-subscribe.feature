@@ -9,6 +9,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     # * A valid device identifier for subscription
     # * A valid sink URL and protocol (e.g., HTTP)
     # * A valid access token with scope "iot-sim-fraud-prevention-subscriptions:org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change:create"
+    # * A valid access token with scope "iot-sim-fraud-prevention-subscriptions:org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change:create"
     # * An access token that requires new authentication
     # * An access token without the required scope
     #
@@ -40,6 +41,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
   @iot_sim_fraud_prevention_subscribe_success_arealimit_change
   Scenario: Successfully subscribe to area limit change events
     Given a valid subscription request body with types including "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change"
+    And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change:create"
     And the request body includes valid device identifier(s) in subscriptionDetail
     And the request body includes valid sink and protocol parameters
     And the sinkProtocol is "HTTP"
@@ -95,7 +97,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_PROTOCOL"
-    And the response property "$.message" contains "The value of Protocol can only be HTTP, MQTT3, MQTT5, AMQP, NATS, KAFKA"
+    And the response property "$.message" contains "Only HTTP is supported"
 
   @iot_sim_fraud_prevention_subscribe_400_out_of_range_maxevents
   Scenario: Subscribe operation with out of range subscriptionMaxEvents
