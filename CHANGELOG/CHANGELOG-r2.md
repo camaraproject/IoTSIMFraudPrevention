@@ -1,8 +1,9 @@
 # Changelog IoTSIMFraudPrevention
 
+<!-- TOC:START -->
 ## Table of Contents
-
 - [r2.1](#r21)
+<!-- TOC:END -->
 
 **Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until it has been released. For example, changes may be reverted before a release is published. For the best results, use the latest published release.**
 
@@ -26,35 +27,6 @@ The API definition(s) are based on
 
 - Commonalities r4.4 (0.9.0)
 - Identity and Consent Management r4.2 (0.5.0)
-
-> **Working area — candidate changes (auto-removed on merge)**  
-> Copy relevant entries into the Breaking changes/Added/Changed/Fixed/Removed sections below. List breaking changes both in Breaking changes and in their normal change category.  
-> You may edit this list while triaging; it will be removed on merge.  
-> This working-area section is removed automatically when the PR is merged.
-
-<details>
-
-<summary>Candidate changes (auto-generated from merged PRs)</summary>
-
-## What's Changed
-
-- Release Automation: Post-release sync (r1.2) by @camara-release-automation[bot] in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/54>
-- Update release-plan.yaml by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/55>
-- Sync common files from Commonalities r4.3 by @camara-release-automation[bot] in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/56>
-- Update iot-sim-fraud-prevention.yaml by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/63>
-- Update release-plan.yaml commonalities_release to 4.4 by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/65>
-- Update release-plan.yaml by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/66>
-- Sync common files from Commonalities r4.4 by @camara-release-automation[bot] in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/67>
-- Add files via upload by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/68>
-- update api definition file by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77>
-- (change) iot-sim-fraud-prevention-subscriptions: update notification examples to BindBreachEventData by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82>
-- (change) iot-sim-fraud-prevention, iot-sim-fraud-prevention-subscriptions: add 422 SERVICE_NOT_APPLICABLE and update notification examples by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/83>
-- (change) iot-sim-fraud-prevention-subscriptions: reduce notification protocol list to HTTP by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/84>
-- (fix) iot-sim-fraud-prevention-subscriptions: correct event type namespace in Subscription.types example by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/79>
-- (admin) remove spurious API definition copies from code/ by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/86>
-- Update iot-sim-fraud-prevention-bind.feature by @chenfr2-ChinaTelecom in <https://github.com/camaraproject/IoTSIMFraudPrevention/pull/88>
-
-</details>
 
 ## iot-sim-fraud-prevention 0.2.0-rc.1
 
