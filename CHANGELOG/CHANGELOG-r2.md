@@ -81,29 +81,30 @@ Changes documented below are compared to version 0.1.0.
 
 * `POST /unbind` now returns `409 INCOMPATIBLE_STATE` when the device has no existing binding, replacing `422 UNNECESSARY_UNBIND_IMEI` and `422 UNNECESSARY_UNBIND_AREALIMIT` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * `POST /bind` now returns `409 INCOMPATIBLE_STATE` when the device is already in the state requested by the operation by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
-* `POST /query` responses now always carry `imeiBind` and `areaLimit`; `ImeiBind.bindImei` is replaced by `ImeiBind.bindStatus` and `AreaLimit.areaLimitStatus` is now required by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+* `POST /query` responses now always include `imeiBind` and `areaLimit`, and `ImeiBind` reports `bindStatus` instead of `bindImei` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 
 ### Added
 
 * `device` object in the `POST /bind`, `POST /unbind` and `POST /query` responses, identifying the device the result applies to by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
-* `DeviceResponse` schema, replacing `BindImei` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+* `ImeiBind.bindStatus`, reporting the current binding status of the device by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * `409 INCOMPATIBLE_STATE` response for `POST /bind` and `POST /unbind` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * `422 SERVICE_NOT_APPLICABLE` response by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/83
 
 ### Changed
 
+* `POST /query` responses now always include both `imeiBind` and `areaLimit`, and `AreaLimit.areaLimitStatus` is always present by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * Error responses now follow the Commonalities r4.4 format, with the `status`, `code` and `message` fields defined by the common files by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
 * The API description now documents that request bodies reject unknown properties, and adds the "Area restrictions" section by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/63 and https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * Notification examples now use `BindBreachEventData` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82
 
 ### Fixed
 
-* Corrected the error response codes and examples of `POST /bind`, `POST /unbind` and `POST /query` that were inconsistent with the API definition in 0.1.0 by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+* Corrected the error response codes and examples of `POST /bind`, `POST /unbind` and `POST /query` that were inconsistent in 0.1.0 by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 
 ### Removed
 
-* `BindImei` schema, replaced by `DeviceResponse` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
-* `ImeiBind.bindImei` property, replaced by `bindStatus` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+* The `bindImei` object previously returned by `POST /bind`, replaced by the `device` object by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+* The `bindImei` field of `ImeiBind`, replaced by `bindStatus` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 
 ## iot-sim-fraud-prevention-subscriptions 0.2.0
 
@@ -135,17 +136,21 @@ Changes documented below are compared to version 0.1.0.
 
 ### Changed
 
+* Subscription lifecycle event types now use the `org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.*` namespace in the subscription request and in the notifications by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
+* `GET /subscriptions` now returns a paginated list, with `subscriptions` and `pagination` instead of a plain array by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
+* `SubscriptionDetail.device` is now optional when the access token identifies the device by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
 * Error responses now follow the Commonalities r4.4 format, with the `status`, `code` and `message` fields defined by the common files by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
 * Subscription request and response payloads now use the Commonalities r4.4 common subscription schemas by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
 * Notification examples now use the corrected event payloads by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82
 
 ### Fixed
 
-* Corrected the notification examples that used event types and payloads inconsistent with the API definition in 0.1.0 by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82
+* Corrected the notification examples that used event types and payloads inconsistent in 0.1.0 by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/82
 
 ### Removed
 
 * MQTT3, MQTT5, AMQP, NATS and Kafka protocol support by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/84
+* The `initialEvent`, `subscriptionDetail`, `subscriptionExpireTime` and `subscriptionMaxEvents` properties of `Config` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
 * `429` responses from `GET /subscriptions`, `GET /subscriptions/{subscriptionId}` and `DELETE /subscriptions/{subscriptionId}` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
 * `404` response from `GET /subscriptions` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/102
 
