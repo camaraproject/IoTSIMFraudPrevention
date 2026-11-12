@@ -6,6 +6,10 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Callback Handling
     # Input to be provided by the implementation to the tester
     #
     # Testing assets:
+    # * A callback sink URL, identified as "callbackUrl", which receives the notifications.
+    #   It is provided by the tester (a test sink the tester controls) and used as the
+    #   "$.sink" value when creating the subscription; it must be reachable by the
+    #   implementation under test.
     # * A valid notification payload for IMEI_CHANGE event
     # * A valid notification payload for AREA_CHANGE event
     #
@@ -13,7 +17,6 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Callback Handling
 
   Background: Common IoT SIM Fraud Prevention Callbacks setup
     Given an environment at the callback sink URL
-    And the resource "/iot-sim-fraud-prevention-subscriptions/vwip/subscriptions"
     And the header "Content-Type" is set to "application/cloudevents+json"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
