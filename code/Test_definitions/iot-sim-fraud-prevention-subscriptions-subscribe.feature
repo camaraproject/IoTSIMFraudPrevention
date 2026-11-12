@@ -29,7 +29,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     Given a valid subscription request body with types including "org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.imei-change"
     And the request body includes valid device identifier(s) in subscriptionDetail
     And the request body includes valid sink and protocol parameters
-    And the sinkProtocol is "HTTP"
+    And the request property "$.protocol" is set to "HTTP"
     When the HTTP POST request "subscribeFraudPrevention" is sent
     Then the response code is 201
     And the response header "Content-Type" is "application/json"
@@ -44,7 +44,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation subscri
     And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:org.camaraproject.iot-sim-fraud-prevention-subscriptions.v0.area-change:create"
     And the request body includes valid device identifier(s) in subscriptionDetail
     And the request body includes valid sink and protocol parameters
-    And the sinkProtocol is "HTTP"
+    And the request property "$.protocol" is set to "HTTP"
     When the HTTP POST request "subscribeFraudPrevention" is sent
     Then the response code is 201
     And the response header "Content-Type" is "application/json"
