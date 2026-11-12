@@ -1,4 +1,4 @@
-Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation deleteSubscription
+Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, v0.2.0 - Operation deleteSubscription
 
     # Input to be provided by the implementation to the tester
     #
@@ -13,7 +13,7 @@ Feature: CAMARA IoT SIM Fraud Prevention Subscriptions, vwip - Operation deleteS
 
   Background: Common deleteSubscription setup
     Given an environment at "apiRoot"
-    And the resource "/iot-sim-fraud-prevention-subscriptions/vwip/subscriptions/{subscriptionId}"
+    And the resource "/iot-sim-fraud-prevention-subscriptions/v0.2/subscriptions/{subscriptionId}"
     And the path parameter "subscriptionId" is set to the ID of an existing subscription
     And the header "Authorization" is set to a valid access token with scope "iot-sim-fraud-prevention-subscriptions:delete"
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
