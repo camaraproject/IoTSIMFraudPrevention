@@ -81,18 +81,17 @@ Changes documented below are compared to version 0.1.0.
 
 * `POST /unbind` now returns `409 INCOMPATIBLE_STATE` when the device has no existing binding, replacing `422 UNNECESSARY_UNBIND_IMEI` and `422 UNNECESSARY_UNBIND_AREALIMIT` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * `POST /bind` now returns `409 INCOMPATIBLE_STATE` when the device is already in the state requested by the operation by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
-* `POST /query` responses now always include `imeiBind` and `areaLimit`, and `ImeiBind` reports `bindStatus` instead of `bindImei` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+* `POST /query` responses now always include `imeiBind` and `areaLimit`; `ImeiBind` no longer returns `bindImei` and now requires `bindStatus` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 
 ### Added
 
 * `device` object in the `POST /bind`, `POST /unbind` and `POST /query` responses, identifying the device the result applies to by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
-* `ImeiBind.bindStatus`, reporting the current binding status of the device by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * `409 INCOMPATIBLE_STATE` response for `POST /bind` and `POST /unbind` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * `422 SERVICE_NOT_APPLICABLE` response by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/83
 
 ### Changed
 
-* `POST /query` responses now always include both `imeiBind` and `areaLimit`, and `AreaLimit.areaLimitStatus` is always present by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+* `POST /query` responses now always include both `imeiBind` and `areaLimit`; `ImeiBind.bindStatus` and `AreaLimit.areaLimitStatus` are now required by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * The API description now documents that request bodies reject unknown properties, and adds the "Area restrictions" section by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/63 and https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 * The `NOT_FOUND` error code is no longer returned in `404` responses; `IDENTIFIER_NOT_FOUND` is used instead by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 
@@ -102,7 +101,7 @@ Changes documented below are compared to version 0.1.0.
 
 ### Removed
 
-* The `bindImei` field of `ImeiBind`, replaced by `bindStatus` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
+* The `bindImei` field of `ImeiBind` by @chenfr2-ChinaTelecom in https://github.com/camaraproject/IoTSIMFraudPrevention/pull/77
 
 ## iot-sim-fraud-prevention-subscriptions 0.2.0
 
