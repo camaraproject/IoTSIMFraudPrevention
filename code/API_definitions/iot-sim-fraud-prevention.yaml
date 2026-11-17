@@ -894,8 +894,14 @@ components:
           examples:
             GENERIC_409_INCOMPATIBLE_STATE:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_409_INCOMPATIBLE_STATE"
-            Device Already In Requested State:
-              description: The device is already in the state requested by the operation, so the operation cannot be completed
+            Device Already Bound:
+              description: The device already has a binding of the requested bind type, so the bind operation cannot be completed
+              value:
+                status: 409
+                code: INCOMPATIBLE_STATE
+                message: The device is already bound with the requested bind type.
+            Device Already Unbound:
+              description: The device is already unbound for the requested bind type, so the unbind operation cannot be completed
               value:
                 status: 409
                 code: INCOMPATIBLE_STATE
