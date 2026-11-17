@@ -155,3 +155,14 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
     And the response property "$.status" is 429
     And the response property "$.code" is "QUOTA_EXCEEDED"
     And the response property "$.message" contains a user friendly text
+
+  # To test this scenario the environment has to be configured to reject requests reaching the threshold limit set.
+  @iot_sim_fraud_prevention_bind_429_too_many_requests
+  Scenario: Bind operation rejected due to too many requests
+    Given a valid bind request body
+    And the threshold of requests has been reached
+    When the HTTP POST request "bindDeviceImei" is sent
+    Then the response status code is 429
+    And the response property "$.status" is 429
+    And the response property "$.code" is "TOO_MANY_REQUESTS"
+    And the response property "$.message" contains a user friendly text
