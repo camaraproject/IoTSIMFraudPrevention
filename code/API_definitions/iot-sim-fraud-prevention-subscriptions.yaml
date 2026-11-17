@@ -734,7 +734,7 @@ components:
         privateAddress:
           $ref: "#/components/schemas/SingleIpv4Addr"
         publicPort:
-          $ref: "#/components/schemas/Port"
+          $ref: "../common/CAMARA_common.yaml#/components/schemas/Port"
       anyOf:
         - required: [publicAddress, privateAddress]
         - required: [publicAddress, publicPort]
@@ -748,13 +748,6 @@ components:
       format: ipv4
       maxLength: 15
       example: "84.125.93.10"
-
-    Port:
-      description: TCP or UDP port number.
-      type: integer
-      format: int32
-      minimum: 0
-      maximum: 65535
 
     DeviceIpv6Address:
       description: |
