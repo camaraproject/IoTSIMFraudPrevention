@@ -106,6 +106,17 @@ Feature: CAMARA IoT SIM Fraud Prevention API, vwip - Operation bindDeviceImei
     And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
+  @iot_sim_fraud_prevention_bind_409_already_bound
+  Scenario: Bind IMEI when already bound
+    Given a valid bind request body with bindType "IMEIBIND"
+    And the request body includes device identifier(s) supported by the implementation
+    And the device already has an existing IMEI binding
+    When the HTTP POST request "bindDeviceImei" is sent
+    Then the response status code is 409
+    And the response property "$.status" is 409
+    And the response property "$.code" is "INCOMPATIBLE_STATE"
+    And the response property "$.message" contains "The device is already bound with the requested bind type"
+
   @iot_sim_fraud_prevention_bind_422_unnecessary_identifier
   Scenario: Bind operation with unnecessary device identifier when using 3-legged token
     Given the header "Authorization" is set to a valid access token identifying a device
