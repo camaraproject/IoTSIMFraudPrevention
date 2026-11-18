@@ -594,8 +594,6 @@ components:
       properties:
         areaType:
           $ref: "#/components/schemas/AreaType"
-        point:
-          $ref: "#/components/schemas/Point"
       required:
         - areaType
       discriminator:
