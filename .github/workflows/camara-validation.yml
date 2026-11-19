@@ -5,6 +5,11 @@
 # all configuration is centralized in camaraproject/tooling.
 #
 # Replaces the legacy pr_validation_caller.yml (v0 validation).
+#
+# The reusable workflow checks tooling out at its own commit (the ref in
+# `uses:` below); no OIDC token or ref override is involved. A
+# maintenance/rX branch carries its own copy of this file (pull requests
+# run the copy of their base branch).
 
 name: CAMARA Validation
 
@@ -26,9 +31,8 @@ permissions:
   issues: write
   contents: read
   statuses: write
-  id-token: write
 
 jobs:
   validation:
-    uses: camaraproject/tooling/.github/workflows/validation.yml@v1-rc
+    uses: camaraproject/tooling/.github/workflows/validation.yml@v1-rc2
     secrets: inherit
