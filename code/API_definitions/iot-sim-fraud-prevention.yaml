@@ -97,9 +97,9 @@ paths:
         Bind a SIM card to the IMEI of the device currently using it, or restrict it to a geographic area.
 
         The request does not carry an IMEI. With `bindType: IMEIBIND` the API provider binds the
-        subscription to the IMEI of the device that is using the SIM card at the time of the
-        request, identified by the `device` object or, when `device` is omitted, by the device
-        identity in the three-legged access token.
+        SIM card to the IMEI of the device that is using it at the time of the request,
+        identified by the `device` object or, when `device` is omitted, by the device identity
+        in the three-legged access token.
 
         The outcome is reported as follows:
         - `200` with `bound: true`: the requested binding is active after the operation.
@@ -107,8 +107,7 @@ paths:
           binding could not be activated, for example because the device did not respond in time.
           The binding is unchanged and the request can be repeated.
         - `409` with `INCOMPATIBLE_STATE`: the request conflicts with the current state of the
-          subscription, for example the requested binding is already active. The subscription is
-          unchanged.
+          SIM card, for example the requested binding is already active. The binding is unchanged.
       operationId: bindDeviceImei
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -207,8 +206,8 @@ paths:
           requested binding could not be removed, for example because the device did not respond in
           time. The binding is unchanged and the request can be repeated.
         - `409` with `INCOMPATIBLE_STATE`: the request conflicts with the current state of the
-          subscription, for example there is no binding of the requested type to remove. The
-          subscription is unchanged.
+          SIM card, for example there is no binding of the requested type to remove. The binding
+          is unchanged.
       operationId: unBindDeviceImei
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -306,8 +305,8 @@ paths:
         value of the queried status.
 
         The response always contains both `imeiBind` and `areaLimit`, so that a single request
-        gives the complete state of the subscription. The status which is not the queried one is
-        returned as it currently is, not as a default value: a device with an active IMEI binding
+        gives the complete state of the SIM card. The status that was not queried is returned
+        with its current value, not with a default value: a device with an active IMEI binding
         and no area restriction is returned as `imeiBind.bindStatus: BOUND` and
         `areaLimit.areaLimitStatus: UNRESTRICTED`.
       operationId: query
