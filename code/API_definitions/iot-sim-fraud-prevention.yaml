@@ -93,7 +93,22 @@ paths:
       tags:
         - Bind Sim Card Fraud Prevention
       summary: Bind device IMEI or area restrictions
-      description: Associate a SIM card with a specific IMEI or restrict it to a geographic area.
+      description: |
+        Bind a SIM card to the IMEI of the device currently using it, or restrict it to a geographic area.
+
+        The request does not carry an IMEI. With `bindType: IMEIBIND` the API provider binds the
+        subscription to the IMEI of the device that is using the SIM card at the time of the
+        request, identified by the `device` object or, when `device` is omitted, by the device
+        identity in the three-legged access token.
+
+        The outcome is reported as follows:
+        - `200` with `bound: true`: the requested binding is active after the operation.
+        - `200` with `bound: false`: the request was valid and has been accepted, but the requested
+          binding could not be activated, for example because the device did not respond in time.
+          The binding is unchanged and the request can be repeated.
+        - `409` with `INCOMPATIBLE_STATE`: the request conflicts with the current state of the
+          subscription, for example the requested binding is already active. The subscription is
+          unchanged.
       operationId: bindDeviceImei
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -183,7 +198,17 @@ paths:
       tags:
         - Unbind Sim Card Fraud Prevention
       summary: Unbind device IMEI or area restrictions
-      description: Remove an existing IMEI binding or area restriction from a device.
+      description: |
+        Remove an existing IMEI binding or area restriction from a device.
+
+        The outcome is reported as follows:
+        - `200` with `unbound: true`: the requested binding is no longer active.
+        - `200` with `unbound: false`: the request was valid and has been accepted, but the
+          requested binding could not be removed, for example because the device did not respond in
+          time. The binding is unchanged and the request can be repeated.
+        - `409` with `INCOMPATIBLE_STATE`: the request conflicts with the current state of the
+          subscription, for example there is no binding of the requested type to remove. The
+          subscription is unchanged.
       operationId: unBindDeviceImei
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -273,7 +298,18 @@ paths:
       tags:
         - Query Card Fraud Prevention
       summary: IoT SIM Fraud Prevention Query
-      description: Retrieve the current IMEI binding status or area restriction for a device.
+      description: |
+        Retrieve the current IMEI binding status and the current area restriction status of a device.
+
+        `queryType` identifies the status the API consumer is interested in: `IMEIBIND` for the
+        IMEI binding, `AREALIMIT` for the area restriction. The API provider returns the current
+        value of the queried status.
+
+        The response always contains both `imeiBind` and `areaLimit`, so that a single request
+        gives the complete state of the subscription. The status which is not the queried one is
+        returned as it currently is, not as a default value: a device with an active IMEI binding
+        and no area restriction is returned as `imeiBind.bindStatus: BOUND` and
+        `areaLimit.areaLimitStatus: UNRESTRICTED`.
       operationId: query
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -470,7 +506,7 @@ components:
         - bindType
 
     BindDeviceImeiResponse:
-      description: Response indicating whether the binding operation succeeded.
+      description: Response indicating whether the requested binding is active after the operation.
       type: object
       required:
         - bound
@@ -479,7 +515,10 @@ components:
           $ref: "#/components/schemas/DeviceResponse"
         bound:
           type: boolean
-          description: "true if binding succeeded, false otherwise."
+          description: |
+            `true` if the requested binding is active after the operation, `false` if the request
+            was accepted but the binding could not be activated. See the operation description for
+            the complete set of outcomes.
           example: true
 
     # ---------- Unbind ----------
@@ -502,7 +541,7 @@ components:
         - unBindType
 
     UnBindDeviceImeiResponse:
-      description: Response indicating whether the unbinding operation succeeded.
+      description: Response indicating whether the requested binding was removed by the operation.
       type: object
       required:
         - unbound
@@ -511,19 +550,24 @@ components:
           $ref: "#/components/schemas/DeviceResponse"
         unbound:
           type: boolean
-          description: "true if unbinding succeeded, false otherwise."
+          description: |
+            `true` if the requested binding is no longer active after the operation, `false` if the
+            request was accepted but the binding could not be removed. See the operation
+            description for the complete set of outcomes.
           example: true
 
     # ---------- Query ----------
     QueryType:
       type: string
-      description: The type of query (IMEI binding or area limit).
+      description: |
+        The status the API consumer is interested in: `IMEIBIND` for the IMEI binding, `AREALIMIT`
+        for the area restriction. The response returns this status together with the other one.
       enum:
         - AREALIMIT
         - IMEIBIND
 
     QueryRequest:
-      description: Request to query the current status.
+      description: Request to query the current IMEI binding status and area restriction status.
       type: object
       properties:
         device:
@@ -534,7 +578,9 @@ components:
         - queryType
 
     QueryFraudPreventionResponse:
-      description: Response containing the requested status.
+      description: |
+        Response containing the current IMEI binding status and the current area restriction status
+        of the device.
       type: object
       properties:
         device:
